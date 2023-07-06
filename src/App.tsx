@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { YMaps, Map } from '@pbe/react-yandex-maps';
 
 function App() {
   return (
