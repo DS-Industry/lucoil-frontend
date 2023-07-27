@@ -6,23 +6,37 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { UserContext } from './context/user-context';
 import { CarWashContext } from './context/carwash-context';
-import { OrderContext } from './context/order-context';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+const colors = {
+  colors: {
+      'PRIMARY_RED' : '#D2233C',
+      'SECONDARY_RED': '#F7EAEC',
+      'WHITE' : '#FFFFFF',
+      'BLACK' : '#000000',
+      'DARK_GRAY' : '#A0A0A4',
+      'WHITE_GRAY' : '#EFEFF3',
+  }
+}
+
+const theme = extendTheme({ colors });
+
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <UserContext.Provider value=''>
-        <CarWashContext.Provider value=''>
-          <OrderContext.Provider value=''>
-            <App />
-          </OrderContext.Provider>
-        </CarWashContext.Provider>
-      </UserContext.Provider>
-    </BrowserRouter>
+    <ChakraProvider theme={theme}>
+      <BrowserRouter>
+        <UserContext.Provider value=''>
+          <CarWashContext.Provider value=''>
+              <App />
+          </CarWashContext.Provider>
+        </UserContext.Provider>
+      </BrowserRouter>
+    </ChakraProvider>
   </React.StrictMode>
 );
 

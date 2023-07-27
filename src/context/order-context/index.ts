@@ -1,3 +1,11 @@
 import React from "react";
 
-export const OrderContext = React.createContext({});
+interface IOrderContext {
+    order: object,
+}
+
+export const OrderContext = React.createContext({
+    order: null,
+    setOrder: () => {}
+
+});

@@ -1,26 +1,26 @@
-import React, { useContext } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { YMaps, Map } from '@pbe/react-yandex-maps';
+import { Route, Routes } from 'react-router-dom';
+import { HomePage } from './pages/home';
+import { ListPage } from './pages/list';
+import { OrderPage } from './pages/order';
+import { OrderContext } from './context/order-context';
+import { useState } from 'react';
 
 function App() {
+  const [ order, setOrder ] = useState(null)
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <OrderContext.Provider value={{ order, setOrder: () => {} }}>
+      <Routes>
+        <Route path='/home' element={<HomePage />} />
+        <Route path='/list' element={<ListPage />} />
+        <Route path='/order' element={<OrderPage />} />
+      </Routes>
+    </OrderContext.Provider>
+    </>
+     
+      
   );
 }
 
