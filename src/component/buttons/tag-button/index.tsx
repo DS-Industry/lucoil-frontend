@@ -1,4 +1,6 @@
 import { Button} from "@chakra-ui/react"
+import { useContext } from "react"
+import { OrderContext } from "../../../context/order-context"
 
 interface ITagButton {
     height: string,
@@ -9,8 +11,8 @@ interface ITagButton {
     onClick?: any,
     onClose: any
     disabled: boolean,
-    setCarWashData: any,
     carWash: any,
+    distance: number
 }
 
 
@@ -23,14 +25,23 @@ export const TagButton: React.FC<ITagButton> = ({
     bgColor, 
     onClick, 
     onClose,
-    setCarWashData,
     carWash,
+    distance,
 }) => {
+
+    const { setOrder } = useContext(OrderContext);
 
     const handleClick = () => {
         onClick(true);
         onClose();
-        setCarWashData(carWash)
+        console.log('This is car wash id for Order context => ', carWash['id']);
+        setOrder((prevValue: any) =>({
+            ...prevValue,
+            carWashId: carWash['id'],
+            title: carWash['name'],
+            address: carWash['address'],
+            distance: distance
+        }));
     }
 
     return (

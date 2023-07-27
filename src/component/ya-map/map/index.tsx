@@ -20,16 +20,12 @@ export const CustomYMap = () => {
 
 
     const navigate = useNavigate();
-    const { setOrder } = useContext(OrderContext);
-
 
     const location = useLocation();
     const [ userPosition, setUserPosition ] = useState<number[]>([]);
     const [ carWashIdList, setCarWashIdList ] = useState<boolean>(false);
     const [ carWashCoords, setCarWashCoords ] = useState<Array<number>>();
     const [ distance, setDistance] = useState<number>(0);
-    const [ sum, setSum ] = useState<string>('');
-    const [ bay, setBay ] = useState<string>('');
     const [ placeMarkSwitch, setPlaceMarkSwitch ] = useState<boolean>(false);
     const [ drawerSwitch, setDrawerSwitch ] = useState<boolean>(false);
     const [ carWashMainInfo, setCarWashMainInfo ] = useState<any>();
@@ -76,10 +72,6 @@ export const CustomYMap = () => {
     const switchIputDrawers = () => {
         setDrawerBaySwitch(false);
         setDrawerSumSwitch(true);
-    }
-
-    const clearOrder = () => {
-
     }
 
     useEffect(() => {
@@ -176,6 +168,7 @@ export const CustomYMap = () => {
             : <Spinner h='30px' w='30px' />
             }
     </Flex>
+    
     <CustomDrawer key={0} isOpen={drawerSwitch} onClose={handleCloseDrawer}>
                 {carWashMainInfo && carWashMainInfo.carWashes.map((carWash: any, index: number) => {
                     return (
@@ -211,8 +204,8 @@ export const CustomYMap = () => {
                                         disabled={distance > 10000 ? true : false} 
                                         onClick={carWash['type'] === 'SelfService' ? setDrawerBaySwitch : setPortalSwitch} 
                                         onClose={setClose}
-                                        setCarWashData={setOrder}
-                                        carWash={carWash} 
+                                        carWash={carWash}
+                                        distance={distance} 
                                         height="50px" 
                                         fontSize="15px" 
                                         bgColor="colors.SECONDARY_RED" 
@@ -227,19 +220,31 @@ export const CustomYMap = () => {
             </CustomDrawer>
             
             <CustomDrawer key={1} isOpen={carWashFullInfoSwitch} onClose={handleCloseCarWashDrawer}>
-                <CarWashFullInfo setOrder={setOrder} distance={distance} carWash={carWash} setProgramSwitch={setPortalSwitch} setDrawerBaySwitch={setDrawerBaySwitch} setClose={setClose}/>
+                <CarWashFullInfo distance={distance} carWash={carWash} setProgramSwitch={setPortalSwitch} setDrawerBaySwitch={setDrawerBaySwitch} setClose={setClose}/>
             </CustomDrawer>
             
             { carWash && carWash['type'] === 'SelfService' ?  
                 <>
                      <CustomDrawer key={11} isOpen={drawerBaySwitch} onClose={handleCloseBayDrawer}>
                         <Flex justifyContent='center' alignItems='center' flexDir='column' w='100%'>
-                            <NumInput getValue={setBay} minValue={carWash["limitMinCost"]} maxValue={carWash['limitMaxCost']} redirect={false} onClick={switchIputDrawers} label="Введите номер поста" isBay={true} />
+                            <NumInput
+                                nameMessage="Номер поста" 
+                                minValue={1} 
+                                maxValue={carWash['boxes'].length} 
+                                onClick={switchIputDrawers} 
+                                label="Введите номер поста" 
+                                isBay={true} />
                         </Flex>
                     </CustomDrawer>
                     <CustomDrawer key={12} isOpen={drawerSumSwitch} onClose={handleCloseSumDrawer}>
                         <Flex justifyContent='center' alignItems='center' flexDir='column' w='100%'>
-                            <NumInput getValue={setSum} minValue={carWash["limitMinCost"]} maxValue={carWash['limitMaxCost']} redirect={true}  onClick={navigateToOrder} label="Введите сумму" isBay={false} />
+                            <NumInput 
+                                nameMessage="Сумма"
+                                minValue={carWash["limitMinCost"]} 
+                                maxValue={carWash['limitMaxCost']}  
+                                onClick={navigateToOrder} 
+                                label="Введите сумму" 
+                                isSum={true} />
                         </Flex>
                     </CustomDrawer> 
                 </> : 

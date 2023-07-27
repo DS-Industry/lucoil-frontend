@@ -1,12 +1,15 @@
 import React from "react";
 
 interface IOrderContext {
-    order: IOrder | null,
+    order: IOrder | any,
     setOrder: any,
 }
 interface IOrder {
     carWash: any,
     bayNumber: number,
+    title: string,
+    address: string,
+    distance: number,
     sum: number,
     paymentId?: number,
     carWashId?: number,
