@@ -10,10 +10,11 @@ interface ICarWash {
     setProgramSwitch: any,
     setClose: any,
     distance: number,
+    setOrder: any,
 }
 
 
-export const CarWashFullInfo: React.FC<ICarWash> = ({ carWash, setDrawerBaySwitch, setClose, setProgramSwitch, distance }) => {
+export const CarWashFullInfo: React.FC<ICarWash> = ({ carWash, setDrawerBaySwitch, setClose, setProgramSwitch, distance, setOrder }) => {
     
     return(
         <>
@@ -92,7 +93,7 @@ export const CarWashFullInfo: React.FC<ICarWash> = ({ carWash, setDrawerBaySwitc
                 justifyContent='center'
                 mb='25px'
                 >
-                <TagButton disabled={distance > 1000000 ? true : false} onClose={setClose} onClick={carWash['type'] === 'SelfService' ? setDrawerBaySwitch : setProgramSwitch} height="50px" fontSize="15px" bgColor="colors.SECONDARY_RED" color="colors.PRIMARY_RED" label="Оплатить мойку"/>
+                <TagButton carWash={carWash} setCarWashData={setOrder}  disabled={distance > 1000000 ? true : false} onClose={setClose} onClick={carWash['type'] === 'SelfService' ? setDrawerBaySwitch : setProgramSwitch} height="50px" fontSize="15px" bgColor="colors.SECONDARY_RED" color="colors.PRIMARY_RED" label="Оплатить мойку"/>
             </Box>
             </Flex>
         </Flex>

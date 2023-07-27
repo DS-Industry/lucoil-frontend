@@ -3,12 +3,16 @@ import { Button } from "@chakra-ui/react";
 interface IOperButton {
     title: string,
     onClick: any,
-    redirect: boolean
+    disabled: boolean,
+    redirect: boolean,
+    value: string,
+    getValue: any,
 }
 
-export const OperButton: React.FC<IOperButton> = ({ title, onClick, redirect }) => {
+export const OperButton: React.FC<IOperButton> = ({ title, onClick, redirect, disabled, getValue, value }) => {
 
     const handleClick = () => {
+        getValue(value);
         if (redirect) {
             onClick();
         } else {
@@ -23,6 +27,7 @@ return (
             borderRadius='4px' 
             color='colors.WHITE' 
             onClick={handleClick}
+            isDisabled={disabled}
             >
             {title}
         </Button>

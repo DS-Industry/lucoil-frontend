@@ -1,7 +1,9 @@
+import { CarWashMap } from "../../component/car-wash/car-wash-map-item"
+
 export const OrderPage: React.FC = () => {
     return (
         <>
-            <h1>Order Page</h1>
+            {/* <CarWashMap id="" title="" openTime="" address="" distance={}/> */}
         </>
     );
 }

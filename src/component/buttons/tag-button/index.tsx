@@ -9,14 +9,28 @@ interface ITagButton {
     onClick?: any,
     onClose: any
     disabled: boolean,
+    setCarWashData: any,
+    carWash: any,
 }
 
 
-export const TagButton: React.FC<ITagButton> = ({ disabled, height, fontSize, color, label, bgColor, onClick, onClose }) => {
+export const TagButton: React.FC<ITagButton> = ({ 
+    disabled, 
+    height, 
+    fontSize, 
+    color, 
+    label, 
+    bgColor, 
+    onClick, 
+    onClose,
+    setCarWashData,
+    carWash,
+}) => {
 
     const handleClick = () => {
         onClick(true);
         onClose();
+        setCarWashData(carWash)
     }
 
     return (

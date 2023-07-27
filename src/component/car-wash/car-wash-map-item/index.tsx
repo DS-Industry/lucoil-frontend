@@ -50,9 +50,10 @@ export const CarWashMap: React.FC<ICarWashMap> = ({
                     fontWeight='400' 
                     mt='15px'
                     color='colors.DARK_GRAY'>{address}</Text>
-                <Text fontSize='12px' fontWeight='600' color='colors.PRIMARY_RED'>{distance < 1000 ? 
-                `${Math.round(distance)} М ` : 
-                `${(distance/1000).toFixed(2)} КМ `} 
+                <Text fontSize='12px' fontWeight='600' color='colors.PRIMARY_RED'>
+                    { distance < 1000 ? 
+                        `${Math.round(distance)} М ` : 
+                        `${(distance/1000).toFixed(2)} КМ `} 
                 ДО АМС</Text>
             </Flex>
         </>
