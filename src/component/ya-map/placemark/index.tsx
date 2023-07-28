@@ -14,7 +14,7 @@ interface ICustomPlacemark {
     carWashes: Array<any>,
     getInfo: any,
     setDrawerSwitch: any,
-    placeMarkSwitch: boolean,
+    placeMarkSwitch: string,
     getDistance: any,
     setPlaceMarkStyle: any,
     setCarWash: any
@@ -117,8 +117,8 @@ export const CustomPlacemark: React.FC<ICustomPlacemark> = ({
                     getInfo({
                         id: index,
                         carWashes: carWashes});
-                    setDrawerSwitch(true);
-                    setPlaceMarkStyle(true);
+                    setDrawerSwitch('main');
+                    setPlaceMarkStyle('main');
                 }}
                         />
         </>

@@ -9,27 +9,34 @@ interface IOperButton {
     value?: string,
     isBay?: boolean,
     isSum?: boolean,
+    first?: boolean
 }
 
-export const OperButton: React.FC<IOperButton> = ({ isBay=false,isSum=false, title, onClick, disabled, value }) => {
+export const OperButton: React.FC<IOperButton> = ({ isBay=false,isSum=false, title, onClick, disabled, value, first }) => {
 
     const { setOrder } = useContext(OrderContext);
 
 
     const handleClick = () => {
         if(isBay) {
+            onClick('sum')
             setOrder((prevValue: any) => ({
                 ...prevValue,
                 bayNumber: value
             }))
         }
         if (isSum) {
+            onClick();
             setOrder((prevValue: any) => ({
                 ...prevValue,
                 sum: value
             }))
         }
-        onClick();
+
+        if (!isBay && !isSum) {
+            onClick();
+        }
+
     }
 return (
     <>
@@ -39,7 +46,7 @@ return (
             borderRadius='4px' 
             color='colors.WHITE' 
             onClick={handleClick}
-            isDisabled={disabled}
+            isDisabled={first ? false : value ? disabled : true}
             >
             {title}
         </Button>

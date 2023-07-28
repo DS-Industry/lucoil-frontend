@@ -74,7 +74,8 @@ export const InstructionPage : React.FC = () => {
                     <OperButton 
                         title="Искать мойку" 
                         onClick={handleClick} 
-                        disabled={false}/>
+                        disabled={false}
+                        first={true}/>
                 </Box>
                 </Flex>
             </Flex>

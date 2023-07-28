@@ -2,14 +2,15 @@ import { Box, Divider, Text } from "@chakra-ui/react";
 import { CarWash } from "../../component/car-wash/car-wash-list-item";
 import { ListInput } from "../../component/inputs/list-input";
 import { carWashList } from "../../variabels";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { MdArrowBackIos } from 'react-icons/md'
 import { NavButton } from "../../component/buttons/nav-button";
 import { Header } from "../../component/header";
+import { useCarWash } from "../../context/carwash-context";
 export const ListPage = () => {
 
     const [term, setTerm] = useState<string>('');
-
+    const { store } = useCarWash();
 
     return (
         <>
@@ -29,12 +30,12 @@ export const ListPage = () => {
                     fontWeight='500'
                     lineHeight='20px'>ВСЕ</Text>
             </Box>
-            {carWashList.map((carwash: any) => {
+            {store.carWashes.map((carwash: any) => {
                 return carwash['carwashes'];
             }).flat().filter((carWash: any) => {
                 return carWash['name'].includes(term) ||
                        carWash['address'].includes(term)
-            }).map((filteredCarWash: any, index) => {
+            }).map((filteredCarWash: any, index: number) => {
                 console.log(filteredCarWash);
                 return (
                     <CarWash 

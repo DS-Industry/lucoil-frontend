@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import GeoSVG  from '../../../assets/icons/geo.svg'
 import ActiveGeoSVG from '../../../assets/icons/geo-2.svg'
-import { carWashList } from "../../../variabels";
 import { CustomPlacemark } from "../placemark";
 import { GeolocationControl, Placemark, YMaps, Map, ZoomControl } from "@pbe/react-yandex-maps";
 import { Box, Flex, Spinner } from "@chakra-ui/react";
@@ -21,6 +20,7 @@ export const CustomYMap = () => {
 
 
     const navigate = useNavigate();
+
     const { setOrder } = useContext(OrderContext);
 
     const { store, getCarWashList } = useCarWash();
@@ -28,56 +28,24 @@ export const CustomYMap = () => {
 
     const location = useLocation();
     const [ userPosition, setUserPosition ] = useState<number[]>([]);
+    const [ drawerSwitchStr, setDrawerSwitch ] = useState<string>('');
     const [ carWashIdList, setCarWashIdList ] = useState<boolean>(false);
     const [ carWashCoords, setCarWashCoords ] = useState<Array<number>>();
     const [ distance, setDistance] = useState<number>(0);
-    const [ placeMarkSwitch, setPlaceMarkSwitch ] = useState<boolean>(false);
-    const [ drawerSwitch, setDrawerSwitch ] = useState<boolean>(false);
     const [ carWashMainInfo, setCarWashMainInfo ] = useState<any>();
     const [ carWash, setCarWash ] = useState<any>();
-    const [ carWashFullInfoSwitch, setCarWashFullInfoSwitch] = useState<boolean>(false);
-    const [ drawerBaySwitch, setDrawerBaySwitch ] = useState<boolean>(false); 
-    const [ drawerSumSwitch, setDrawerSumSwitch ] = useState<boolean>(false);
-    const [ portalSwitch, setPortalSwitch ] = useState<boolean>(false);
+
 
 
     const handleCloseDrawer = () => {
-        setDrawerSwitch(false);
-        setPlaceMarkSwitch(false);
+        setDrawerSwitch('');
     }
 
-    const handleCloseCarWashDrawer = () => {
-        setCarWashFullInfoSwitch(false);
-        setPlaceMarkSwitch(false);
-    }
-
-    const handleCloseBayDrawer = () => {
-        setDrawerBaySwitch(false);
-        setPlaceMarkSwitch(false);
-    }
-    const handleCloseSumDrawer = () => {
-        setDrawerSumSwitch(false);
-        setPlaceMarkSwitch(false);
-    }
-
-    const handleCloseProgramDrawer = () => {
-        setPortalSwitch(false);
-        setPlaceMarkSwitch(false);
-    }
-
-    const setClose = () => {
-        setCarWashFullInfoSwitch(false);
-        setDrawerSwitch(false);
-    }
 
     const navigateToOrder = () => {
         navigate('/order');
     }
 
-    const switchIputDrawers = () => {
-        setDrawerBaySwitch(false);
-        setDrawerSumSwitch(true);
-    }
 
     useEffect(() => {
       navigator.geolocation.getCurrentPosition(
@@ -89,14 +57,12 @@ export const CustomYMap = () => {
     },[])
 
     useEffect(() => {
-        console.log('HERE');
         async function getCarWashListWithCoords() {
             await getCarWashList();
             console.log(store.carWashes);
         }
 
         if (!store.isLoading){
-            console.log('HERE 111');
             getCarWashListWithCoords();
         }
     }, [])
@@ -108,7 +74,7 @@ export const CustomYMap = () => {
         let resultCarWashList : Array<any> = [];
 
         if (carWashId) {
-            carWashList.forEach((carWashWithCoords : any) => {
+            store.carWashes.forEach((carWashWithCoords : any) => {
                 return carWashWithCoords.carwashes.map((carWash : any) => {
                     return resultCarWashList.push({
                         id: carWashWithCoords['id'],
@@ -123,8 +89,7 @@ export const CustomYMap = () => {
             setCarWashIdList(resultCarWash.id);
             setCarWash(resultCarWash.carWash);
             setCarWashCoords(resultCarWash.coords);
-            setPlaceMarkSwitch(true);
-            setCarWashFullInfoSwitch(true);
+            setDrawerSwitch('full-info');
         }
     }, [])
   
@@ -150,31 +115,30 @@ export const CustomYMap = () => {
                   console.log(carWash);
                   if(carWash.lat && carWash.lon)
                   {
-
-
-                      return (
-                        <CustomPlacemark
-                            key={index}
-                            index={index}
-                            coords={[carWash.lat, carWash.lon]}
-                            carWashes={carWash.carwashes}
-                            setCarWash={setCarWash}
-                            icon={GeoSVG}
-                            activeIcon={ActiveGeoSVG}
-                            userPosition={userPosition}
-                            getCoords={setCarWashCoords}
-                            setPlaceMarkStyle={setPlaceMarkSwitch}
-                            getDistance={setDistance}
-                            size={[41,41]}
+                    return (
+                    <CustomPlacemark
+                        key={index}
+                        index={index}
+                        coords={[carWash.lat, carWash.lon]}
+                        carWashes={carWash.carwashes}
+                        setCarWash={setCarWash}
+                        icon={GeoSVG}
+                        activeIcon={ActiveGeoSVG}
+                        userPosition={userPosition}
+                        getCoords={setCarWashCoords}
+                        setPlaceMarkStyle={setDrawerSwitch}
+                        getDistance={setDistance}
+                        size={[41,41]}
                             activeSize={[61,61]}
                             getInfo={setCarWashMainInfo}
                             placemarkId={carWashMainInfo ? carWashMainInfo.id : carWashIdList ? carWashIdList : -1}
                             setDrawerSwitch={setDrawerSwitch}
-                            placeMarkSwitch={placeMarkSwitch}
+                            placeMarkSwitch={drawerSwitchStr}
                         />
 
                         )
-                    }})
+                    } 
+                })
               }          
               <Placemark options={{ preset: 'islands#redCircleDotIcon'}} geometry={ userPosition } />
               <GeolocationControl 
@@ -191,7 +155,7 @@ export const CustomYMap = () => {
             }
     </Flex>
 
-    <CustomDrawer key={0} isOpen={drawerSwitch} onClose={handleCloseDrawer}>
+    <CustomDrawer key={0} isOpen={drawerSwitchStr === 'main' ? true : false} onClose={handleCloseDrawer}>
                 {carWashMainInfo && carWashMainInfo.carWashes.map((carWash: any, index: number) => {
                     return (
                         <>
@@ -206,8 +170,7 @@ export const CustomYMap = () => {
                             address={carWash['address']} 
                             distance={distance}
                             getCarWash={setCarWash}
-                            setCarWashDrawer={setCarWashFullInfoSwitch}
-                            setSwitch={setDrawerSwitch}
+                            setCarWashDrawer={setDrawerSwitch}
                             />
                         {(distance && distance > 1000000) &&
                             <Flex w='100%' justifyContent='center' mt='20px'>
@@ -224,9 +187,9 @@ export const CustomYMap = () => {
                                 mt='15px'
                                 >
                                     <TagButton 
-                                        disabled={distance > 10000 ? true : false} 
-                                        onClick={carWash['type'] === 'SelfService' ? setDrawerBaySwitch : setPortalSwitch} 
-                                        onClose={setClose}
+                                        disabled={distance > 10000 ? true : false}
+                                        switchCarWashType={carWash['type'] === 'SelfService' ? 'bay' : 'portal'} 
+                                        onClick={setDrawerSwitch} 
                                         carWash={carWash}
                                         distance={distance}
                                         height="50px" 
@@ -242,24 +205,29 @@ export const CustomYMap = () => {
                 })}
             </CustomDrawer>
             
-            <CustomDrawer key={1} isOpen={carWashFullInfoSwitch} onClose={handleCloseCarWashDrawer}>
-                <CarWashFullInfo distance={distance} carWash={carWash} setProgramSwitch={setPortalSwitch} setDrawerBaySwitch={setDrawerBaySwitch} setClose={setClose}/>
+            <CustomDrawer key={1} isOpen={drawerSwitchStr === 'full-info' ? true : false} onClose={handleCloseDrawer}>
+                <CarWashFullInfo 
+                    distance={distance} 
+                    carWash={carWash} 
+                    setDrawerSwitch={setDrawerSwitch} 
+                    switchCarWashType={carWash && carWash['type'] === 'SelfService' ? 'bay' : 'portal'}
+                    />
             </CustomDrawer>
             
             { carWash && carWash['type'] === 'SelfService' ?  
                 <>
-                     <CustomDrawer key={11} isOpen={drawerBaySwitch} onClose={handleCloseBayDrawer}>
+                     <CustomDrawer key={11} isOpen={drawerSwitchStr === 'bay' ? true : false} onClose={handleCloseDrawer}>
                         <Flex justifyContent='center' alignItems='center' flexDir='column' w='100%'>
                             <NumInput
                                 nameMessage="Номер поста"
                                 minValue={1}
                                 maxValue={carWash['boxes'].length}
-                                onClick={switchIputDrawers}
+                                onClick={setDrawerSwitch}
                                 label="Введите номер поста"
                                 isBay={true} />
                         </Flex>
                     </CustomDrawer>
-                    <CustomDrawer key={12} isOpen={drawerSumSwitch} onClose={handleCloseSumDrawer}>
+                    <CustomDrawer key={12} isOpen={drawerSwitchStr === 'sum' ? true : false} onClose={handleCloseDrawer}>
                         <Flex justifyContent='center' alignItems='center' flexDir='column' w='100%'>
                             <NumInput
                                 nameMessage="Сумма"
@@ -272,7 +240,7 @@ export const CustomYMap = () => {
                     </CustomDrawer> 
                 </> : 
                 <>
-                    <CustomDrawer key={2} isOpen={portalSwitch} onClose={handleCloseProgramDrawer}>
+                    <CustomDrawer key={2} isOpen={drawerSwitchStr === 'portal' ? true : false} onClose={handleCloseDrawer}>
                         <PortalProgramList programList={carWash && carWash['price']}/>
                     </CustomDrawer>
                 </>

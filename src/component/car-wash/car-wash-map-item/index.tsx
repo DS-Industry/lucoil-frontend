@@ -11,7 +11,6 @@ interface ICarWashMap {
     isDisabled: boolean,
     carWash?: any,
     getCarWash?: any,
-    setSwitch?: any,
     setCarWashDrawer?: any,
 }
 
@@ -22,16 +21,15 @@ export const CarWashMap: React.FC<ICarWashMap> = ({
     distance, 
     carWash, 
     getCarWash, 
-    setSwitch, 
     setCarWashDrawer,
     isDisabled
 }) => {
 
     const handleClick = () => {
+
         if (!isDisabled) {
             getCarWash(carWash);
-            setSwitch(false);
-            setCarWashDrawer(true);
+            setCarWashDrawer('full-info');
         }
     }
 

@@ -9,22 +9,22 @@ interface ITagButton {
     color: string,
     label: string,
     onClick?: any,
-    onClose: any
     disabled: boolean,
     carWash: any,
-    distance: number
+    distance: number,
+    switchCarWashType: string,
 }
 
 
 export const TagButton: React.FC<ITagButton> = ({ 
     disabled, 
+    switchCarWashType,
     height, 
     fontSize, 
     color, 
     label, 
     bgColor, 
     onClick, 
-    onClose,
     carWash,
     distance,
 }) => {
@@ -32,8 +32,7 @@ export const TagButton: React.FC<ITagButton> = ({
     const { setOrder } = useContext(OrderContext);
 
     const handleClick = () => {
-        onClick(true);
-        onClose();
+        onClick(switchCarWashType);
         console.log('This is car wash id for Order context => ', carWash['id']);
         setOrder((prevValue: any) =>({
             ...prevValue,
