@@ -8,6 +8,7 @@ interface ICarWashMap {
     openTime: string | undefined,
     address: string | undefined,
     distance?: number | null,
+    isDisabled: boolean,
     carWash?: any,
     getCarWash?: any,
     setSwitch?: any,
@@ -19,22 +20,23 @@ export const CarWashMap: React.FC<ICarWashMap> = ({
     openTime, 
     address,
     carWash, 
-    getCarWash, 
-    setSwitch, 
-    setCarWashDrawer,
+    getCarWash,
     distance,
+    setCarWashDrawer,
+    isDisabled
 }) => {
 
     const handleClick = () => {
-        getCarWash(carWash);
-        setSwitch(false);
-        setCarWashDrawer(true);
-        //navigate(`/carwash/${id}`)
+
+        if (!isDisabled) {
+            getCarWash(carWash);
+            setCarWashDrawer('full-info');
+        }
     }
 
     return (
         <>
-            <Flex justifyContent='flex-start' flexDirection='column' onClick={handleClick}>    
+            <Flex justifyContent='flex-start' flexDirection='column'  onClick={handleClick}>
                 <Text 
                     fontSize='20px' 
                     lineHeight='20px' 

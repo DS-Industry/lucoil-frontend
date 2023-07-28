@@ -10,22 +10,22 @@ interface ITagButton {
     color: string,
     label: string,
     onClick?: any,
-    onClose: any
     disabled: boolean,
     carWash: any,
-    distance: number
+    distance: number,
+    switchCarWashType: string,
 }
 
 
 export const TagButton: React.FC<ITagButton> = ({ 
     disabled, 
-    height, 
+    switchCarWashType,
+    height,
     fontSize, 
     color, 
     label, 
     bgColor, 
-    onClick, 
-    onClose,
+    onClick,
     carWash,
     distance,
 }) => {
@@ -34,8 +34,7 @@ export const TagButton: React.FC<ITagButton> = ({
     const { updateStore: updateCWState} = useCarWash();
 
     const handleClick = () => {
-        onClick(true);
-        onClose();
+        onClick(switchCarWashType);
         updateStore({
             carWashId: carWash.id
         });

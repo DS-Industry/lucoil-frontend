@@ -6,20 +6,19 @@ import { TagInfo } from "../../tag-info";
 
 interface ICarWash {
     carWash: any,
-    setDrawerBaySwitch: any,
-    setProgramSwitch: any,
-    setClose: any,
+    setDrawerSwitch: any,
     distance: number,
+    switchCarWashType: string,
 }
 
 
-export const CarWashFullInfo: React.FC<ICarWash> = ({ carWash, setDrawerBaySwitch, setClose, setProgramSwitch, distance }) => {
+export const CarWashFullInfo: React.FC<ICarWash> = ({ carWash, setDrawerSwitch, distance, switchCarWashType }) => {
     
     return(
         <>
         <Flex flexDir='column' pt='28px' h='90vh'>
-            <CarWashMap title={carWash['name']} id={carWash['id']} openTime="24 часа" address={carWash['address']} distance={distance}  />
-            <Flex pt='52px' h='100%' flexDirection='column' justifyContent='space-between'>
+            <CarWashMap isDisabled={false} title={carWash['name']} id={carWash['id']} openTime="24 часа" address={carWash['address']} distance={distance}  />
+            <Flex pt='52px' h='100%' flexDirection='column' justifyContent='space-between' >
                 {carWash['type'] === 'Portal' ? 
                     <>
                         <Box>
@@ -46,7 +45,7 @@ export const CarWashFullInfo: React.FC<ICarWash> = ({ carWash, setDrawerBaySwitc
                             <Text lineHeight='20px' fontSize='12px' color='colors.DARK_GRAY'>Программы</Text>
                             <Flex flexDir='row' flexWrap='wrap'>
                                 {
-                                    carWash['price'].map((program : any) => {
+                                    carWash.price.map((program : any) => {
                                         return (
                                             <>
                                                 <Box mr='6px' mb='7px'>
@@ -62,24 +61,18 @@ export const CarWashFullInfo: React.FC<ICarWash> = ({ carWash, setDrawerBaySwitc
 
                 }
                 <Box mb='15px'>
-                <Text lineHeight='20px' fontSize='12px' color='colors.DARK_GRAY'>Услуги</Text>
-                <Flex flexDir='row' flexWrap='wrap'>
-                    <Box mr='6px' mb='7px'>
-                        <TagInfo label="Пылесос" bgColor="colors.WHITE_GRAY" color="colors.BLACK" fontSize="14px" height="20px"/>
-                    </Box>
-                    <Box mr='6px' mb='7px'>
-                        <TagInfo label="Полировка" bgColor="colors.WHITE_GRAY" color="colors.BLACK" fontSize="14px" height="20px"/>
-                    </Box>
-                    <Box mr='6px' mb='7px'>
-                        <TagInfo label="Парковка" bgColor="colors.WHITE_GRAY" color="colors.BLACK" fontSize="14px" height="20px"/>
-                    </Box>
-                    <Box mr='6px' mb='7px'>
-                        <TagInfo label="Туалет" bgColor="colors.WHITE_GRAY" color="colors.BLACK" fontSize="14px" height="20px"/>
-                    </Box>
-                    <Box mr='6px' mb='7px'>
-                        <TagInfo label="Кофе" bgColor="colors.WHITE_GRAY" color="colors.BLACK" fontSize="14px" height="20px"/>
-                    </Box>
-                </Flex>
+                {carWash['tags'] && carWash['tags'].map((tag: any) => {
+                    return (
+                        <>
+                            <Text lineHeight='20px' fontSize='12px' color='colors.DARK_GRAY'>Услуги</Text>
+                            <Flex flexDir='row' flexWrap='wrap'>
+                                <Box>
+                                    <TagInfo label={tag.name} bgColor="colors.WHITE_GRAY" color="colors.BLACK" fontSize="14px" height="20px"/>
+                                </Box>
+                            </Flex>
+                        </>
+                    )
+                })}
                 </Box>
                 {(distance && distance > 500) &&
                     <Flex w='100%' justifyContent='center' mb='15px'>
@@ -94,13 +87,10 @@ export const CarWashFullInfo: React.FC<ICarWash> = ({ carWash, setDrawerBaySwitc
                 >
                 <TagButton 
                     distance={distance} 
+                    switchCarWashType={switchCarWashType}
                     carWash={carWash} 
-                    disabled={distance > 1000000 ? true : false} 
-                    onClose={setClose} 
-                    onClick={
-                        carWash['type'] === 'SelfService' ? 
-                        setDrawerBaySwitch : setProgramSwitch
-                    } 
+                    disabled={distance > 500 ? true : false} 
+                    onClick={setDrawerSwitch} 
                     height="50px" 
                     fontSize="15px" 
                     bgColor="colors.SECONDARY_RED" 
