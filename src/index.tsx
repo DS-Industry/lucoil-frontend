@@ -31,9 +31,7 @@ root.render(
     <ChakraProvider theme={theme}>
       <BrowserRouter>
         <UserContext.Provider value=''>
-          <CarWashContext.Provider value=''>
               <App />
-          </CarWashContext.Provider>
         </UserContext.Provider>
       </BrowserRouter>
     </ChakraProvider>

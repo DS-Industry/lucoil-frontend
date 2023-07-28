@@ -14,6 +14,7 @@ import { useLocation, useNavigate, } from "react-router-dom";
 import { PortalProgramList } from "../../portal/portal-program-list";
 import { TagInfo } from "../../tag-info";
 import { OrderContext } from "../../../context/order-context";
+import {useCarWash} from "../../../context/carwash-context";
 
 export const CustomYMap = () => {
 
@@ -21,6 +22,8 @@ export const CustomYMap = () => {
 
     const navigate = useNavigate();
     const { setOrder } = useContext(OrderContext);
+
+    const { store, getCarWashList } = useCarWash();
 
 
     const location = useLocation();
@@ -92,6 +95,19 @@ export const CustomYMap = () => {
     },[])
 
     useEffect(() => {
+        console.log('HERE');
+        async function getCarWashListWithCoords() {
+            await getCarWashList();
+            console.log(store.carWashes);
+        }
+
+        if (!store.isLoading){
+            console.log('HERE 111');
+            getCarWashListWithCoords();
+        }
+    }, [])
+
+    useEffect(() => {
 
         const queryParams = new URLSearchParams(location.search);
         const carWashId = queryParams.get('carWashId');
@@ -99,11 +115,11 @@ export const CustomYMap = () => {
 
         if (carWashId) {
             carWashList.forEach((carWashWithCoords : any) => {
-                return carWashWithCoords['carwashes'].map((carWash : any) => {
+                return carWashWithCoords.carwashes.map((carWash : any) => {
                     return resultCarWashList.push({
                         id: carWashWithCoords['id'],
                         carWash: carWash,
-                        coords: [carWashWithCoords['location']['lat'],carWashWithCoords['location']['lon']],
+                        coords: [carWashWithCoords.lat,carWashWithCoords.lon],
                     })})});
                     const resultCarWash = resultCarWashList.find((carWash) => carWash.carWash['id'] === carWashId);
             console.log('this is carWash', resultCarWash);
@@ -121,7 +137,7 @@ export const CustomYMap = () => {
     return (
     <>
         <Flex h='88%' w='100%' >
-            {userPosition.length > 0 ? 
+            {store.carWashes && userPosition.length > 0 ?
             <YMaps
             enterprise
             query={{
@@ -136,31 +152,35 @@ export const CustomYMap = () => {
                 controls: [] 
                 }}
                 modules={["control.ZoomControl", "control.FullscreenControl", "geoObject.addon.balloon", "geolocation", "geocode", "control.GeolocationControl", "multiRouter.MultiRoute"]} >
-              {
-                carWashList.map((carWash: any, index: number) => {
-                  return (
-                    <CustomPlacemark 
-                        key={index}
-                        index={carWash['id']} 
-                        coords={[carWash['location']['lat'], carWash['location']['lon']]}
-                        carWashes={carWash['carwashes']}
-                        setCarWash={setCarWash}
-                        icon={GeoSVG}
-                        activeIcon={ActiveGeoSVG}
-                        userPosition={userPosition}
-                        getCoords={setCarWashCoords}
-                        setPlaceMarkStyle={setPlaceMarkSwitch}
-                        getDistance={setDistance}
-                        size={[41,41]}
-                        activeSize={[61,61]}
-                        getInfo={setCarWashMainInfo}
-                        placemarkId={carWashMainInfo ? carWashMainInfo.id : carWashIdList ? carWashIdList : -1}
-                        setDrawerSwitch={setDrawerSwitch}
-                        placeMarkSwitch={placeMarkSwitch}
-                        
+              {store.carWashes.map((carWash: any, index: number) => {
+                  console.log(carWash);
+                  if(carWash.lat && carWash.lon)
+                  {
 
+
+                      return (
+                        <CustomPlacemark
+                            key={index}
+                            index={index}
+                            coords={[carWash.lat, carWash.lon]}
+                            carWashes={carWash.carwashes}
+                            setCarWash={setCarWash}
+                            icon={GeoSVG}
+                            activeIcon={ActiveGeoSVG}
+                            userPosition={userPosition}
+                            getCoords={setCarWashCoords}
+                            setPlaceMarkStyle={setPlaceMarkSwitch}
+                            getDistance={setDistance}
+                            size={[41,41]}
+                            activeSize={[61,61]}
+                            getInfo={setCarWashMainInfo}
+                            placemarkId={carWashMainInfo ? carWashMainInfo.id : carWashIdList ? carWashIdList : -1}
+                            setDrawerSwitch={setDrawerSwitch}
+                            placeMarkSwitch={placeMarkSwitch}
                         />
-                )})
+
+                        )
+                    }})
               }          
               <Placemark options={{ preset: 'islands#redCircleDotIcon'}} geometry={ userPosition } />
               <GeolocationControl 
