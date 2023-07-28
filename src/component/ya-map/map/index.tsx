@@ -13,7 +13,7 @@ import { NumInput } from "../../inputs/num-input";
 import { useLocation, useNavigate, } from "react-router-dom";
 import { PortalProgramList } from "../../portal/portal-program-list";
 import { TagInfo } from "../../tag-info";
-import { OrderContext } from "../../../context/order-context";
+import {OrderContext, useOrder} from "../../../context/order-context";
 import {useCarWash} from "../../../context/carwash-context";
 
 export const CustomYMap = () => {
@@ -21,9 +21,13 @@ export const CustomYMap = () => {
 
 
     const navigate = useNavigate();
-    const { setOrder } = useContext(OrderContext);
+    const { store: orderStore, updateStore } = useOrder();
 
     const { store, getCarWashList } = useCarWash();
+
+    useEffect(() => {
+        console.log(store);
+    }, [store])
 
 
     const location = useLocation();
@@ -89,14 +93,12 @@ export const CustomYMap = () => {
     },[])
 
     useEffect(() => {
-        console.log('HERE');
         async function getCarWashListWithCoords() {
             await getCarWashList();
             console.log(store.carWashes);
         }
 
         if (!store.isLoading){
-            console.log('HERE 111');
             getCarWashListWithCoords();
         }
     }, [])
@@ -116,10 +118,6 @@ export const CustomYMap = () => {
                         coords: [carWashWithCoords.lat,carWashWithCoords.lon],
                     })})});
                     const resultCarWash = resultCarWashList.find((carWash) => carWash.carWash['id'] === carWashId);
-            console.log('this is carWash', resultCarWash);
-            console.log(resultCarWashList.map((carWash) => {
-                return carWash.carWash;
-            }));
             setCarWashIdList(resultCarWash.id);
             setCarWash(resultCarWash.carWash);
             setCarWashCoords(resultCarWash.coords);
@@ -147,7 +145,6 @@ export const CustomYMap = () => {
                 }}
                 modules={["control.ZoomControl", "control.FullscreenControl", "geoObject.addon.balloon", "geolocation", "geocode", "control.GeolocationControl", "multiRouter.MultiRoute"]} >
               {store.carWashes.map((carWash: any, index: number) => {
-                  console.log(carWash);
                   if(carWash.lat && carWash.lon)
                   {
 

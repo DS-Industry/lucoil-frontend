@@ -13,6 +13,7 @@ interface ICarWashContext {
     store: ICarWashStorePartial;
     getCarWashList: () => void;
     pingCarWash: (carWashId: number, bayNumber: number) => void;
+    updateStore: (newState: ICarWashStorePartial) => void;
 }
 
 const CarWashContext = React.createContext<ICarWashContext | null>(null);
@@ -63,7 +64,8 @@ const CarWashProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         <CarWashContext.Provider value={{
             store: store,
             getCarWashList: getCarWashList,
-            pingCarWash: pingCarWash
+            pingCarWash: pingCarWash,
+            updateStore: updateStore,
             }}>
             {children}
         </CarWashContext.Provider>

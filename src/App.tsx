@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { HomePage } from './pages/home';
 import { ListPage } from './pages/list';
 import { OrderPage } from './pages/order';
-import { OrderContext } from './context/order-context';
+import {OrderContext, OrderProvider} from './context/order-context';
 import { useState } from 'react';
 import {CarWashProvider} from "./context/carwash-context";
 import { InstructionPage } from './pages/instruction';
@@ -13,7 +13,7 @@ function App() {
 
   return (
     <>
-    <OrderContext.Provider value={{ order, setOrder: () => {} }}>
+    <OrderProvider>
       <CarWashProvider>
         <Routes>
           <Route path='/home' element={<HomePage />} />
@@ -22,7 +22,7 @@ function App() {
           <Route path='/' element={<InstructionPage/>} />
         </Routes>
       </CarWashProvider>
-    </OrderContext.Provider>
+    </OrderProvider>
     </>
      
       

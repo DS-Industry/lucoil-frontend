@@ -7,7 +7,7 @@ interface ICarWashMap {
     title: string | undefined,
     openTime: string | undefined,
     address: string | undefined,
-    distance: number,
+    distance?: number | null,
     carWash?: any,
     getCarWash?: any,
     setSwitch?: any,
@@ -17,12 +17,12 @@ interface ICarWashMap {
 export const CarWashMap: React.FC<ICarWashMap> = ({ 
     title, 
     openTime, 
-    address, 
-    distance, 
+    address,
     carWash, 
     getCarWash, 
     setSwitch, 
-    setCarWashDrawer 
+    setCarWashDrawer,
+    distance,
 }) => {
 
     const handleClick = () => {
@@ -51,9 +51,9 @@ export const CarWashMap: React.FC<ICarWashMap> = ({
                     mt='15px'
                     color='colors.DARK_GRAY'>{address}</Text>
                 <Text fontSize='12px' fontWeight='600' color='colors.PRIMARY_RED'>
-                    { distance < 1000 ? 
-                        `${Math.round(distance)} М ` : 
-                        `${(distance/1000).toFixed(2)} КМ `} 
+                    {distance && distance < 1000 ?
+                        `${Math.round(distance)} М ` : distance && distance > 1000 ?
+                        `${(distance/1000).toFixed(2)} КМ ` : ''}
                 ДО АМС</Text>
             </Flex>
         </>

@@ -1,18 +1,19 @@
 import { useContext, useEffect } from "react";
 import { CarWashMap } from "../../component/car-wash/car-wash-map-item"
-import { OrderContext } from "../../context/order-context";
+import {OrderContext, useOrder} from "../../context/order-context";
 import { Flex, Text } from "@chakra-ui/react";
 import { OperButton } from "../../component/buttons/oper_button";
+import {useCarWash} from "../../context/carwash-context";
 
 export const OrderPage: React.FC = () => {
-    const { order } = useContext(OrderContext);
-
+    const { store, updateStore, sendOrder } = useOrder();
+    const { store: carWashStore} = useCarWash();
     useEffect(() => {
-        console.log(order);
+
     },[])
 
     const handleClick = () => {
-
+        console.log(store);
     }
 
     return (
@@ -23,11 +24,11 @@ export const OrderPage: React.FC = () => {
                 p='28px'
                 >
                 <CarWashMap 
-                    id={String(order?.carWashId)} 
-                    title={order?.title} 
+                    id={String(store.sum)}
+                    title={carWashStore.carWash.name ? carWashStore.carWash.name : '' }
                     openTime="24часа" 
-                    address={order?.address} 
-                    distance={order.distance}/> 
+                    address={carWashStore.carWash.address ? carWashStore.carWash.address : ''}
+                    distance={100}/>
                 <>
                 </>
                 <Flex flexDirection='inherit' justifyContent='center'>
@@ -36,7 +37,7 @@ export const OrderPage: React.FC = () => {
                         textAlign='center' 
                         fontSize='48px' 
                         fontWeight='700'
-                        >{order.sum} ₽</Text>
+                        >{store.sum} ₽</Text>
                     <OperButton title="Оплатить" onClick={handleClick} disabled={false}/>
                 </Flex>
             </Flex>
