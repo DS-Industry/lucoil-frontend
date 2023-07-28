@@ -1,23 +1,35 @@
 import { Button } from "@chakra-ui/react";
+import { useContext } from "react";
+import { OrderContext } from "../../../context/order-context";
 
 interface IOperButton {
     title: string,
     onClick: any,
     disabled: boolean,
-    redirect: boolean,
-    value: string,
-    getValue: any,
+    value?: string,
+    isBay?: boolean,
+    isSum?: boolean,
 }
 
-export const OperButton: React.FC<IOperButton> = ({ title, onClick, redirect, disabled, getValue, value }) => {
+export const OperButton: React.FC<IOperButton> = ({ isBay=false,isSum=false, title, onClick, disabled, value }) => {
+
+    const { setOrder } = useContext(OrderContext);
+
 
     const handleClick = () => {
-        getValue(value);
-        if (redirect) {
-            onClick();
-        } else {
-         onClick(true);
+        if(isBay) {
+            setOrder((prevValue: any) => ({
+                ...prevValue,
+                bayNumber: value
+            }))
         }
+        if (isSum) {
+            setOrder((prevValue: any) => ({
+                ...prevValue,
+                sum: value
+            }))
+        }
+        onClick();
     }
 return (
     <>

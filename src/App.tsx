@@ -5,6 +5,7 @@ import { OrderPage } from './pages/order';
 import { OrderContext } from './context/order-context';
 import { useState } from 'react';
 import {CarWashProvider} from "./context/carwash-context";
+import { InstructionPage } from './pages/instruction';
 
 function App() {
   const [ order, setOrder ] = useState(null)
@@ -18,6 +19,7 @@ function App() {
           <Route path='/home' element={<HomePage />} />
           <Route path='/list' element={<ListPage />} />
           <Route path='/order' element={<OrderPage />} />
+          <Route path='/' element={<InstructionPage/>} />
         </Routes>
       </CarWashProvider>
     </OrderContext.Provider>

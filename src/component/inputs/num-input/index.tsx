@@ -4,39 +4,33 @@ import { OperButton } from "../../buttons/oper_button";
 
 interface INumInput {
  label: string,
- isBay: boolean,
- getValue: any,
+ isBay?: boolean,
+ isSum?: boolean,
  onClick?: any,
- redirect: boolean,
  minValue: number,
- maxValue: number
+ maxValue: number,
+ nameMessage: string,
+
 }
 
 export const NumInput: React.FC<INumInput> = ({ 
     label, 
+    nameMessage,
     isBay, 
-    getValue, 
     onClick, 
-    redirect,
     minValue,
     maxValue,
+    isSum,
  }) => {
 
-    const minValueMessage = `Сумма должна быть не менее ${minValue}`;
-    const maxValueMessage = `Сумма должна быть не более ${maxValue}`;
+    const minValueMessage = `${nameMessage} должна быть не менее ${minValue}`;
+    const maxValueMessage = `${nameMessage} должна быть не более ${maxValue}`;
 
     const [value, setValue] = useState<string>('');
     const [ messageSwitch, setMessageSwitch ] = useState<number>(0);
 
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        let regexp = /^$|^[1-9]$/;
-        if(isBay) {
-            if(regexp.test(event.target.value)) {
-                setValue(event.target.value);
-                console.log(value);
-            }
-        } else {
             setValue(event.target.value);
             console.log(event.target.value)
             if ( Number(event.target.value) < minValue ) {
@@ -48,8 +42,6 @@ export const NumInput: React.FC<INumInput> = ({
                     setMessageSwitch(0);
                 }
             }
-
-        }
     }
 
     return (
@@ -81,12 +73,13 @@ export const NumInput: React.FC<INumInput> = ({
                     h='60px' 
                     fontSize='60px' 
                     type="number" />
-                <OperButton 
-                    disabled={messageSwitch === 1 || messageSwitch === 2 ? true : false} 
-                    onClick={onClick} 
-                    redirect={redirect} 
+                <OperButton
+                    isBay={isBay}
+                    isSum={isSum} 
+                    disabled={(messageSwitch === 1 || messageSwitch === 2) ? 
+                        true : false} 
+                    onClick={onClick}  
                     value={value}
-                    getValue={getValue}
                     title="Далее"/>
         </>
     )

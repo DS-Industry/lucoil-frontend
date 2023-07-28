@@ -246,88 +246,13 @@ export const carWashList = [
             }
         ]
     },
-    /* {
-        title: 'Car Wash 1',
-        label: '1.9 km',
-        address: 'Voronezh city, Brusilov street, 4E',
-        openTime: '24 hours',
-        coords: [51.661926, 39.258588],
-    },
-    {
-        title: 'Car Wash 11',
-        label: '1.9 km',
-        address: 'Voronezh city, Brusilov street, 4E',
-        openTime: '24 hours',
-        coords: [51.961926, 39.252588]
-    },
-    {
-        title: 'Car Wash 21',
-        label: '1.9 km',
-        address: 'Voronezh city, Brusilov street, 4E',
-        openTime: '24 hours',
-        coords: [51.611926, 39.558588],
-    },
-    {
-        title: 'Car Wash 31',
-        label: '1.9 km',
-        address: 'Voronezh city, Brusilov street, 4E',
-        openTime: '24 hours',
-        coords: [51.667926, 39.252588],
-    },
-    {
-        title: 'Car Wash 41',
-        label: '1.9 km',
-        address: 'Voronezh city, Brusilov street, 4E',
-        openTime: '24 hours',
-        coords: [51.669926, 39.255588],
-    },
-    {
-        title: 'Car Wash 51',
-        label: '1.9 km',
-        address: 'Voronezh city, Brusilov street, 4E',
-        openTime: '24 hours',
-        coords: [51.668926, 39.254588],
-    },
-    {
-        title: 'Car Wash 61',
-        label: '1.9 km',
-        address: 'Voronezh city, Brusilov street, 4E',
-        openTime: '24 hours',
-        coords: [51.664926, 39.250588],
-    },
-    {
-        title: 'Car Wash 71',
-        label: '1.9 km',
-        address: 'Voronezh city, Brusilov street, 4E',
-        openTime: '24 hours',
-        coords: [51.664926, 39.250588],
-    },
-    {
-        title: 'Car Wash 81',
-        label: '1.9 km',
-        address: 'Voronezh city, Brusilov street, 4E',
-        openTime: '24 hours',
-        coords: [51.614926, 39.250588],
-    },
-    {
-        title: 'Car Wash 91',
-        label: '1.9 km',
-        address: 'Voronezh city, Brusilov street, 4E',
-        openTime: '24 hours',
-        coords: [51.634926, 39.250588],
-    },
-    {
-        title: 'Car Wash 101',
-        label: '1.9 km',
-        address: 'Voronezh city, Brusilov street, 4E',
-        openTime: '24 hours',
-        coords: [51.667926, 39.250588],
-    },
-    {
-        title: 'Car Wash 1123',
-        label: '1.9 km',
-        address: 'Voronezh city, Brusilov street, 4E',
-        openTime: '24 hours',
-        coords: [51.669926, 39.250588],
-    }, */
+];
+
+export const instructionList = [
+    "Выберите мойку на карте",
+    "Введите номер поста, в котором вы находитесь",
+    "Введите сумму, которую вы хотите внести за мойку",
+    "Проверьте введенные данные",
+    "Оплатите мойку",
+    "Сумма отобразится на терминале поста, выберите программу и приступайте к помывке автомобиля"
 ]
