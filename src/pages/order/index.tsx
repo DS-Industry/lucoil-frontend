@@ -40,7 +40,7 @@ export const OrderPage: React.FC = () => {
                         fontSize='48px' 
                         fontWeight='700'
                         >{store.sum} ₽</Text>
-                    <OperButton title="Оплатить" onClick={handleClick} disabled={false}/>
+                    <OperButton title="Оплатить" onClick={handleClick} disabled={false} isOper={false}/>
                 </Flex>
             </Flex>
         </>

@@ -75,7 +75,7 @@ export const InstructionPage : React.FC = () => {
                         title="Искать мойку" 
                         onClick={handleClick} 
                         disabled={false}
-                        first={true}/>
+                        isOper={false}/>
                 </Box>
                 </Flex>
             </Flex>
