@@ -197,6 +197,7 @@ export const CustomYMap = () => {
                         <>
                         <Flex mb='30px' flexDirection='column'>
                         <CarWashMap 
+                            isDisabled={false}
                             key={index}
                             carWash={carWash}
                             id={carWash['id']}

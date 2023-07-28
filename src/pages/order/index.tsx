@@ -27,7 +27,8 @@ export const OrderPage: React.FC = () => {
                     title={order?.title} 
                     openTime="24часа" 
                     address={order?.address} 
-                    distance={order.distance}/> 
+                    distance={order.distance}
+                    isDisabled={true}/> 
                 <>
                 </>
                 <Flex flexDirection='inherit' justifyContent='center'>

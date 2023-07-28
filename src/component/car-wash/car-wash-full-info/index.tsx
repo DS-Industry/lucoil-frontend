@@ -18,8 +18,8 @@ export const CarWashFullInfo: React.FC<ICarWash> = ({ carWash, setDrawerBaySwitc
     return(
         <>
         <Flex flexDir='column' pt='28px' h='90vh'>
-            <CarWashMap title={carWash['name']} id={carWash['id']} openTime="24 часа" address={carWash['address']} distance={distance}  />
-            <Flex pt='52px' h='100%' flexDirection='column' justifyContent='space-between'>
+            <CarWashMap isDisabled={false} title={carWash['name']} id={carWash['id']} openTime="24 часа" address={carWash['address']} distance={distance}  />
+            <Flex pt='52px' h='100%' flexDirection='column' justifyContent='space-between' >
                 {carWash['type'] === 'Portal' ? 
                     <>
                         <Box>
