@@ -28,7 +28,9 @@ export const OrderPage: React.FC = () => {
                     title={carWashStore.carWash.name ? carWashStore.carWash.name : '' }
                     openTime="24часа" 
                     address={carWashStore.carWash.address ? carWashStore.carWash.address : ''}
-                    distance={100}/>
+                    distance={100}
+                    isDisabled={true}
+                />
                 <>
                 </>
                 <Flex flexDirection='inherit' justifyContent='center'>
