@@ -1,8 +1,9 @@
-import React from "react";
+import React from 'react';
 
 interface IUserContext {
-
-
+	person: string;
 }
 
-export const UserContext = React.createContext<IUserContext>({});
+export const UserContext = React.createContext<IUserContext>({
+	person: '',
+});
