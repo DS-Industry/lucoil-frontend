@@ -4,9 +4,9 @@ import { OperButton } from '../../buttons/oper_button';
 
 interface INumInput {
 	label: string;
-	isBay?: boolean;
 	isSum?: boolean;
 	onClick?: any;
+	switchCarWashType?: string;
 	minValue: number;
 	maxValue: number;
 	nameMessage: string;
@@ -15,11 +15,11 @@ interface INumInput {
 export const NumInput: React.FC<INumInput> = ({
 	label,
 	nameMessage,
-	isBay,
 	onClick,
 	minValue,
 	maxValue,
 	isSum,
+	switchCarWashType,
 }) => {
 	const minValueMessage = `${nameMessage} должна быть не менее ${minValue}`;
 	const maxValueMessage = `${nameMessage} должна быть не более ${maxValue}`;
@@ -73,7 +73,7 @@ export const NumInput: React.FC<INumInput> = ({
 				type="number"
 			/>
 			<OperButton
-				isBay={isBay}
+				switchCarWashType={switchCarWashType}
 				isSum={isSum}
 				disabled={messageSwitch === 1 || messageSwitch === 2 ? true : false}
 				onClick={onClick}

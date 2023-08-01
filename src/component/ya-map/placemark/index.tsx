@@ -49,7 +49,10 @@ export const CustomPlacemark: React.FC<ICustomPlacemark> = ({
 		size,
 	});
 
-	const calculateDistance = () => {
+	const calculateDistance = (
+		userPosition: Array<number>,
+		coords: Array<number>
+	) => {
 		if (yMaps) {
 			yMaps.ready(() => {
 				const multiRoute = new yMaps.multiRouter.MultiRoute(
@@ -75,6 +78,10 @@ export const CustomPlacemark: React.FC<ICustomPlacemark> = ({
 						}) as IRouteDistance;
 						if (routeDistance) {
 							getDistance(routeDistance.value);
+							console.log('-----------------', index);
+							console.log('I AM IN PLACEMARK ');
+							console.log('THIS IS VALUE ', routeDistance.value);
+							console.log('-----------------');
 						}
 					}
 				});
@@ -83,19 +90,28 @@ export const CustomPlacemark: React.FC<ICustomPlacemark> = ({
 	};
 
 	useEffect(() => {
-		if (placemarkId === index) {
-			if (placeMarkSwitch) {
-				setPlaceMarkParams({
-					icon: activeIcon,
-					size: activeSize,
-				});
-			} else {
-				setPlaceMarkParams({
-					icon,
-					size,
-				});
+		const updatePlaceMark = async () => {
+			if (placemarkId === index) {
+				calculateDistance(userPosition, coords);
+				console.log('-----------------', index);
+				console.log('index', index);
+				console.log('id car wash', placemarkId);
+				console.log('placeMarkSwitch', placeMarkSwitch);
+				console.log('-----------------');
+				if (placeMarkSwitch) {
+					setPlaceMarkParams({
+						icon: activeIcon,
+						size: activeSize,
+					});
+				} else {
+					setPlaceMarkParams({
+						icon,
+						size,
+					});
+				}
 			}
-		}
+		};
+		updatePlaceMark();
 	}, [placeMarkSwitch]);
 
 	return (
@@ -113,7 +129,6 @@ export const CustomPlacemark: React.FC<ICustomPlacemark> = ({
 						setCarWash(carWashes[0]);
 					}
 					getCoords(coords);
-					calculateDistance();
 					getInfo({
 						id: index,
 						carWashes,

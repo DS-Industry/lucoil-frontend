@@ -6,28 +6,32 @@ interface IOperButton {
 	onClick: any;
 	disabled: boolean;
 	value?: string;
-	isBay?: boolean;
 	isSum?: boolean;
 	isOper?: boolean;
+	switchCarWashType?: string;
 }
 
 export const OperButton: React.FC<IOperButton> = ({
-	isBay = false,
 	isSum = false,
 	title,
 	onClick,
 	disabled,
 	value,
 	isOper = true,
+	switchCarWashType,
 }) => {
 	const { updateStore } = useOrder();
 
 	const handleClick = () => {
-		if (isBay) {
-			onClick('sum');
+		if (switchCarWashType) {
 			updateStore({
 				bayNumber: Number(value),
 			});
+			if (switchCarWashType === 'bay') {
+				onClick('sum');
+			} else {
+				onClick(switchCarWashType);
+			}
 		}
 		if (isSum) {
 			onClick();
@@ -36,7 +40,7 @@ export const OperButton: React.FC<IOperButton> = ({
 			});
 		}
 
-		if (!isBay && !isSum) {
+		if (!switchCarWashType && !isSum) {
 			onClick();
 		}
 	};

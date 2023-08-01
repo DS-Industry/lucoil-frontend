@@ -9,14 +9,13 @@ interface ITagButton {
 	color: string;
 	label: string;
 	onClick?: any;
-	disabled: boolean;
 	carWash: any;
-	distance: number;
 	switchCarWashType: string;
+	distance: number;
 }
 
 export const TagButton: React.FC<ITagButton> = ({
-	disabled,
+	distance,
 	switchCarWashType,
 	height,
 	fontSize,
@@ -25,25 +24,24 @@ export const TagButton: React.FC<ITagButton> = ({
 	bgColor,
 	onClick,
 	carWash,
-	distance,
 }) => {
 	const { updateStore } = useOrder();
 	const { updateStore: updateCWState } = useCarWash();
 
 	const handleClick = () => {
+		const carWashDistance: any = { ...carWash, distance };
 		onClick(switchCarWashType);
 		updateStore({
 			carWashId: carWash.id,
 		});
 		updateCWState({
-			carWash,
+			carWash: carWashDistance,
 		});
 	};
 
 	return (
 		<>
 			<Button
-				isDisabled={disabled}
 				display="flex"
 				w="100%"
 				h={height}

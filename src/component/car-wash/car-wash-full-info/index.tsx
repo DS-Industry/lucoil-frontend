@@ -7,14 +7,12 @@ interface ICarWash {
 	carWash: any;
 	setDrawerSwitch: any;
 	distance: number;
-	switchCarWashType: string;
 }
 
 export const CarWashFullInfo: React.FC<ICarWash> = ({
 	carWash,
 	setDrawerSwitch,
 	distance,
-	switchCarWashType,
 }) => {
 	return (
 		<Flex flexDir="column" pt="28px" h="90vh">
@@ -130,9 +128,8 @@ export const CarWashFullInfo: React.FC<ICarWash> = ({
 				<Box w="100%" display="flex" justifyContent="center" mb="25px">
 					<TagButton
 						distance={distance}
-						switchCarWashType={switchCarWashType}
+						switchCarWashType="bay"
 						carWash={carWash}
-						disabled={distance > 10000000 ? true : false}
 						onClick={setDrawerSwitch}
 						height="50px"
 						fontSize="15px"

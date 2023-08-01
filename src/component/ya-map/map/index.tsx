@@ -31,8 +31,8 @@ export const CustomYMap = () => {
 
 	const location = useLocation();
 	const [userPosition, setUserPosition] = useState<number[]>([]);
-	const [drawerSwitchStr, setDrawerSwitch] = useState<string>('');
-	const [carWashIdList, setCarWashIdList] = useState<boolean>(false);
+	const [drawerSwitch, setDrawerSwitch] = useState<string>('');
+	const [carWashIdList, setCarWashIdList] = useState<number>(-1);
 	const [carWashCoords, setCarWashCoords] = useState<Array<number>>();
 	const [distance, setDistance] = useState<number>(0);
 	const [carWashMainInfo, setCarWashMainInfo] = useState<any>();
@@ -65,15 +65,16 @@ export const CustomYMap = () => {
 	}, []);
 
 	useEffect(() => {
+		console.log('HERE THERE!!!');
 		const queryParams = new URLSearchParams(location.search);
 		const carWashId = queryParams.get('carWashId');
 		const resultCarWashList: Array<any> = [];
 
 		if (carWashId) {
-			store.carWashes.forEach((carWashWithCoords: any) => {
+			store.carWashes.forEach((carWashWithCoords: any, index: number) => {
 				return carWashWithCoords.carwashes.map((carWash: any) => {
 					return resultCarWashList.push({
-						id: carWashWithCoords.id,
+						id: index,
 						carWash,
 						coords: [carWashWithCoords.lat, carWashWithCoords.lon],
 					});
@@ -82,6 +83,12 @@ export const CustomYMap = () => {
 			const resultCarWash = resultCarWashList.find(
 				(carWash) => carWash.carWash.id === carWashId
 			);
+			console.log('-------------------');
+			console.log('THIS IS resultCarWashList', resultCarWashList);
+			console.log('-------------------');
+			console.log('-------------------');
+			console.log('THIS IS ID', resultCarWash.id);
+			console.log('-------------------');
 			setCarWashIdList(resultCarWash.id);
 			setCarWash(resultCarWash.carWash);
 			setCarWashCoords(resultCarWash.coords);
@@ -91,7 +98,7 @@ export const CustomYMap = () => {
 
 	return (
 		<>
-			<Flex h="88%" w="100%">
+			<Flex h="88%" w="100%" justifyContent="center" alignItems="center">
 				{store.carWashes && userPosition.length > 0 ? (
 					<YMaps
 						enterprise
@@ -139,12 +146,12 @@ export const CustomYMap = () => {
 											placemarkId={
 												carWashMainInfo
 													? carWashMainInfo.id
-													: carWashIdList
+													: carWashIdList >= 0
 													? carWashIdList
 													: -1
 											}
 											setDrawerSwitch={setDrawerSwitch}
-											placeMarkSwitch={drawerSwitchStr}
+											placeMarkSwitch={drawerSwitch}
 										/>
 									);
 								}
@@ -171,7 +178,7 @@ export const CustomYMap = () => {
 
 			<CustomDrawer
 				key={0}
-				isOpen={drawerSwitchStr === 'main' ? true : false}
+				isOpen={drawerSwitch === 'main' ? true : false}
 				onClose={handleCloseDrawer}
 			>
 				{carWashMainInfo &&
@@ -191,7 +198,7 @@ export const CustomYMap = () => {
 										getCarWash={setCarWash}
 										setCarWashDrawer={setDrawerSwitch}
 									/>
-									{distance && distance > 1000000 && (
+									{distance && distance > 500 && (
 										<Flex w="100%" justifyContent="center" mt="20px">
 											<TagInfo
 												label="АМС слишком далеко от вас!"
@@ -211,10 +218,7 @@ export const CustomYMap = () => {
 											mt="15px"
 										>
 											<TagButton
-												disabled={distance > 10000 ? true : false}
-												switchCarWashType={
-													carWash.type === 'SelfService' ? 'bay' : 'portal'
-												}
+												switchCarWashType="bay"
 												onClick={setDrawerSwitch}
 												carWash={carWash}
 												distance={distance}
@@ -234,69 +238,69 @@ export const CustomYMap = () => {
 
 			<CustomDrawer
 				key={1}
-				isOpen={drawerSwitchStr === 'full-info' ? true : false}
+				isOpen={drawerSwitch === 'full-info' ? true : false}
 				onClose={handleCloseDrawer}
 			>
 				<CarWashFullInfo
 					distance={distance}
 					carWash={carWash}
 					setDrawerSwitch={setDrawerSwitch}
-					switchCarWashType={
-						carWash && carWash.type === 'SelfService' ? 'bay' : 'portal'
-					}
 				/>
 			</CustomDrawer>
 
+			{carWash && (
+				<CustomDrawer
+					key={11}
+					isOpen={drawerSwitch === 'bay' ? true : false}
+					onClose={handleCloseDrawer}
+				>
+					<Flex
+						justifyContent="center"
+						alignItems="center"
+						flexDir="column"
+						w="100%"
+					>
+						<NumInput
+							nameMessage="Номер поста"
+							minValue={1}
+							maxValue={carWash.boxes.length}
+							onClick={setDrawerSwitch}
+							label="Введите номер поста"
+							switchCarWashType={
+								carWash && carWash.type === 'SelfService' ? 'bay' : 'portal'
+							}
+						/>
+					</Flex>
+				</CustomDrawer>
+			)}
+
 			{carWash && carWash.type === 'SelfService' ? (
-				<>
-					<CustomDrawer
-						key={11}
-						isOpen={drawerSwitchStr === 'bay' ? true : false}
-						onClose={handleCloseDrawer}
+				<CustomDrawer
+					key={12}
+					isOpen={drawerSwitch === 'sum' ? true : false}
+					onClose={handleCloseDrawer}
+				>
+					<Flex
+						justifyContent="center"
+						alignItems="center"
+						flexDir="column"
+						w="100%"
 					>
-						<Flex
-							justifyContent="center"
-							alignItems="center"
-							flexDir="column"
-							w="100%"
-						>
-							<NumInput
-								nameMessage="Номер поста"
-								minValue={1}
-								maxValue={carWash.boxes.length}
-								onClick={setDrawerSwitch}
-								label="Введите номер поста"
-								isBay={true}
-							/>
-						</Flex>
-					</CustomDrawer>
-					<CustomDrawer
-						key={12}
-						isOpen={drawerSwitchStr === 'sum' ? true : false}
-						onClose={handleCloseDrawer}
-					>
-						<Flex
-							justifyContent="center"
-							alignItems="center"
-							flexDir="column"
-							w="100%"
-						>
-							<NumInput
-								nameMessage="Сумма"
-								minValue={carWash.limitMinCost}
-								maxValue={carWash.limitMaxCost}
-								onClick={navigateToOrder}
-								label="Введите сумму"
-								isSum={true}
-							/>
-						</Flex>
-					</CustomDrawer>
-				</>
+						<NumInput
+							nameMessage="Сумма"
+							minValue={carWash.limitMinCost}
+							maxValue={carWash.limitMaxCost}
+							onClick={navigateToOrder}
+							label="Введите сумму"
+							isSum={true}
+						/>
+					</Flex>
+				</CustomDrawer>
 			) : (
 				<>
 					<CustomDrawer
 						key={2}
-						isOpen={drawerSwitchStr === 'portal' ? true : false}
+						isOpen={drawerSwitch === 'portal' ? true : false}
 						onClose={handleCloseDrawer}
 					>
 						<PortalProgramList programList={carWash && carWash.price} />

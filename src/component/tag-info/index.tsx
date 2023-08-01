@@ -2,11 +2,13 @@ import { Tag, TagLabel } from '@chakra-ui/react';
 import React from 'react';
 
 interface ITagInfo {
+	width?: string;
 	label: string;
 	bgColor: string;
 	color: string;
 	fontSize: string;
 	height: string;
+	fontWeight?: string;
 }
 
 export const TagInfo: React.FC<ITagInfo> = ({
@@ -15,10 +17,12 @@ export const TagInfo: React.FC<ITagInfo> = ({
 	bgColor,
 	fontSize,
 	height,
+	fontWeight = '600',
 }) => {
 	return (
 		<>
 			<Tag
+				w="auto"
 				h={height}
 				paddingLeft="10px"
 				paddingRight="10px"
@@ -27,7 +31,7 @@ export const TagInfo: React.FC<ITagInfo> = ({
 				borderRadius="4px"
 				bg={bgColor}
 			>
-				<TagLabel fontWeight="600" fontSize={fontSize} color={color}>
+				<TagLabel fontWeight={fontWeight} fontSize={fontSize} color={color}>
 					{label}
 				</TagLabel>
 			</Tag>
