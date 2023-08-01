@@ -1,14 +1,11 @@
 import { Button, Flex } from '@chakra-ui/react';
 import { FaMagnifyingGlass } from 'react-icons/fa6';
-import { useNavigate } from 'react-router-dom';
 
 interface INavBar {
 	openList: (arg: string) => void;
 }
 
 export const Navbar: React.FC<INavBar> = ({ openList }) => {
-	const navigate = useNavigate();
-
 	const handleClick = () => {
 		openList('list');
 	};

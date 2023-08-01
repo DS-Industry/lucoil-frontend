@@ -21,6 +21,7 @@ import { TagInfo } from '../../tag-info';
 import { useCarWash } from '../../../context/carwash-context';
 import { Navbar } from '../../nav-bar';
 import { ListPage } from '../../../pages/list';
+import { CustomAlert } from '../../alert';
 
 export const CustomYMap = () => {
 	const navigate = useNavigate();
@@ -95,28 +96,30 @@ export const CustomYMap = () => {
 						>
 							{store.carWashes.map((carWash: any, index: number) => {
 								console.log(carWash);
-								carWash.lat && carWash.lon && (
-									<CustomPlacemark
-										key={index}
-										index={index}
-										coords={[carWash.lat, carWash.lon]}
-										carWashes={carWash.carwashes}
-										setCarWash={setCarWash}
-										icon={GeoSVG}
-										activeIcon={ActiveGeoSVG}
-										userPosition={userPosition}
-										getCoords={setCarWashCoords}
-										setPlaceMarkStyle={setDrawerSwitch}
-										getDistance={setDistance}
-										size={[41, 41]}
-										activeSize={[61, 61]}
-										getInfo={setCarWashMainInfo}
-										setCarWashId={setCarWashIdList}
-										placemarkId={carWashIdList ? carWashIdList : -1}
-										setDrawerSwitch={setDrawerSwitch}
-										placeMarkSwitch={drawerSwitch}
-									/>
-								);
+								if (carWash.lat && carWash.lon) {
+									return (
+										<CustomPlacemark
+											key={index}
+											index={index}
+											coords={[carWash.lat, carWash.lon]}
+											carWashes={carWash.carwashes}
+											setCarWash={setCarWash}
+											icon={GeoSVG}
+											activeIcon={ActiveGeoSVG}
+											userPosition={userPosition}
+											getCoords={setCarWashCoords}
+											setPlaceMarkStyle={setDrawerSwitch}
+											getDistance={setDistance}
+											size={[41, 41]}
+											activeSize={[61, 61]}
+											getInfo={setCarWashMainInfo}
+											setCarWashId={setCarWashIdList}
+											placemarkId={carWashIdList ? carWashIdList : -1}
+											setDrawerSwitch={setDrawerSwitch}
+											placeMarkSwitch={drawerSwitch}
+										/>
+									);
+								}
 							})}
 							<Placemark
 								options={{ preset: 'islands#redCircleDotIcon' }}
@@ -133,12 +136,14 @@ export const CustomYMap = () => {
 							/>
 						</Map>
 					</YMaps>
+				) : store.carWashes === null ? (
+					<CustomAlert />
 				) : (
 					<Spinner h="30px" w="30px" />
 				)}
 			</Flex>
 
-			<Navbar openList={setDrawerSwitch} />
+			{store.carWashes && <Navbar openList={setDrawerSwitch} />}
 
 			<CustomDrawer
 				key={'aa11133'}

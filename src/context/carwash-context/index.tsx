@@ -36,10 +36,9 @@ const CarWashProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 			const response = await api.get('carwash/list');
 			console.log(response.data);
 			updateStore({ carWashes: response.data, isLoading: false });
-			return;
 		} catch (error) {
 			console.log(error);
-			updateStore({ isLoading: false, carWashes: [] });
+			updateStore({ isLoading: false, carWashes: null });
 		}
 	};
 

@@ -4,14 +4,23 @@ import { Box, Flex, HStack, Text } from '@chakra-ui/react';
 import { OperButton } from '../../component/buttons/oper_button';
 import { useCarWash } from '../../context/carwash-context';
 import { TagInfo } from '../../component/tag-info';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const OrderPage: React.FC = () => {
+	const navigate = useNavigate();
 	const { store } = useOrder();
 	const { store: carWashStore } = useCarWash();
 
 	const handleClick = () => {
 		console.log(store);
 	};
+
+	useEffect(() => {
+		if (!carWashStore.carWash) {
+			navigate('/home');
+		}
+	}, []);
 
 	return (
 		<Flex
@@ -25,14 +34,10 @@ export const OrderPage: React.FC = () => {
 			<Flex flexDirection="column">
 				<CarWashMap
 					id={String(store.sum)}
-					title={carWashStore.carWash.name ? carWashStore.carWash.name : ''}
+					title={carWashStore.carWash ? carWashStore.carWash.name : ''}
 					openTime="24часа"
-					address={
-						carWashStore.carWash.address ? carWashStore.carWash.address : ''
-					}
-					distance={
-						carWashStore.carWash.distance ? carWashStore.carWash.distance : ''
-					}
+					address={carWashStore.carWash ? carWashStore.carWash.address : ''}
+					distance={carWashStore.carWash ? carWashStore.carWash.distance : ''}
 					isDisabled={true}
 				/>
 				<Text pt="30px" fontSize="15px" fontWeight="700">
