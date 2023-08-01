@@ -15,7 +15,6 @@ function App() {
 					<CarWashProvider>
 						<Routes>
 							<Route path="/home" element={<HomePage />} />
-							<Route path="/list" element={<ListPage />} />
 							<Route path="/order" element={<OrderPage />} />
 							<Route path="/" element={<InstructionPage />} />
 						</Routes>

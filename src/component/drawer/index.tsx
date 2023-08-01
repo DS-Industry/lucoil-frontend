@@ -11,6 +11,10 @@ import { ReactNode } from 'react';
 interface ICustomDrawer {
 	children: ReactNode;
 	isOpen: boolean;
+	pl?: string;
+	pr?: string;
+	topBR?: string;
+	size?: string;
 	onClose: () => void;
 }
 
@@ -18,15 +22,19 @@ export const CustomDrawer: React.FC<ICustomDrawer> = ({
 	children,
 	isOpen,
 	onClose,
+	pl,
+	pr,
+	topBR,
+	size,
 }) => {
 	return (
 		<>
-			<Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
+			<Drawer isOpen={isOpen} placement="bottom" onClose={onClose} size={size}>
 				<DrawerOverlay />
-				<DrawerContent borderTopRadius="16px">
+				<DrawerContent borderTopRadius={topBR ? topBR : '16px'}>
 					<DrawerCloseButton />
 					<DrawerHeader></DrawerHeader>
-					<DrawerBody pl="16px" pr="16px">
+					<DrawerBody pl={pl ? pl : '16px'} pr={pr ? pr : '16px'}>
 						{children}
 					</DrawerBody>
 				</DrawerContent>

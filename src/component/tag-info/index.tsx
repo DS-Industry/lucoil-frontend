@@ -3,7 +3,7 @@ import React from 'react';
 
 interface ITagInfo {
 	width?: string;
-	label: string;
+	label: string | number;
 	bgColor: string;
 	color: string;
 	fontSize: string;
@@ -30,6 +30,7 @@ export const TagInfo: React.FC<ITagInfo> = ({
 				paddingBottom="10px"
 				borderRadius="4px"
 				bg={bgColor}
+				whiteSpace="nowrap"
 			>
 				<TagLabel fontWeight={fontWeight} fontSize={fontSize} color={color}>
 					{label}

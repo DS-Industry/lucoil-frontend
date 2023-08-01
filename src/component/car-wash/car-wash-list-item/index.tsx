@@ -1,17 +1,34 @@
 import { Box, Flex, HStack, Text, Divider } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
 
 interface ICarWash {
-	id: string;
+	coords: string;
 	title: string;
 	address: string;
+	carWash: any;
+	openFullInfo: (arg: string) => void;
+	setCarWashCoords: any;
+	index: number;
+	setCarWash: any;
+	setCarWashIdList: any;
 }
 
-export const CarWash: React.FC<ICarWash> = ({ id, title, address }) => {
-	const navigate = useNavigate();
-
+export const CarWash: React.FC<ICarWash> = ({
+	coords,
+	title,
+	address,
+	carWash,
+	openFullInfo,
+	setCarWashCoords,
+	index,
+	setCarWash,
+	setCarWashIdList,
+}) => {
 	const handleClick = () => {
-		navigate(`/home?carWashId=${id}`);
+		openFullInfo('full-info');
+		console.log('this is info', { ...carWash, index });
+		setCarWashCoords(coords);
+		setCarWashIdList(index);
+		setCarWash(carWash);
 	};
 
 	return (

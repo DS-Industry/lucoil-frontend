@@ -114,7 +114,7 @@ export const CarWashFullInfo: React.FC<ICarWash> = ({
 							);
 						})}
 				</Box>
-				{distance && distance > 500 && (
+				{distance && distance > 500 ? (
 					<Flex w="100%" justifyContent="center" mb="15px">
 						<TagInfo
 							label="АМС слишком далеко от вас!"
@@ -124,7 +124,17 @@ export const CarWashFullInfo: React.FC<ICarWash> = ({
 							height="28px"
 						/>
 					</Flex>
-				)}
+				) : !distance ? (
+					<Flex w="100%" justifyContent="center" mb="15px">
+						<TagInfo
+							label="Вычисление расстояния до Мойки..."
+							bgColor="colors.SECONDARY_RED"
+							color="colors.PRIMARY_RED"
+							fontSize="14px"
+							height="28px"
+						/>
+					</Flex>
+				) : null}
 				<Box w="100%" display="flex" justifyContent="center" mb="25px">
 					<TagButton
 						distance={distance}

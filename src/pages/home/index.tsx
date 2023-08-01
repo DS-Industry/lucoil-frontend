@@ -9,7 +9,6 @@ export const HomePage = () => {
 			<Flex direction="column" className="App" h="100vh">
 				<Header label="Автомойки" />
 				<CustomYMap />
-				<Navbar />
 			</Flex>
 		</>
 	);

@@ -1,5 +1,6 @@
 import { Placemark, useYMaps } from '@pbe/react-yandex-maps/';
 import { useEffect, useState } from 'react';
+import { useCarWash } from '../../../context/carwash-context';
 
 interface ICustomPlacemark {
 	index: number | null;
@@ -18,6 +19,7 @@ interface ICustomPlacemark {
 	getDistance: any;
 	setPlaceMarkStyle: any;
 	setCarWash: any;
+	setCarWashId: any;
 }
 
 interface IRouteDistance {
@@ -42,6 +44,7 @@ export const CustomPlacemark: React.FC<ICustomPlacemark> = ({
 	getCoords,
 	setPlaceMarkStyle,
 	setCarWash,
+	setCarWashId,
 }) => {
 	const yMaps = useYMaps();
 	const [placeMarkParams, setPlaceMarkParams] = useState({
@@ -90,15 +93,20 @@ export const CustomPlacemark: React.FC<ICustomPlacemark> = ({
 	};
 
 	useEffect(() => {
+		if (placemarkId === index) {
+			calculateDistance(userPosition, coords);
+		}
+	});
+
+	useEffect(() => {
 		const updatePlaceMark = async () => {
 			if (placemarkId === index) {
-				calculateDistance(userPosition, coords);
 				console.log('-----------------', index);
 				console.log('index', index);
 				console.log('id car wash', placemarkId);
 				console.log('placeMarkSwitch', placeMarkSwitch);
 				console.log('-----------------');
-				if (placeMarkSwitch) {
+				if (placeMarkSwitch && placeMarkSwitch !== 'list') {
 					setPlaceMarkParams({
 						icon: activeIcon,
 						size: activeSize,
@@ -129,6 +137,7 @@ export const CustomPlacemark: React.FC<ICustomPlacemark> = ({
 						setCarWash(carWashes[0]);
 					}
 					getCoords(coords);
+					setCarWashId(index);
 					getInfo({
 						id: index,
 						carWashes,

@@ -3,14 +3,31 @@ import Logo from '../../assets/logo/header_logo.svg';
 import { Header } from '../../component/header';
 import { instructionList } from '../../variabels';
 import { OperButton } from '../../component/buttons/oper_button';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useOrder } from '../../context/order-context';
+import { useEffect } from 'react';
 
 export const InstructionPage: React.FC = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+
+	const { updateStore } = useOrder();
 
 	const handleClick = () => {
 		navigate('/home');
 	};
+
+	useEffect(() => {
+		const queryParams = new URLSearchParams(location.search);
+		const partnerCard: number = Number(queryParams.get('partnerCard'));
+
+		if (partnerCard) {
+			console.log(partnerCard);
+			updateStore({
+				partnerCard,
+			});
+		}
+	}, []);
 
 	return (
 		<>

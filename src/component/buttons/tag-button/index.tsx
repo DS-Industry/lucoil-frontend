@@ -29,8 +29,9 @@ export const TagButton: React.FC<ITagButton> = ({
 	const { updateStore: updateCWState } = useCarWash();
 
 	const handleClick = () => {
+		console.log('i am here!!!');
 		const carWashDistance: any = { ...carWash, distance };
-		onClick(switchCarWashType);
+		onClick('bay');
 		updateStore({
 			carWashId: carWash.id,
 		});

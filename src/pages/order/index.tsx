@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { CarWashMap } from '../../component/car-wash/car-wash-map-item';
 import { useOrder } from '../../context/order-context';
 import { Box, Flex, HStack, Text } from '@chakra-ui/react';
@@ -76,9 +75,9 @@ export const OrderPage: React.FC = () => {
 						:
 					</Text>
 				</HStack>
-				<Box w="30%" mt="11px" fontWeight="500">
+				<Box mt="11px" fontWeight="500">
 					<TagInfo
-						label="10"
+						label={store.partnerCard ? store.partnerCard : 'partner card'}
 						bgColor="colors.WHITE_GRAY"
 						color="colors.BLACK"
 						fontSize="14px"

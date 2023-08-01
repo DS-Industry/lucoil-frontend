@@ -15,10 +15,12 @@ import { CarWashMap } from '../../car-wash/car-wash-map-item';
 import { TagButton } from '../../buttons/tag-button';
 import { CarWashFullInfo } from '../../car-wash/car-wash-full-info';
 import { NumInput } from '../../inputs/num-input';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { PortalProgramList } from '../../portal/portal-program-list';
 import { TagInfo } from '../../tag-info';
 import { useCarWash } from '../../../context/carwash-context';
+import { Navbar } from '../../nav-bar';
+import { ListPage } from '../../../pages/list';
 
 export const CustomYMap = () => {
 	const navigate = useNavigate();
@@ -29,7 +31,6 @@ export const CustomYMap = () => {
 		console.log(store);
 	}, [store]);
 
-	const location = useLocation();
 	const [userPosition, setUserPosition] = useState<number[]>([]);
 	const [drawerSwitch, setDrawerSwitch] = useState<string>('');
 	const [carWashIdList, setCarWashIdList] = useState<number>(-1);
@@ -64,41 +65,9 @@ export const CustomYMap = () => {
 		}
 	}, []);
 
-	useEffect(() => {
-		console.log('HERE THERE!!!');
-		const queryParams = new URLSearchParams(location.search);
-		const carWashId = queryParams.get('carWashId');
-		const resultCarWashList: Array<any> = [];
-
-		if (carWashId) {
-			store.carWashes.forEach((carWashWithCoords: any, index: number) => {
-				return carWashWithCoords.carwashes.map((carWash: any) => {
-					return resultCarWashList.push({
-						id: index,
-						carWash,
-						coords: [carWashWithCoords.lat, carWashWithCoords.lon],
-					});
-				});
-			});
-			const resultCarWash = resultCarWashList.find(
-				(carWash) => carWash.carWash.id === carWashId
-			);
-			console.log('-------------------');
-			console.log('THIS IS resultCarWashList', resultCarWashList);
-			console.log('-------------------');
-			console.log('-------------------');
-			console.log('THIS IS ID', resultCarWash.id);
-			console.log('-------------------');
-			setCarWashIdList(resultCarWash.id);
-			setCarWash(resultCarWash.carWash);
-			setCarWashCoords(resultCarWash.coords);
-			setDrawerSwitch('full-info');
-		}
-	}, []);
-
 	return (
 		<>
-			<Flex h="88%" w="100%" justifyContent="center" alignItems="center">
+			<Flex h="85vh" w="100%" justifyContent="center" alignItems="center">
 				{store.carWashes && userPosition.length > 0 ? (
 					<YMaps
 						enterprise
@@ -108,7 +77,7 @@ export const CustomYMap = () => {
 					>
 						<Map
 							width="100%"
-							height="100%"
+							height="85vh"
 							state={{
 								center: carWashCoords ? carWashCoords : userPosition,
 								zoom: 15,
@@ -143,13 +112,8 @@ export const CustomYMap = () => {
 											size={[41, 41]}
 											activeSize={[61, 61]}
 											getInfo={setCarWashMainInfo}
-											placemarkId={
-												carWashMainInfo
-													? carWashMainInfo.id
-													: carWashIdList >= 0
-													? carWashIdList
-													: -1
-											}
+											setCarWashId={setCarWashIdList}
+											placemarkId={carWashIdList ? carWashIdList : -1}
 											setDrawerSwitch={setDrawerSwitch}
 											placeMarkSwitch={drawerSwitch}
 										/>
@@ -175,6 +139,25 @@ export const CustomYMap = () => {
 					<Spinner h="30px" w="30px" />
 				)}
 			</Flex>
+
+			<Navbar openList={setDrawerSwitch} />
+
+			<CustomDrawer
+				key={'aa11133'}
+				isOpen={drawerSwitch === 'list'}
+				onClose={handleCloseDrawer}
+				size="full"
+				topBR="0"
+				pl="0"
+				pr="0"
+			>
+				<ListPage
+					openFullInfo={setDrawerSwitch}
+					setCarWashCoords={setCarWashCoords}
+					setCarWash={setCarWash}
+					setCarWashIdList={setCarWashIdList}
+				/>
+			</CustomDrawer>
 
 			<CustomDrawer
 				key={0}
@@ -243,7 +226,7 @@ export const CustomYMap = () => {
 			>
 				<CarWashFullInfo
 					distance={distance}
-					carWash={carWash}
+					carWash={carWash && carWash}
 					setDrawerSwitch={setDrawerSwitch}
 				/>
 			</CustomDrawer>
