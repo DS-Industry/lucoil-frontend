@@ -1,5 +1,4 @@
 import { Flex } from '@chakra-ui/react';
-import { Navbar } from '../../component/nav-bar';
 import { CustomYMap } from '../../component/ya-map/map';
 import { Header } from '../../component/header';
 

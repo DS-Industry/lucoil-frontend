@@ -6,6 +6,7 @@
 	"extends": ["react-app", "react-app/jest", "plugin:prettier/recommended"],
 	"plugins": ["prettier"],
 	"rules": {
+		"react-hooks/exhaustive-deps": "off",
 		"prettier/prettier": [
 			"error",
 			{

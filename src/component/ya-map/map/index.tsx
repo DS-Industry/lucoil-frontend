@@ -95,30 +95,28 @@ export const CustomYMap = () => {
 						>
 							{store.carWashes.map((carWash: any, index: number) => {
 								console.log(carWash);
-								if (carWash.lat && carWash.lon) {
-									return (
-										<CustomPlacemark
-											key={index}
-											index={index}
-											coords={[carWash.lat, carWash.lon]}
-											carWashes={carWash.carwashes}
-											setCarWash={setCarWash}
-											icon={GeoSVG}
-											activeIcon={ActiveGeoSVG}
-											userPosition={userPosition}
-											getCoords={setCarWashCoords}
-											setPlaceMarkStyle={setDrawerSwitch}
-											getDistance={setDistance}
-											size={[41, 41]}
-											activeSize={[61, 61]}
-											getInfo={setCarWashMainInfo}
-											setCarWashId={setCarWashIdList}
-											placemarkId={carWashIdList ? carWashIdList : -1}
-											setDrawerSwitch={setDrawerSwitch}
-											placeMarkSwitch={drawerSwitch}
-										/>
-									);
-								}
+								carWash.lat && carWash.lon && (
+									<CustomPlacemark
+										key={index}
+										index={index}
+										coords={[carWash.lat, carWash.lon]}
+										carWashes={carWash.carwashes}
+										setCarWash={setCarWash}
+										icon={GeoSVG}
+										activeIcon={ActiveGeoSVG}
+										userPosition={userPosition}
+										getCoords={setCarWashCoords}
+										setPlaceMarkStyle={setDrawerSwitch}
+										getDistance={setDistance}
+										size={[41, 41]}
+										activeSize={[61, 61]}
+										getInfo={setCarWashMainInfo}
+										setCarWashId={setCarWashIdList}
+										placemarkId={carWashIdList ? carWashIdList : -1}
+										setDrawerSwitch={setDrawerSwitch}
+										placeMarkSwitch={drawerSwitch}
+									/>
+								);
 							})}
 							<Placemark
 								options={{ preset: 'islands#redCircleDotIcon' }}

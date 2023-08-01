@@ -2,9 +2,6 @@ import { Box, Divider, Text } from '@chakra-ui/react';
 import { CarWash } from '../../component/car-wash/car-wash-list-item';
 import { ListInput } from '../../component/inputs/list-input';
 import { useEffect, useState } from 'react';
-import { MdArrowBackIos } from 'react-icons/md';
-import { NavButton } from '../../component/buttons/nav-button';
-import { Header } from '../../component/header';
 import { useCarWash } from '../../context/carwash-context';
 
 interface IListPage {

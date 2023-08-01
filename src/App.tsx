@@ -1,6 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
 import { HomePage } from './pages/home';
-import { ListPage } from './pages/list';
 import { OrderPage } from './pages/order';
 import { OrderProvider } from './context/order-context';
 import { CarWashProvider } from './context/carwash-context';
