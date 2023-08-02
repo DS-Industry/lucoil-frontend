@@ -1,5 +1,5 @@
 import { Flex } from '@chakra-ui/react';
-import { CustomYMap } from '../../component/ya-map/map';
+import { CustomYMap } from '../../component/ya-map/drawers';
 import { Header } from '../../component/header';
 
 export const HomePage = () => {

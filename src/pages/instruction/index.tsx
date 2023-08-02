@@ -14,7 +14,7 @@ export const InstructionPage: React.FC = () => {
 	const { updateStore } = useOrder();
 
 	const handleClick = () => {
-		navigate('/home');
+		navigate('/login');
 	};
 
 	useEffect(() => {

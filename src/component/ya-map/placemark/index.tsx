@@ -81,10 +81,6 @@ export const CustomPlacemark: React.FC<ICustomPlacemark> = ({
 						}) as IRouteDistance;
 						if (routeDistance) {
 							getDistance(routeDistance.value);
-							console.log('-----------------', index);
-							console.log('I AM IN PLACEMARK ');
-							console.log('THIS IS VALUE ', routeDistance.value);
-							console.log('-----------------');
 						}
 					}
 				});
@@ -101,12 +97,11 @@ export const CustomPlacemark: React.FC<ICustomPlacemark> = ({
 	useEffect(() => {
 		const updatePlaceMark = async () => {
 			if (placemarkId === index) {
-				console.log('-----------------', index);
-				console.log('index', index);
-				console.log('id car wash', placemarkId);
-				console.log('placeMarkSwitch', placeMarkSwitch);
-				console.log('-----------------');
-				if (placeMarkSwitch && placeMarkSwitch !== 'list') {
+				if (
+					placeMarkSwitch &&
+					placeMarkSwitch !== 'list' &&
+					placeMarkSwitch !== 'tel'
+				) {
 					setPlaceMarkParams({
 						icon: activeIcon,
 						size: activeSize,

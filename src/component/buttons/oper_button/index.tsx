@@ -1,10 +1,11 @@
 import { Button } from '@chakra-ui/react';
 import { useOrder } from '../../../context/order-context';
+import { useUser } from '../../../context/user-context';
 
 interface IOperButton {
 	title: string;
 	onClick: any;
-	disabled: boolean;
+	disabled?: boolean;
 	value?: string;
 	isSum?: boolean;
 	isOper?: boolean;
@@ -21,9 +22,16 @@ export const OperButton: React.FC<IOperButton> = ({
 	switchCarWashType,
 }) => {
 	const { updateStore } = useOrder();
+	const { updateStore: updateUserStore } = useUser();
 
 	const handleClick = () => {
-		if (switchCarWashType) {
+		if (switchCarWashType === 'tel') {
+			updateUserStore({
+				phNumber: value,
+			});
+			onClick();
+		}
+		if (switchCarWashType && switchCarWashType !== 'tel') {
 			updateStore({
 				bayNumber: Number(value),
 			});

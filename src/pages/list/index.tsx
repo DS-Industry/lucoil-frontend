@@ -34,6 +34,7 @@ export const ListPage: React.FC<IListPage> = ({
 		});
 		setCarWashList(list);
 	}, []);
+
 	return (
 		<>
 			<Box

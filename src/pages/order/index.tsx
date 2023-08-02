@@ -6,11 +6,13 @@ import { useCarWash } from '../../context/carwash-context';
 import { TagInfo } from '../../component/tag-info';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../../context/user-context';
 
 export const OrderPage: React.FC = () => {
 	const navigate = useNavigate();
 	const { store } = useOrder();
 	const { store: carWashStore } = useCarWash();
+	const { user } = useUser();
 
 	const handleClick = () => {
 		console.log(store);
@@ -83,6 +85,16 @@ export const OrderPage: React.FC = () => {
 				<Box mt="11px" fontWeight="500">
 					<TagInfo
 						label={store.partnerCard ? store.partnerCard : 'partner card'}
+						bgColor="colors.WHITE_GRAY"
+						color="colors.BLACK"
+						fontSize="14px"
+						height="20px"
+						fontWeight="500"
+					/>
+				</Box>
+				<Box mt="11px" fontWeight="500">
+					<TagInfo
+						label={user && user.phNumber ? user.phNumber : 'user phone number'}
 						bgColor="colors.WHITE_GRAY"
 						color="colors.BLACK"
 						fontSize="14px"
