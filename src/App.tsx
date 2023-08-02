@@ -5,6 +5,7 @@ import { OrderProvider } from './context/order-context';
 import { CarWashProvider } from './context/carwash-context';
 import { InstructionPage } from './pages/instruction';
 import { UserProvider } from './context/user-context';
+import { PaymentPage } from './pages/payment';
 import { LoginPage } from './pages/login';
 import { VerificationPage } from './pages/verification';
 import { SuccessPaymentPage } from './pages/success-payment';
@@ -22,6 +23,8 @@ function App() {
 							<Route path="/verification" element={<VerificationPage />} />
 							<Route path="/home" element={<HomePage />} />
 							<Route path="/order" element={<OrderPage />} />
+							<Route path="/" element={<InstructionPage />} />
+							<Route path="/pay" element={<PaymentPage />} />
 							<Route path="/success" element={<SuccessPaymentPage />} />
 							<Route path="/error" element={<ErrorPaymentPage />} />
 						</Routes>
