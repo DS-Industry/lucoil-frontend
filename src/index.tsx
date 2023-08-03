@@ -22,11 +22,11 @@ const colors = {
 const theme = extendTheme({ colors });
 
 root.render(
-		<ChakraProvider theme={theme}>
-			<BrowserRouter>
-				<App />
-			</BrowserRouter>
-		</ChakraProvider>
+	<ChakraProvider theme={theme}>
+		<BrowserRouter>
+			<App />
+		</BrowserRouter>
+	</ChakraProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
