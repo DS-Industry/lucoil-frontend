@@ -36,7 +36,7 @@ export const ListPage: React.FC<IListPage> = ({
 	}, []);
 
 	return (
-		<>
+		<Box>
 			<Box
 				w="100%"
 				bg="#F8F8F8"
@@ -86,6 +86,6 @@ export const ListPage: React.FC<IListPage> = ({
 							/>
 						);
 					})}
-		</>
+		</Box>
 	);
 };

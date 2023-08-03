@@ -35,27 +35,13 @@ export const CustomYMap = () => {
 	};
 
 	useEffect(() => {
-		console.log(store);
-		console.log('session storage');
-		console.log('phone', sessionStorage.getItem('phone'));
-		console.log('partnerCard', sessionStorage.getItem('partnerCard'));
-		const carWash = sessionStorage.getItem('carWash');
-		if (carWash) {
-			console.log('car wash', JSON.parse(carWash));
-		}
-	}, [store]);
-
-	useEffect(() => {
-		navigator.geolocation.getCurrentPosition((position) => {
-			const { latitude, longitude } = position.coords;
-			setUserPosition([latitude, longitude]);
-		});
-	}, []);
-
-	useEffect(() => {
 		async function getCarWashListWithCoords() {
 			await getCarWashList();
 			console.log(store.carWashes);
+			navigator.geolocation.getCurrentPosition((position) => {
+				const { latitude, longitude } = position.coords;
+				setUserPosition([latitude, longitude]);
+			});
 		}
 
 		if (!store.isLoading) {
@@ -82,7 +68,7 @@ export const CustomYMap = () => {
 			{store.carWashes && <Navbar openList={setDrawerSwitch} />}
 
 			<CustomDrawer
-				key={29346765}
+				key={100}
 				isOpen={drawerSwitch === 'list'}
 				onClose={handleCloseDrawer}
 				size="full"
@@ -91,7 +77,7 @@ export const CustomYMap = () => {
 				pr="0"
 			>
 				<ListPage
-					key={1897867}
+					key={1001}
 					openFullInfo={setDrawerSwitch}
 					setCarWashCoords={setCarWashCoords}
 					setCarWash={setCarWash}
@@ -100,14 +86,14 @@ export const CustomYMap = () => {
 			</CustomDrawer>
 
 			<CustomDrawer
-				key={111}
+				key={1011}
 				isOpen={drawerSwitch === 'main' ? true : false}
 				onClose={handleCloseDrawer}
 			>
 				{carWashMainInfo &&
 					carWashMainInfo.carWashes.map((carWash: any, index: number) => {
 						return (
-							<Flex mb="30px" flexDirection="column">
+							<Flex mb="30px" flexDirection="column" key={index}>
 								<CarWashMap
 									isDisabled={false}
 									key={index}
@@ -121,7 +107,12 @@ export const CustomYMap = () => {
 									setCarWashDrawer={setDrawerSwitch}
 								/>
 								{distance && distance > 500 && (
-									<Flex w="100%" justifyContent="center" mt="20px" key={index}>
+									<Flex
+										w="100%"
+										justifyContent="center"
+										mt="20px"
+										key={index + 1212}
+									>
 										<TagInfo
 											label="АМС слишком далеко от вас!"
 											bgColor="colors.SECONDARY_RED"
@@ -158,7 +149,6 @@ export const CustomYMap = () => {
 			</CustomDrawer>
 
 			<CustomDrawer
-				key={1}
 				isOpen={drawerSwitch === 'full-info' ? true : false}
 				onClose={handleCloseDrawer}
 			>
@@ -171,7 +161,6 @@ export const CustomYMap = () => {
 
 			{carWash && (
 				<CustomDrawer
-					key={11}
 					isOpen={drawerSwitch === 'bay' ? true : false}
 					onClose={handleCloseDrawer}
 				>
@@ -197,7 +186,6 @@ export const CustomYMap = () => {
 
 			{carWash && carWash.type === 'SelfService' ? (
 				<CustomDrawer
-					key={12}
 					isOpen={drawerSwitch === 'sum' ? true : false}
 					onClose={handleCloseDrawer}
 				>
@@ -220,7 +208,6 @@ export const CustomYMap = () => {
 			) : (
 				<>
 					<CustomDrawer
-						key={123131}
 						isOpen={drawerSwitch === 'portal' ? true : false}
 						onClose={handleCloseDrawer}
 					>

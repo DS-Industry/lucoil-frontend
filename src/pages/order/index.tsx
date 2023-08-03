@@ -1,6 +1,6 @@
 import { CarWashMap } from '../../component/car-wash/car-wash-map-item';
 import { useOrder } from '../../context/order-context';
-import { Box, Flex, HStack, Text } from '@chakra-ui/react';
+import { Box, Flex, HStack, Text, useToast } from '@chakra-ui/react';
 import { OperButton } from '../../component/buttons/oper_button';
 import { useCarWash } from '../../context/carwash-context';
 import { TagInfo } from '../../component/tag-info';
@@ -17,6 +17,7 @@ interface IStorageData {
 }
 
 export const OrderPage: React.FC = () => {
+	const toast = useToast();
 	const navigate = useNavigate();
 	const { store, sendPayment, updateStore } = useOrder();
 	const {
@@ -28,7 +29,14 @@ export const OrderPage: React.FC = () => {
 	const [storageData, setStorageData] = useState<IStorageData | null>(null);
 
 	const handleClick = () => {
-		pingCarWash(Number(store.carWashId), Number(store.bayNumber));
+		if (store.carWashId) {
+			pingCarWash(Number(store.carWashId), Number(store.bayNumber));
+		} else {
+			pingCarWash(
+				Number(storageData?.carWash.id),
+				Number(storageData?.bayNumber)
+			);
+		}
 	};
 
 	useEffect(() => {
@@ -37,7 +45,11 @@ export const OrderPage: React.FC = () => {
 				pingStatus: null,
 			});
 			const data = {
-				amount: String(store.sum),
+				amount: store.sum
+					? String(store.sum)
+					: storageData?.sum
+					? storageData.sum
+					: 'null',
 				phone: user.phNumber
 					? String(user.phNumber)
 					: storageData?.phone
@@ -49,10 +61,18 @@ export const OrderPage: React.FC = () => {
 		}
 
 		if (carWashStore.pingStatus === 400) {
+			console.log('is busy');
 			updateCWStore({
 				pingStatus: null,
 			});
-			console.log('ping status busy');
+			toast({
+				title: 'Кажется с постом что-то не так',
+				description: 'Возможно он занят',
+				status: 'error',
+				duration: 9000,
+				isClosable: true,
+				position: 'top',
+			});
 			navigate('/home');
 		}
 	}, [carWashStore.pingStatus]);
@@ -69,17 +89,22 @@ export const OrderPage: React.FC = () => {
 		const sum = sessionStorage.getItem('sum');
 		const bayNumber = sessionStorage.getItem('bayNumber');
 		const carWash = sessionStorage.getItem('carWash');
-		console.log(carWash);
 		if (carWash) {
 			setStorageData({
 				phone: phNumber,
 				partnerCard: partnerCard,
 				sum: sum,
 				bayNumber: bayNumber,
-				carWash: carWash,
+				carWash: JSON.parse(carWash),
 			});
 		}
 	}, []);
+
+	useEffect(() => {
+		if (storageData) {
+			console.log(storageData);
+		}
+	}, [storageData]);
 
 	return (
 		<Flex
@@ -97,7 +122,7 @@ export const OrderPage: React.FC = () => {
 						carWashStore.carWash
 							? carWashStore.carWash.name
 							: storageData?.carWash
-							? storageData.carWash.name
+							? storageData.carWash['name']
 							: 'cwnamve'
 					}
 					openTime="24часа"
@@ -198,7 +223,7 @@ export const OrderPage: React.FC = () => {
 			</Flex>
 			<Flex flexDirection="inherit" justifyContent="center">
 				<Text w="100%" textAlign="center" fontSize="48px" fontWeight="700">
-					{store.sum} ₽
+					{store.sum ? store.sum : storageData?.sum ? storageData.sum : 'sum'} ₽
 				</Text>
 				<OperButton
 					title="Оплатить"
