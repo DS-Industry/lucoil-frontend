@@ -1,9 +1,26 @@
-import { MdError } from 'react-icons/md';
 import { Flex, Text } from '@chakra-ui/react';
 import { CheckCircleIcon } from '@chakra-ui/icons';
 import { Header } from '../../component/header';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useOrder } from '../../context/order-context';
 
 export const SuccessPaymentPage = () => {
+	const { updateStore } = useOrder();
+	const navigate = useNavigate();
+	useEffect(() => {
+		updateStore({
+			paymentId: null,
+			paymentTocken: null,
+			carWashId: null,
+			bayNumber: null,
+			sum: null,
+		});
+		sessionStorage.removeItem('carWash');
+		setTimeout(() => {
+			navigate('/home');
+		}, 3000);
+	}, []);
 	return (
 		<>
 			<Header label="Статус оплаты" />

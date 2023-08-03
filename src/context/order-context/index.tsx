@@ -1,6 +1,11 @@
 import React from 'react';
 import api from '../../api';
 
+interface IPaymentData {
+	amount: string;
+	phone: string;
+}
+
 interface IOrderStorePartial {
 	carWashId?: number | null;
 	bayNumber?: number | null;
@@ -8,11 +13,13 @@ interface IOrderStorePartial {
 	paymentId?: number | null;
 	partnerCard?: number | null;
 	isPaid?: boolean | null;
+	paymentTocken?: string | null;
 }
 interface IOrderContext {
 	store: IOrderStorePartial;
 	sendOrder: () => Promise<void>;
 	updateStore: (data: IOrderStorePartial) => void;
+	sendPayment: (data: IPaymentData) => void;
 }
 
 const OrderContext = React.createContext<IOrderContext | null>(null);
@@ -25,6 +32,7 @@ const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
 		bayNumber: null,
 		sum: null,
 		paymentId: null,
+		paymentTocken: null,
 		partnerCard: null,
 		isPaid: false,
 	});
@@ -34,14 +42,56 @@ const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
 		setStore(state);
 	};
 
+	const sendPayment = async (data: IPaymentData) => {
+		try {
+			console.log(data);
+			const response = await api.post('payment/create', {
+				amount: data.amount,
+				phone: data.phone,
+				redirect_url: 'http://localhost:3000',
+			});
+			console.log(response.data);
+			updateStore({
+				paymentId: response.data.id,
+				paymentTocken: response.data.confirmation.confirmation_token,
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	const sendOrder = async () => {
 		try {
-			const response = await api.post(`order/create`, {
+			let data = {
 				paymentId: store.paymentId,
 				carWashId: store.carWashId,
 				bayNumber: store.bayNumber,
 				orderSum: store.sum,
 				partnerCard: store.partnerCard,
+			};
+			if (!store.carWashId) {
+				const carWash = sessionStorage.getItem('carWash');
+				const bayNumber = sessionStorage.getItem('bayNumber');
+				const sum = sessionStorage.getItem('sum');
+				const partnerCard = sessionStorage.getItem('parterCard');
+				if (carWash) {
+					data = {
+						...data,
+						carWashId: JSON.parse(carWash).id,
+						bayNumber: Number(bayNumber),
+						orderSum: Number(sum),
+						partnerCard: Number(partnerCard),
+					};
+				}
+			}
+
+			console.log(data);
+			const response = await api.post(`order/create`, {
+				paymentId: data.paymentId,
+				carWashId: data.carWashId,
+				bayNumber: data.bayNumber,
+				orderSum: data.orderSum,
+				partnerCard: data.partnerCard,
 			});
 
 			console.log(response);
@@ -51,7 +101,9 @@ const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
 	};
 
 	return (
-		<OrderContext.Provider value={{ store, sendOrder, updateStore }}>
+		<OrderContext.Provider
+			value={{ store, sendOrder, sendPayment, updateStore }}
+		>
 			{children}
 		</OrderContext.Provider>
 	);

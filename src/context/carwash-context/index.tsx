@@ -48,6 +48,7 @@ const CarWashProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 			const response = await api.get(
 				`carwash/ping?carWashId=${carWashId}&bayNumber=${bayNumber}`
 			);
+			console.log(response.data);
 			if (response.status === 200) {
 				updateStore({ pingStatus: 200, isLoading: false });
 			}

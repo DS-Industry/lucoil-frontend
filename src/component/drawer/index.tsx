@@ -32,23 +32,21 @@ export const CustomDrawer: React.FC<ICustomDrawer> = ({
 	isCloseOnOverlayClick = true,
 }) => {
 	return (
-		<>
-			<Drawer
-				isOpen={isOpen}
-				placement="bottom"
-				onClose={onClose}
-				size={size}
-				closeOnOverlayClick={isCloseOnOverlayClick}
-			>
-				<DrawerOverlay />
-				<DrawerContent borderTopRadius={topBR ? topBR : '16px'}>
-					{isConf ? '' : <DrawerCloseButton />}
-					<DrawerHeader></DrawerHeader>
-					<DrawerBody pl={pl ? pl : '16px'} pr={pr ? pr : '16px'}>
-						{children}
-					</DrawerBody>
-				</DrawerContent>
-			</Drawer>
-		</>
+		<Drawer
+			isOpen={isOpen}
+			placement="bottom"
+			onClose={onClose}
+			size={size}
+			closeOnOverlayClick={isCloseOnOverlayClick}
+		>
+			<DrawerOverlay />
+			<DrawerContent borderTopRadius={topBR ? topBR : '16px'}>
+				{isConf ? '' : <DrawerCloseButton />}
+				<DrawerHeader></DrawerHeader>
+				<DrawerBody pl={pl ? pl : '16px'} pr={pr ? pr : '16px'}>
+					{children}
+				</DrawerBody>
+			</DrawerContent>
+		</Drawer>
 	);
 };

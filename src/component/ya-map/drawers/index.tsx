@@ -18,10 +18,6 @@ export const CustomYMap = () => {
 
 	const { store, getCarWashList } = useCarWash();
 
-	useEffect(() => {
-		console.log(store);
-	}, [store]);
-
 	const [userPosition, setUserPosition] = useState<number[]>([]);
 	const [drawerSwitch, setDrawerSwitch] = useState<string>('');
 	const [carWashIdList, setCarWashIdList] = useState<number>(-1);
@@ -37,6 +33,17 @@ export const CustomYMap = () => {
 	const navigateToOrder = () => {
 		navigate('/order');
 	};
+
+	useEffect(() => {
+		console.log(store);
+		console.log('session storage');
+		console.log('phone', sessionStorage.getItem('phone'));
+		console.log('partnerCard', sessionStorage.getItem('partnerCard'));
+		const carWash = sessionStorage.getItem('carWash');
+		if (carWash) {
+			console.log('car wash', JSON.parse(carWash));
+		}
+	}, [store]);
 
 	useEffect(() => {
 		navigator.geolocation.getCurrentPosition((position) => {
@@ -75,7 +82,7 @@ export const CustomYMap = () => {
 			{store.carWashes && <Navbar openList={setDrawerSwitch} />}
 
 			<CustomDrawer
-				key={'aa11133'}
+				key={29346765}
 				isOpen={drawerSwitch === 'list'}
 				onClose={handleCloseDrawer}
 				size="full"
@@ -84,6 +91,7 @@ export const CustomYMap = () => {
 				pr="0"
 			>
 				<ListPage
+					key={1897867}
 					openFullInfo={setDrawerSwitch}
 					setCarWashCoords={setCarWashCoords}
 					setCarWash={setCarWash}
@@ -92,61 +100,59 @@ export const CustomYMap = () => {
 			</CustomDrawer>
 
 			<CustomDrawer
-				key={0}
+				key={111}
 				isOpen={drawerSwitch === 'main' ? true : false}
 				onClose={handleCloseDrawer}
 			>
 				{carWashMainInfo &&
 					carWashMainInfo.carWashes.map((carWash: any, index: number) => {
 						return (
-							<>
-								<Flex mb="30px" flexDirection="column">
-									<CarWashMap
-										isDisabled={false}
-										key={index}
-										carWash={carWash}
-										id={carWash.id}
-										title={carWash.name}
-										openTime="24 часа"
-										address={carWash.address}
-										distance={distance}
-										getCarWash={setCarWash}
-										setCarWashDrawer={setDrawerSwitch}
-									/>
-									{distance && distance > 500 && (
-										<Flex w="100%" justifyContent="center" mt="20px">
-											<TagInfo
-												label="АМС слишком далеко от вас!"
-												bgColor="colors.SECONDARY_RED"
-												color="colors.PRIMARY_RED"
-												fontSize="14px"
-												height="28px"
-											/>
-										</Flex>
-									)}
+							<Flex mb="30px" flexDirection="column">
+								<CarWashMap
+									isDisabled={false}
+									key={index}
+									carWash={carWash}
+									id={carWash.id}
+									title={carWash.name}
+									openTime="24 часа"
+									address={carWash.address}
+									distance={distance}
+									getCarWash={setCarWash}
+									setCarWashDrawer={setDrawerSwitch}
+								/>
+								{distance && distance > 500 && (
+									<Flex w="100%" justifyContent="center" mt="20px" key={index}>
+										<TagInfo
+											label="АМС слишком далеко от вас!"
+											bgColor="colors.SECONDARY_RED"
+											color="colors.PRIMARY_RED"
+											fontSize="14px"
+											height="28px"
+										/>
+									</Flex>
+								)}
 
-									{carWashMainInfo && carWashMainInfo.carWashes.length < 2 && (
-										<Box
-											w="100%"
-											display="flex"
-											justifyContent="space-between"
-											mt="15px"
-										>
-											<TagButton
-												switchCarWashType="bay"
-												onClick={setDrawerSwitch}
-												carWash={carWash}
-												distance={distance}
-												height="50px"
-												fontSize="15px"
-												bgColor="colors.SECONDARY_RED"
-												color="colors.PRIMARY_RED"
-												label="Оплатить мойку"
-											/>
-										</Box>
-									)}
-								</Flex>
-							</>
+								{carWashMainInfo && carWashMainInfo.carWashes.length < 2 && (
+									<Box
+										w="100%"
+										display="flex"
+										justifyContent="space-between"
+										mt="15px"
+									>
+										<TagButton
+											switchCarWashType="bay"
+											onClick={setDrawerSwitch}
+											carWash={carWash}
+											distance={distance}
+											height="50px"
+											fontSize="15px"
+											bgColor="colors.SECONDARY_RED"
+											color="colors.PRIMARY_RED"
+											label="Оплатить мойку"
+										/>
+									</Box>
+								)}
+							</Flex>
 						);
 					})}
 			</CustomDrawer>
@@ -214,7 +220,7 @@ export const CustomYMap = () => {
 			) : (
 				<>
 					<CustomDrawer
-						key={2}
+						key={123131}
 						isOpen={drawerSwitch === 'portal' ? true : false}
 						onClose={handleCloseDrawer}
 					>

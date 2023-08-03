@@ -38,11 +38,11 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 			updateStore({ isLoading: true });
 			//-------- Add endPoint to send Number and get code --------
 			console.log('Отправка номера...');
-			/* 	await api.post('', {
+			/*cosnt verificationCode = await api.post('', {
 				phNumber,
 			}); */
 			//----------------------------------------------------------
-			updateStore({ isLoading: false });
+			updateStore({ isLoading: false, phNumber: phNumber });
 		} catch (error) {
 			console.log(error);
 			updateStore({ isLoading: false });

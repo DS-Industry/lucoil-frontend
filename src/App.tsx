@@ -23,7 +23,6 @@ function App() {
 							<Route path="/verification" element={<VerificationPage />} />
 							<Route path="/home" element={<HomePage />} />
 							<Route path="/order" element={<OrderPage />} />
-							<Route path="/" element={<InstructionPage />} />
 							<Route path="/pay" element={<PaymentPage />} />
 							<Route path="/success" element={<SuccessPaymentPage />} />
 							<Route path="/error" element={<ErrorPaymentPage />} />

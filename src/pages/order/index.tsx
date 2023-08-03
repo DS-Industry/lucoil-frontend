@@ -4,23 +4,80 @@ import { Box, Flex, HStack, Text } from '@chakra-ui/react';
 import { OperButton } from '../../component/buttons/oper_button';
 import { useCarWash } from '../../context/carwash-context';
 import { TagInfo } from '../../component/tag-info';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../context/user-context';
 
+interface IStorageData {
+	phone: string | null;
+	partnerCard: string | null;
+	sum: string | null;
+	bayNumber: string | null;
+	carWash: any | null;
+}
+
 export const OrderPage: React.FC = () => {
 	const navigate = useNavigate();
-	const { store } = useOrder();
-	const { store: carWashStore } = useCarWash();
+	const { store, sendPayment, updateStore } = useOrder();
+	const {
+		store: carWashStore,
+		pingCarWash,
+		updateStore: updateCWStore,
+	} = useCarWash();
 	const { user } = useUser();
+	const [storageData, setStorageData] = useState<IStorageData | null>(null);
 
 	const handleClick = () => {
-		console.log(store);
+		pingCarWash(Number(store.carWashId), Number(store.bayNumber));
 	};
 
 	useEffect(() => {
-		if (!carWashStore.carWash) {
+		if (carWashStore.pingStatus === 200) {
+			updateCWStore({
+				pingStatus: null,
+			});
+			const data = {
+				amount: String(store.sum),
+				phone: user.phNumber
+					? String(user.phNumber)
+					: storageData?.phone
+					? storageData.phone
+					: 'string',
+			};
+			sendPayment(data);
+			console.log('ping status free');
+		}
+
+		if (carWashStore.pingStatus === 400) {
+			updateCWStore({
+				pingStatus: null,
+			});
+			console.log('ping status busy');
 			navigate('/home');
+		}
+	}, [carWashStore.pingStatus]);
+
+	useEffect(() => {
+		if (store.paymentTocken) {
+			navigate('/pay');
+		}
+	}, [store.paymentTocken]);
+
+	useEffect(() => {
+		const phNumber = sessionStorage.getItem('phone');
+		const partnerCard = sessionStorage.getItem('partnerCard');
+		const sum = sessionStorage.getItem('sum');
+		const bayNumber = sessionStorage.getItem('bayNumber');
+		const carWash = sessionStorage.getItem('carWash');
+		console.log(carWash);
+		if (carWash) {
+			setStorageData({
+				phone: phNumber,
+				partnerCard: partnerCard,
+				sum: sum,
+				bayNumber: bayNumber,
+				carWash: carWash,
+			});
 		}
 	}, []);
 
@@ -36,10 +93,28 @@ export const OrderPage: React.FC = () => {
 			<Flex flexDirection="column">
 				<CarWashMap
 					id={String(store.sum)}
-					title={carWashStore.carWash ? carWashStore.carWash.name : ''}
+					title={
+						carWashStore.carWash
+							? carWashStore.carWash.name
+							: storageData?.carWash
+							? storageData.carWash.name
+							: 'cwnamve'
+					}
 					openTime="24часа"
-					address={carWashStore.carWash ? carWashStore.carWash.address : ''}
-					distance={carWashStore.carWash ? carWashStore.carWash.distance : ''}
+					address={
+						carWashStore.carWash
+							? carWashStore.carWash.address
+							: storageData?.carWash
+							? storageData?.carWash.address
+							: 'address'
+					}
+					distance={
+						carWashStore.carWash
+							? carWashStore.carWash.distance
+							: storageData?.carWash
+							? storageData?.carWash.distance
+							: 'distance'
+					}
 					isDisabled={true}
 				/>
 				<Text pt="30px" fontSize="15px" fontWeight="700">
@@ -47,7 +122,13 @@ export const OrderPage: React.FC = () => {
 				</Text>
 				<Box w="30%">
 					<TagInfo
-						label={String(store.bayNumber) ? String(store.bayNumber) : '1'}
+						label={
+							store.bayNumber
+								? String(store.bayNumber)
+								: storageData?.bayNumber
+								? storageData.bayNumber
+								: 'bayNumber'
+						}
 						bgColor="colors.PRIMARY_RED"
 						color="colors.WHITE"
 						fontSize="14px"
@@ -84,7 +165,13 @@ export const OrderPage: React.FC = () => {
 				</HStack>
 				<Box mt="11px" fontWeight="500">
 					<TagInfo
-						label={store.partnerCard ? store.partnerCard : 'partner card'}
+						label={
+							store.partnerCard
+								? store.partnerCard
+								: storageData?.partnerCard
+								? storageData.partnerCard
+								: 'partner card'
+						}
 						bgColor="colors.WHITE_GRAY"
 						color="colors.BLACK"
 						fontSize="14px"
@@ -94,7 +181,13 @@ export const OrderPage: React.FC = () => {
 				</Box>
 				<Box mt="11px" fontWeight="500">
 					<TagInfo
-						label={user && user.phNumber ? user.phNumber : 'user phone number'}
+						label={
+							user.phNumber
+								? user.phNumber
+								: storageData?.phone
+								? storageData.phone
+								: 'phone number'
+						}
 						bgColor="colors.WHITE_GRAY"
 						color="colors.BLACK"
 						fontSize="14px"

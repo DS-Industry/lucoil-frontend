@@ -23,6 +23,7 @@ export const InstructionPage: React.FC = () => {
 
 		if (partnerCard) {
 			console.log(partnerCard);
+			sessionStorage.setItem('partnerCard', String(partnerCard));
 			updateStore({
 				partnerCard,
 			});

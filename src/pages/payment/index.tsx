@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
+import { useOrder } from '../../context/order-context';
+import { useNavigate } from 'react-router-dom';
 export const PaymentPage = () => {
-
+	const { store, sendOrder } = useOrder();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const script = document.createElement('script');
@@ -10,7 +13,7 @@ export const PaymentPage = () => {
 			// Initialization of the widget
 			// @ts-ignore
 			const checkout = new window.YooMoneyCheckoutWidget({
-				confirmation_token: 'ct-2c5c60d5-000f-5000-a000-160dad9b3808', // Your confirmation token obtained from YooKassa// Your completion payment page URL
+				confirmation_token: store.paymentTocken, // Your confirmation token obtained from YooKassa// Your completion payment page URL
 
 				// Uncomment the following block if you need to customize the widget's appearance
 				// customization: {
@@ -28,6 +31,9 @@ export const PaymentPage = () => {
 			checkout.on('success', () => {
 				//Код, который нужно выполнить после успешной оплаты.
 				console.log('Start Equipment');
+				//sendOrder();
+				console.log(store);
+				navigate('/success');
 				//Удаление инициализированного виджета
 				checkout.destroy();
 			});
@@ -45,7 +51,3 @@ export const PaymentPage = () => {
 	}, []);
 	return <div id="payment-form"></div>;
 };
-
-
-
-

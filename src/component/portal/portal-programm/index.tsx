@@ -17,22 +17,20 @@ export const PortalService: React.FC<IPortalService> = ({ name, cost }) => {
 	};
 
 	return (
-		<>
-			<Box
-				onClick={handleClick}
-				p="18px"
-				borderRadius="8px"
-				bgColor="colors.WHITE_GRAY"
-			>
-				<HStack justifyContent="space-between">
-					<Text fontSize="24px" fontWeight="700" lineHeight="20px">
-						{name}
-					</Text>
-					<Text fontSize="24px" fontWeight="700" lineHeight="20px">
-						{cost} ₽
-					</Text>
-				</HStack>
-			</Box>
-		</>
+		<Box
+			onClick={handleClick}
+			p="18px"
+			borderRadius="8px"
+			bgColor="colors.WHITE_GRAY"
+		>
+			<HStack justifyContent="space-between">
+				<Text fontSize="24px" fontWeight="700" lineHeight="20px">
+					{name}
+				</Text>
+				<Text fontSize="24px" fontWeight="700" lineHeight="20px">
+					{cost} ₽
+				</Text>
+			</HStack>
+		</Box>
 	);
 };

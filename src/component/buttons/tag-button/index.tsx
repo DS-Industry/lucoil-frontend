@@ -16,7 +16,6 @@ interface ITagButton {
 
 export const TagButton: React.FC<ITagButton> = ({
 	distance,
-	switchCarWashType,
 	height,
 	fontSize,
 	color,
@@ -38,25 +37,24 @@ export const TagButton: React.FC<ITagButton> = ({
 		updateCWState({
 			carWash: carWashDistance,
 		});
+		sessionStorage.setItem('carWash', JSON.stringify(carWashDistance));
 	};
 
 	return (
-		<>
-			<Button
-				display="flex"
-				w="100%"
-				h={height}
-				paddingTop="10px"
-				paddingBottom="10px"
-				borderRadius="4px"
-				bg={bgColor}
-				fontWeight="600"
-				fontSize={fontSize}
-				color={color}
-				onClick={handleClick}
-			>
-				{label}
-			</Button>
-		</>
+		<Button
+			display="flex"
+			w="100%"
+			h={height}
+			paddingTop="10px"
+			paddingBottom="10px"
+			borderRadius="4px"
+			bg={bgColor}
+			fontWeight="600"
+			fontSize={fontSize}
+			color={color}
+			onClick={handleClick}
+		>
+			{label}
+		</Button>
 	);
 };

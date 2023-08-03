@@ -12,7 +12,9 @@ export const LoginPage: React.FC = () => {
 	const [userChoice, setUserChoise] = useState<boolean>();
 
 	const handleClick = () => {
-		sendPhNumber(value);
+		const correctPhone = `+7${value.slice(1)}`;
+		sessionStorage.setItem('phone', correctPhone);
+		sendPhNumber(correctPhone);
 		navigate('/verification');
 	};
 	return (

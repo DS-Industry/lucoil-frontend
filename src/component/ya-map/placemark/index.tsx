@@ -1,6 +1,5 @@
 import { Placemark, useYMaps } from '@pbe/react-yandex-maps/';
 import { useEffect, useState } from 'react';
-import { useCarWash } from '../../../context/carwash-context';
 
 interface ICustomPlacemark {
 	index: number | null;
@@ -118,29 +117,27 @@ export const CustomPlacemark: React.FC<ICustomPlacemark> = ({
 	}, [placeMarkSwitch]);
 
 	return (
-		<>
-			<Placemark
-				key={index}
-				geometry={coords}
-				options={{
-					iconLayout: 'default#image',
-					iconImageHref: placeMarkParams.icon,
-					iconImageSize: placeMarkParams.size,
-				}}
-				onClick={() => {
-					if (carWashes.length < 2) {
-						setCarWash(carWashes[0]);
-					}
-					getCoords(coords);
-					setCarWashId(index);
-					getInfo({
-						id: index,
-						carWashes,
-					});
-					setDrawerSwitch('main');
-					setPlaceMarkStyle('main');
-				}}
-			/>
-		</>
+		<Placemark
+			key={index}
+			geometry={coords}
+			options={{
+				iconLayout: 'default#image',
+				iconImageHref: placeMarkParams.icon,
+				iconImageSize: placeMarkParams.size,
+			}}
+			onClick={() => {
+				if (carWashes.length < 2) {
+					setCarWash(carWashes[0]);
+				}
+				getCoords(coords);
+				setCarWashId(index);
+				getInfo({
+					id: index,
+					carWashes,
+				});
+				setDrawerSwitch('main');
+				setPlaceMarkStyle('main');
+			}}
+		/>
 	);
 };

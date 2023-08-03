@@ -20,22 +20,20 @@ export const TagInfo: React.FC<ITagInfo> = ({
 	fontWeight = '600',
 }) => {
 	return (
-		<>
-			<Tag
-				w="auto"
-				h={height}
-				paddingLeft="10px"
-				paddingRight="10px"
-				paddingTop="10px"
-				paddingBottom="10px"
-				borderRadius="4px"
-				bg={bgColor}
-				whiteSpace="nowrap"
-			>
-				<TagLabel fontWeight={fontWeight} fontSize={fontSize} color={color}>
-					{label}
-				</TagLabel>
-			</Tag>
-		</>
+		<Tag
+			w="auto"
+			h={height}
+			paddingLeft="10px"
+			paddingRight="10px"
+			paddingTop="10px"
+			paddingBottom="10px"
+			borderRadius="4px"
+			bg={bgColor}
+			whiteSpace="nowrap"
+		>
+			<TagLabel fontWeight={fontWeight} fontSize={fontSize} color={color}>
+				{label}
+			</TagLabel>
+		</Tag>
 	);
 };
