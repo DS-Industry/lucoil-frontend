@@ -31,9 +31,9 @@ export const PaymentPage = () => {
 			checkout.on('success', () => {
 				//Код, который нужно выполнить после успешной оплаты.
 				console.log('Start Equipment');
-				//sendOrder();
+				sendOrder();
+				console.log('after order');
 				console.log(store);
-				navigate('/success');
 				//Удаление инициализированного виджета
 				checkout.destroy();
 			});

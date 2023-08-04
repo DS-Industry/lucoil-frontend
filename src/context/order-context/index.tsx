@@ -1,5 +1,6 @@
 import React from 'react';
 import api from '../../api';
+import { useNavigate } from 'react-router-dom';
 
 interface IPaymentData {
 	amount: string;
@@ -36,6 +37,7 @@ const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
 		partnerCard: null,
 		isPaid: false,
 	});
+	const navigate = useNavigate();
 
 	const updateStore = (data: IOrderStorePartial) => {
 		const state = { ...store, ...data };
@@ -85,7 +87,7 @@ const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
 				}
 			}
 
-			console.log(data);
+			console.log('This is data', data);
 			const response = await api.post(`order/create`, {
 				paymentId: data.paymentId,
 				carWashId: data.carWashId,
@@ -93,8 +95,9 @@ const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
 				orderSum: data.orderSum,
 				partnerCard: data.partnerCard,
 			});
-
+			console.log('This is response', response);
 			console.log(response);
+			navigate('/success');
 		} catch (e) {
 			console.log(e);
 		}
