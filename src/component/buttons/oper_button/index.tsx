@@ -59,6 +59,7 @@ export const OperButton: React.FC<IOperButton> = ({
 			<Button
 				bg="colors.PRIMARY_RED"
 				w="100%"
+				h="46px"
 				borderRadius="4px"
 				color="colors.WHITE"
 				onClick={handleClick}
