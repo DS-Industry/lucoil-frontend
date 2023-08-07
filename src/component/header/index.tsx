@@ -5,6 +5,7 @@ interface IHeader {
 	fontSize?: string;
 	fontWeight?: string;
 	flexPos?: string;
+	paddingLeft?: string;
 }
 
 export const Header: React.FC<IHeader> = ({
@@ -12,6 +13,7 @@ export const Header: React.FC<IHeader> = ({
 	fontSize = '15px',
 	fontWeight = '600',
 	flexPos = 'center',
+	paddingLeft = '0',
 }) => {
 	return (
 		<Flex
@@ -21,7 +23,12 @@ export const Header: React.FC<IHeader> = ({
 			justifyContent={flexPos}
 			alignItems="center"
 		>
-			<Text fontSize={fontSize} fontWeight={fontWeight} lineHeight="20px">
+			<Text
+				fontSize={fontSize}
+				fontWeight={fontWeight}
+				pl={paddingLeft}
+				lineHeight="20px"
+			>
 				{label}
 			</Text>
 		</Flex>

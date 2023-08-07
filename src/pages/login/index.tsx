@@ -4,6 +4,8 @@ import {
 	Flex,
 	HStack,
 	Input,
+	InputGroup,
+	InputLeftAddon,
 	Text,
 	border,
 } from '@chakra-ui/react';
@@ -17,15 +19,32 @@ import { Header } from '../../component/header';
 export const LoginPage: React.FC = () => {
 	const navigate = useNavigate();
 	const { sendPhNumber } = useUser();
-	const [value, setValue] = useState<string>('');
+	const [value, setValue] = useState<any>('');
 	const [userChoice, setUserChoise] = useState<boolean>();
 
 	const handleClick = () => {
-		const correctPhone = `+7${value.slice(1)}`;
-		sessionStorage.setItem('phone', correctPhone);
-		sendPhNumber(correctPhone);
+		sessionStorage.setItem('phone', value);
+		sendPhNumber(value);
 		navigate('/verification');
 	};
+
+	const formatPhoneNumber = (input: string) => {
+		let splitFormatter = input.split('');
+		if (
+			(input.length === 4 || input.length === 8 || input.length === 11) &&
+			splitFormatter[splitFormatter.length - 1] === ' '
+		) {
+			splitFormatter.pop();
+		} else if (
+			input.length === 4 ||
+			input.length === 8 ||
+			input.length === 11
+		) {
+			splitFormatter.splice(input.length - 1, 0, ' ');
+		}
+		return splitFormatter.join('');
+	};
+
 	return (
 		<>
 			<Flex
@@ -34,43 +53,62 @@ export const LoginPage: React.FC = () => {
 				flexDir="column"
 				justifyContent="flex-start"
 				alignItems="center"
-				paddingInline="16px"
-				pb="10%"
+				pb="20%"
 			>
 				<Header
 					fontSize="28px"
 					fontWeight="800"
 					label="Авторизация"
 					flexPos="flex-start"
+					paddingLeft="16px"
 				/>
 				<Flex
 					h="100%"
 					w="100%"
 					flexDir="column"
 					justifyContent="space-between"
+					paddingInline="16px"
 					alignItems="flex-start"
 				>
 					<Box mt="50px" width="100%">
 						<Text fontWeight="700" fontSize="20px">
 							Введите номер телефона
 						</Text>
-						<Input
-							variant="flushed"
-							type="tel"
-							placeholder="+7 000 000 00 00"
-							width="100%"
-							mb="16px"
-							value={value}
-							onChange={(event: ChangeEvent<HTMLInputElement>) => {
-								setValue(event.target.value);
-							}}
-						/>
+						<InputGroup>
+							<InputLeftAddon
+								border="0"
+								bgColor="colors.WHITE"
+								children="+7"
+								fontWeight="500"
+								pb="2px"
+								pr="0px"
+							/>
+							<Input
+								pl="10px"
+								variant="flushed"
+								type="tel"
+								placeholder="000 000 00 00"
+								width="100%"
+								fontSize="15px"
+								fontWeight="500"
+								mb="16px"
+								pb="0px"
+								value={value}
+								onChange={(event: ChangeEvent<HTMLInputElement>) => {
+									const input = event.target.value;
+									const formatted = formatPhoneNumber(input);
+									if (formatted.length <= 13) {
+										setValue(formatted);
+									}
+								}}
+							/>
+						</InputGroup>
 					</Box>
 					<OperButton
 						title="Получить код"
 						onClick={handleClick}
 						value={value}
-						disabled={value.length === 11 ? false : true}
+						disabled={value.length === 13 ? false : true}
 						switchCarWashType="tel"
 					/>
 				</Flex>
