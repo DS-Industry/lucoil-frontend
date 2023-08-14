@@ -63,7 +63,7 @@ export const OperButton: React.FC<IOperButton> = ({
 				borderRadius="4px"
 				color="colors.WHITE"
 				onClick={handleClick}
-				isDisabled={!isOper ? false : value ? disabled : true}
+				isDisabled={!isOper ? false : value ? false : disabled}
 			>
 				{title}
 			</Button>

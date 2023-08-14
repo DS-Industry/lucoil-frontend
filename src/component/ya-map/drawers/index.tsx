@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Box, Flex } from '@chakra-ui/react';
 import { CustomDrawer } from '../../drawer';
-import { CarWashMap } from '../../car-wash/car-wash-map-item';
-import { TagButton } from '../../buttons/tag-button';
 import { CarWashFullInfo } from '../../car-wash/car-wash-full-info';
 import { NumInput } from '../../inputs/num-input';
 import { useNavigate } from 'react-router-dom';
 import { PortalProgramList } from '../../portal/portal-program-list';
-import { TagInfo } from '../../tag-info';
 import { useCarWash } from '../../../context/carwash-context';
 import { Navbar } from '../../nav-bar';
 import { ListPage } from '../../../pages/list';
 import { YandexMaps } from '../map';
+import { CarWashMainInfo } from '../../car-wash/car-wash-main-info';
 
 export const CustomYMap = () => {
 	const navigate = useNavigate();
@@ -93,57 +90,13 @@ export const CustomYMap = () => {
 				{carWashMainInfo &&
 					carWashMainInfo.carWashes.map((carWash: any, index: number) => {
 						return (
-							<Flex mb="30px" flexDirection="column" key={index}>
-								<CarWashMap
-									isDisabled={false}
-									key={index}
-									carWash={carWash}
-									id={carWash.id}
-									title={carWash.name}
-									openTime="24 часа"
-									address={carWash.address}
-									distance={distance}
-									getCarWash={setCarWash}
-									setCarWashDrawer={setDrawerSwitch}
-								/>
-								{distance && distance > 500 && (
-									<Flex
-										w="100%"
-										justifyContent="center"
-										mt="20px"
-										key={index + 1212}
-									>
-										<TagInfo
-											label="АМС слишком далеко от вас!"
-											bgColor="colors.SECONDARY_RED"
-											color="colors.PRIMARY_RED"
-											fontSize="14px"
-											height="28px"
-										/>
-									</Flex>
-								)}
-
-								{carWashMainInfo && carWashMainInfo.carWashes.length < 2 && (
-									<Box
-										w="100%"
-										display="flex"
-										justifyContent="space-between"
-										mt="15px"
-									>
-										<TagButton
-											switchCarWashType="bay"
-											onClick={setDrawerSwitch}
-											carWash={carWash}
-											distance={distance}
-											height="50px"
-											fontSize="15px"
-											bgColor="colors.SECONDARY_RED"
-											color="colors.PRIMARY_RED"
-											label="Оплатить мойку"
-										/>
-									</Box>
-								)}
-							</Flex>
+							<CarWashMainInfo
+								distance={distance}
+								carWash={carWash}
+								setCarWash={setCarWash}
+								setDrawerSwitch={setDrawerSwitch}
+								carWashMainInfo={carWashMainInfo}
+							/>
 						);
 					})}
 			</CustomDrawer>
@@ -161,26 +114,19 @@ export const CustomYMap = () => {
 
 			{carWash && (
 				<CustomDrawer
-					isOpen={drawerSwitch === 'bay' ? true : false}
+					isOpen={drawerSwitch === 'bay'}
 					onClose={handleCloseDrawer}
 				>
-					<Flex
-						justifyContent="center"
-						alignItems="center"
-						flexDir="column"
-						w="100%"
-					>
-						<NumInput
-							nameMessage="Номер поста"
-							minValue={1}
-							maxValue={carWash.boxes.length}
-							onClick={setDrawerSwitch}
-							label="Введите номер поста"
-							switchCarWashType={
-								carWash && carWash.type === 'SelfService' ? 'bay' : 'portal'
-							}
-						/>
-					</Flex>
+					<NumInput
+						nameMessage="Номер поста"
+						minValue={1}
+						maxValue={carWash.boxes.length}
+						onClick={setDrawerSwitch}
+						label="Введите номер поста"
+						switchCarWashType={
+							carWash && carWash.type === 'SelfService' ? 'bay' : 'portal'
+						}
+					/>
 				</CustomDrawer>
 			)}
 
@@ -189,26 +135,19 @@ export const CustomYMap = () => {
 					isOpen={drawerSwitch === 'sum' ? true : false}
 					onClose={handleCloseDrawer}
 				>
-					<Flex
-						justifyContent="center"
-						alignItems="center"
-						flexDir="column"
-						w="100%"
-					>
-						<NumInput
-							nameMessage="Сумма"
-							minValue={carWash.limitMinCost}
-							maxValue={carWash.limitMaxCost}
-							onClick={navigateToOrder}
-							label="Введите сумму"
-							isSum={true}
-						/>
-					</Flex>
+					<NumInput
+						nameMessage="Сумма"
+						minValue={carWash.limitMinCost}
+						maxValue={carWash.limitMaxCost}
+						onClick={navigateToOrder}
+						label="Введите сумму"
+						isSum={true}
+					/>
 				</CustomDrawer>
 			) : (
 				<>
 					<CustomDrawer
-						isOpen={drawerSwitch === 'portal' ? true : false}
+						isOpen={drawerSwitch === 'portal'}
 						onClose={handleCloseDrawer}
 					>
 						<PortalProgramList programList={carWash && carWash.price} />

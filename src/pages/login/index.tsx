@@ -1,30 +1,22 @@
-import {
-	Box,
-	Checkbox,
-	Flex,
-	HStack,
-	Input,
-	InputGroup,
-	InputLeftAddon,
-	Text,
-	border,
-} from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { OperButton } from '../../component/buttons/oper_button';
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CustomDrawer } from '../../component/drawer';
 import { useUser } from '../../context/user-context';
 import { Header } from '../../component/header';
+import { PhoneInput } from '../../component/inputs/phone-input';
 
 export const LoginPage: React.FC = () => {
 	const navigate = useNavigate();
 	const { sendPhNumber } = useUser();
 	const [value, setValue] = useState<any>('');
-	const [userChoice, setUserChoise] = useState<boolean>();
 
 	const handleClick = () => {
-		sessionStorage.setItem('phone', value);
-		sendPhNumber(value);
+		const phNumber = `+7 ${value}`;
+		const correctPhNumber = phNumber.replaceAll(' ', '');
+		console.log(correctPhNumber);
+		sessionStorage.setItem('phone', correctPhNumber);
+		sendPhNumber(phNumber);
 		navigate('/verification');
 	};
 
@@ -70,67 +62,20 @@ export const LoginPage: React.FC = () => {
 					paddingInline="16px"
 					alignItems="flex-start"
 				>
-					<Box mt="50px" width="100%">
-						<Text fontWeight="700" fontSize="20px">
-							Введите номер телефона
-						</Text>
-						<InputGroup>
-							<InputLeftAddon
-								border="0"
-								bgColor="colors.WHITE"
-								children="+7"
-								fontWeight="500"
-								pb="2px"
-								pr="0px"
-							/>
-							<Input
-								pl="10px"
-								variant="flushed"
-								type="tel"
-								placeholder="000 000 00 00"
-								width="100%"
-								fontSize="15px"
-								fontWeight="500"
-								mb="16px"
-								pb="0px"
-								value={value}
-								onChange={(event: ChangeEvent<HTMLInputElement>) => {
-									const input = event.target.value;
-									const formatted = formatPhoneNumber(input);
-									if (formatted.length <= 13) {
-										setValue(formatted);
-									}
-								}}
-							/>
-						</InputGroup>
-					</Box>
+					<PhoneInput
+						value={value}
+						setValue={setValue}
+						formatPhoneNumber={formatPhoneNumber}
+					/>
 					<OperButton
 						title="Получить код"
 						onClick={handleClick}
-						value={value}
+						value={value.length === 13 ? value : null}
 						disabled={value.length === 13 ? false : true}
 						switchCarWashType="tel"
 					/>
 				</Flex>
 			</Flex>
-
-			<CustomDrawer
-				isOpen={!userChoice}
-				isConf={true}
-				isCloseOnOverlayClick={false}
-				onClose={() => {
-					setUserChoise(true);
-				}}
-			>
-				<HStack>
-					<Checkbox
-						onChange={() => {
-							setUserChoise(true);
-						}}
-					/>
-					<Text>Что то про политику конфиденциальности</Text>
-				</HStack>
-			</CustomDrawer>
 		</>
 	);
 };

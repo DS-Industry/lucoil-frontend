@@ -2,6 +2,7 @@ import { Flex, Text } from '@chakra-ui/react';
 
 interface IHeader {
 	label: string;
+	bgcolor?: string;
 	fontSize?: string;
 	fontWeight?: string;
 	flexPos?: string;
@@ -10,6 +11,7 @@ interface IHeader {
 
 export const Header: React.FC<IHeader> = ({
 	label,
+	bgcolor = '#F8F8F8',
 	fontSize = '15px',
 	fontWeight = '600',
 	flexPos = 'center',
@@ -19,7 +21,7 @@ export const Header: React.FC<IHeader> = ({
 		<Flex
 			h="7vh"
 			w="100%"
-			bgColor="#F8F8F8"
+			bgColor={bgcolor}
 			justifyContent={flexPos}
 			alignItems="center"
 		>

@@ -1,4 +1,4 @@
-import { Input, Text } from '@chakra-ui/react';
+import { Flex, Input, Text } from '@chakra-ui/react';
 import { ChangeEvent, useState } from 'react';
 import { OperButton } from '../../buttons/oper_button';
 
@@ -42,7 +42,7 @@ export const NumInput: React.FC<INumInput> = ({
 	};
 
 	return (
-		<>
+		<Flex justifyContent="center" alignItems="center" flexDir="column" w="100%">
 			<Text
 				fontSize="20px"
 				fontWeight="700"
@@ -80,6 +80,6 @@ export const NumInput: React.FC<INumInput> = ({
 				value={value}
 				title="Далее"
 			/>
-		</>
+		</Flex>
 	);
 };

@@ -19,7 +19,19 @@ const colors = {
 	},
 };
 
-const theme = extendTheme({ colors });
+const components = {
+	Checkbox: {
+		baseStyle: {
+			control: {
+				rounded: 'full',
+				width: '24px',
+				height: '24px',
+			},
+		},
+	},
+};
+
+const theme = extendTheme({ colors, components });
 
 root.render(
 	<ChakraProvider theme={theme}>

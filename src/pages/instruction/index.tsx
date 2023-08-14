@@ -1,11 +1,13 @@
-import { Avatar, Box, Flex, Image, Text } from '@chakra-ui/react';
-import Logo from '../../assets/logo/header_logo.svg';
+import { Box, Flex } from '@chakra-ui/react';
 import { Header } from '../../component/header';
 import { instructionList } from '../../variabels';
 import { OperButton } from '../../component/buttons/oper_button';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useOrder } from '../../context/order-context';
 import { useEffect } from 'react';
+import { Logo } from '../../component/logo';
+import { InstructionList } from '../../component/hard-data/instructions';
+import { MainText } from '../../component/hard-data/main-text';
 
 export const InstructionPage: React.FC = () => {
 	const navigate = useNavigate();
@@ -39,23 +41,11 @@ export const InstructionPage: React.FC = () => {
 				alignItems="center"
 				flexDirection="column"
 			>
-				<Header label="" />
+				<Header bgcolor="colors.WHITE" label="" />
 
-				<Box mt="30px">
-					<Image h="25vh" w="50vw" src={Logo} alt="logo car wash" mr="0" />
-				</Box>
+				<Logo />
 
-				<Box textAlign="center" mt="50px">
-					<Text color="colors.BLACK" fontSize="22px" fontWeight="500">
-						Мойте автомобиль с выгодой на МОЙ-КА!DS и получайте
-					</Text>
-					<Text color="colors.PRIMARY_RED" fontSize="22px" fontWeight="500">
-						10% кешбэк
-					</Text>
-					<Text color="colors.BLACK" fontSize="22px" fontWeight="500">
-						баллами на вашу карту Лукойла.
-					</Text>
-				</Box>
+				<MainText />
 
 				<Flex
 					flexDirection="column"
@@ -71,33 +61,7 @@ export const InstructionPage: React.FC = () => {
 					alignItems="baseline"
 				>
 					{instructionList.map((info: string, index: number) => {
-						return (
-							<Flex
-								key={index}
-								justifyContent="flex-start"
-								alignItems="flex-start"
-								pl="16px"
-								pr="16px"
-							>
-								<Avatar
-									name={String(index + 1)}
-									w="28px"
-									h="28px"
-									bgColor="colors.PRIMARY_RED"
-									ml="30px"
-									fontSize="16px"
-									fontWeight="600"
-								/>
-								<Text
-									ml="16px"
-									fontSize="14px"
-									fontWeight="600"
-									color="colors.BLACK"
-								>
-									{info}
-								</Text>
-							</Flex>
-						);
+						return <InstructionList key={index} info={info} index={index} />;
 					})}
 					<Box pl="13px" pr="13px" w="100%">
 						<OperButton

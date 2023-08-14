@@ -1,17 +1,16 @@
 import React from 'react';
-import api from '../../api';
 
 interface IUserPartial {
 	partnerCard?: string | number | null;
 	phNumber?: string | null;
+	token?: boolean | null;
 	verification?: boolean | string | null;
-	isLoading?: boolean | null;
+	isLoading?: boolean;
 }
 
 interface IUserContext {
 	user: IUserPartial;
 	updateStore: (data: IUserPartial) => void;
-	getVerificationStatus: (data: IUserPartial) => void;
 	sendCode: (verificationCode: string) => void;
 	sendPhNumber: (phNumber: string) => void;
 }
@@ -24,8 +23,9 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 	const [user, setUser] = React.useState<IUserPartial>({
 		partnerCard: null,
 		phNumber: null,
+		token: null,
 		verification: null,
-		isLoading: null,
+		isLoading: false,
 	});
 
 	const updateStore = (data: IUserPartial) => {
@@ -36,13 +36,18 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 	const sendPhNumber = async (phNumber: string) => {
 		try {
 			updateStore({ isLoading: true });
+			const correctPhNumber = phNumber.replaceAll(' ', '');
 			//-------- Add endPoint to send Number and get code --------
-			console.log('Отправка номера...');
-			/*cosnt verificationCode = await api.post('', {
-				phNumber,
-			}); */
+			console.log('Отправка номера...', correctPhNumber);
+			sessionStorage.setItem('phone', correctPhNumber);
+			/*
+			cosnt response = await api.post('', {
+				correctPhNumber,
+			}); 
+			const { signUp } = response.data
+			*/
 			//----------------------------------------------------------
-			updateStore({ isLoading: false, phNumber: phNumber });
+			updateStore({ isLoading: false, phNumber: correctPhNumber /* signUp */ });
 		} catch (error) {
 			console.log(error);
 			updateStore({ isLoading: false });
@@ -54,29 +59,22 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 			updateStore({ isLoading: true });
 			//-------- Add endPoint to send code and get status --------
 			console.log('Отправка кода...');
-			/* 			await api.post('', {
+			/* 
+			const response = await api.post('', {
 				verificationCode,
-			}); */
+			}); 
+			
+			
+			const verification = response.data
+			*/
+			setTimeout(() => {
+				updateStore({ isLoading: false, verification: true });
+			}, 5000);
 			//----------------------------------------------------------
-			updateStore({ isLoading: false });
+			/* 			updateStore({ isLoading: false, verification: true }); */
 		} catch (error) {
 			console.log(error);
 			updateStore({ isLoading: false });
-		}
-	};
-
-	const getVerificationStatus = async () => {
-		try {
-			updateStore({ isLoading: true });
-			//-------- Add endPoint to get verification result --------
-			const verifStatus = true;
-			/* 			const verifStatus: boolean | string = await api.get(''); */
-			console.log('Получение статуса...');
-			//----------------------------------------------------------
-			updateStore({ verification: verifStatus, isLoading: false });
-		} catch (error) {
-			console.log(error);
-			updateStore({ verification: null, isLoading: false });
 		}
 	};
 
@@ -85,7 +83,6 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 			value={{
 				user,
 				updateStore,
-				getVerificationStatus,
 				sendCode,
 				sendPhNumber,
 			}}
