@@ -57,7 +57,7 @@ export const OperButton: React.FC<IOperButton> = ({
 	return (
 		<>
 			<Button
-				bg="colors.PRIMARY_RED"
+				bg={!disabled ? 'colors.PRIMARY_RED' : '#D2D3D9'}
 				w="100%"
 				h="46px"
 				borderRadius="4px"
