@@ -66,7 +66,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 			const verification = response.data
 			*/
 			setTimeout(() => {
-				updateStore({ isLoading: false, token: 'validation token' });
+				updateStore({ isLoading: false, token: 'success' });
 			}, 5000);
 			//----------------------------------------------------------
 			/* 			updateStore({ isLoading: false, verification: true }); */

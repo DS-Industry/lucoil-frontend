@@ -53,6 +53,7 @@ export const VerificationInput: React.FC<IVerificationInput> = ({
 	return (
 		<Input
 			autoFocus={index === 0}
+			disabled={user.isLoading}
 			borderRadius="9px"
 			borderColor="colors.WHITE"
 			bgColor="colors.SECONDARY_RED"
