@@ -68,7 +68,7 @@ export const LoginPage: React.FC = () => {
 						formatPhoneNumber={formatPhoneNumber}
 					/>
 					<OperButton
-						title="Получить код"
+						title="Далее"
 						onClick={handleClick}
 						value={value.length === 13 ? value : null}
 						disabled={value.length === 13 ? false : true}

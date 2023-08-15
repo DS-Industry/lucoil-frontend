@@ -38,12 +38,12 @@ export const VerificationPage = () => {
 		const result = Object.values(code).join('');
 		sendCode(result);
 		console.log('here');
-		/* if (phNumber) {
+		if (phNumber) {
 			navigate('/home');
-		} */
+		}
 	};
 
-	useEffect(() => {
+	/* 	useEffect(() => {
 		if (user.verification) {
 			console.log('here');
 			setCode({
@@ -52,11 +52,11 @@ export const VerificationPage = () => {
 				thirdN: '',
 				fourthN: '',
 			});
-			/* 			if (user.verification) {
+			 			if (user.verification) {
 				navigate('/home');
-			} */
+			} 
 		}
-	}, [user.verification]);
+	}, [user.verification]); */
 
 	useEffect(() => {
 		if (isDisabled) {
@@ -92,6 +92,7 @@ export const VerificationPage = () => {
 					<Text fontSize="15px" color="#C7C7CB" fontWeight="500" mb="30px">
 						Код направлен на {user.phNumber ? user.phNumber : phNumber}
 					</Text>
+
 					<VerificationList code={code} setCode={setCode} />
 
 					<Text fontSize="15px" color="#C7C7CB" fontWeight="500" mt="30px">

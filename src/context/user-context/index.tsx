@@ -3,8 +3,7 @@ import React from 'react';
 interface IUserPartial {
 	partnerCard?: string | number | null;
 	phNumber?: string | null;
-	token?: boolean | null;
-	verification?: boolean | string | null;
+	token?: string | null;
 	isLoading?: boolean;
 }
 
@@ -24,7 +23,6 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 		partnerCard: null,
 		phNumber: null,
 		token: null,
-		verification: null,
 		isLoading: false,
 	});
 
@@ -68,7 +66,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 			const verification = response.data
 			*/
 			setTimeout(() => {
-				updateStore({ isLoading: false, verification: true });
+				updateStore({ isLoading: false, token: 'validation token' });
 			}, 5000);
 			//----------------------------------------------------------
 			/* 			updateStore({ isLoading: false, verification: true }); */
