@@ -9,11 +9,17 @@ import { Navbar } from '../../nav-bar';
 import { ListPage } from '../../../pages/list';
 import { YandexMaps } from '../map';
 import { CarWashMainInfo } from '../../car-wash/car-wash-main-info';
+import { Box, Flex, Image, Text } from '@chakra-ui/react';
+import { OperButton } from '../../buttons/oper_button';
+import { SelectBay } from '../../select-bay';
 
 export const CustomYMap = () => {
 	const navigate = useNavigate();
 
 	const { store, getCarWashList } = useCarWash();
+	const [carWashWithDistance, setCarWashWithDistance] = useState<Array<any>>(
+		[]
+	);
 
 	const [userPosition, setUserPosition] = useState<number[]>([]);
 	const [drawerSwitch, setDrawerSwitch] = useState<string>('');
@@ -34,7 +40,7 @@ export const CustomYMap = () => {
 	useEffect(() => {
 		async function getCarWashListWithCoords() {
 			await getCarWashList();
-			console.log(store.carWashes);
+			//console.log(store.carWashes);
 			navigator.geolocation.getCurrentPosition((position) => {
 				const { latitude, longitude } = position.coords;
 				setUserPosition([latitude, longitude]);
@@ -45,6 +51,18 @@ export const CustomYMap = () => {
 			getCarWashListWithCoords();
 		}
 	}, []);
+
+	useEffect(() => {
+		console.log('distance array length', carWashWithDistance.length);
+		if (carWashWithDistance.length) {
+			console.log('this is store carwashes');
+			console.log(store.carWashes);
+			console.log('this is store carwashes upper');
+			console.log('----------- START --------------');
+			console.log(carWashWithDistance);
+			console.log('----------- END ------------------');
+		}
+	}, [carWashWithDistance]);
 
 	return (
 		<>
@@ -59,6 +77,8 @@ export const CustomYMap = () => {
 				setCarWashMainInfo={setCarWashMainInfo}
 				setDistance={setDistance}
 				setDrawerSwitch={setDrawerSwitch}
+				setCarWashWithDistance={setCarWashWithDistance}
+				carWashWithDistance={carWashWithDistance}
 				drawerSwitch={drawerSwitch}
 			/>
 
@@ -75,6 +95,7 @@ export const CustomYMap = () => {
 			>
 				<ListPage
 					key={1001}
+					userPosition={userPosition}
 					openFullInfo={setDrawerSwitch}
 					setCarWashCoords={setCarWashCoords}
 					setCarWash={setCarWash}
@@ -91,6 +112,7 @@ export const CustomYMap = () => {
 					carWashMainInfo.carWashes.map((carWash: any, index: number) => {
 						return (
 							<CarWashMainInfo
+								key={index}
 								distance={distance}
 								carWash={carWash}
 								setCarWash={setCarWash}
@@ -117,7 +139,9 @@ export const CustomYMap = () => {
 					isOpen={drawerSwitch === 'bay'}
 					onClose={handleCloseDrawer}
 				>
-					<NumInput
+					<SelectBay carWash={carWash} onClick={setDrawerSwitch} />
+					{/* 				
+						<NumInput
 						nameMessage="Номер поста"
 						minValue={1}
 						maxValue={carWash.boxes.length}
@@ -126,7 +150,7 @@ export const CustomYMap = () => {
 						switchCarWashType={
 							carWash && carWash.type === 'SelfService' ? 'bay' : 'portal'
 						}
-					/>
+					/> */}
 				</CustomDrawer>
 			)}
 

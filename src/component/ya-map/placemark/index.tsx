@@ -1,8 +1,10 @@
-import { Placemark, useYMaps } from '@pbe/react-yandex-maps/';
+import { Placemark } from '@pbe/react-yandex-maps/';
 import { useEffect, useState } from 'react';
+import { calculateDistance } from '../../../utill/functions';
 
 interface ICustomPlacemark {
 	index: number | null;
+	carWash: any;
 	placemarkId: number;
 	userPosition: Array<number>;
 	coords: Array<number>;
@@ -19,11 +21,8 @@ interface ICustomPlacemark {
 	setPlaceMarkStyle: any;
 	setCarWash: any;
 	setCarWashId: any;
-}
-
-interface IRouteDistance {
-	text: string;
-	value: number;
+	setCarWashWithDistance: any;
+	carWashWithDistance: any;
 }
 
 export const CustomPlacemark: React.FC<ICustomPlacemark> = ({
@@ -45,51 +44,20 @@ export const CustomPlacemark: React.FC<ICustomPlacemark> = ({
 	setCarWash,
 	setCarWashId,
 }) => {
-	const yMaps = useYMaps();
 	const [placeMarkParams, setPlaceMarkParams] = useState({
 		icon,
 		size,
 	});
 
-	const calculateDistance = (
-		userPosition: Array<number>,
-		coords: Array<number>
-	) => {
-		if (yMaps) {
-			yMaps.ready(() => {
-				const multiRoute = new yMaps.multiRouter.MultiRoute(
-					{
-						referencePoints: [userPosition, coords],
-						params: {
-							routingMode: 'auto',
-						},
-					},
-					{
-						boundsAutoApply: true,
-					}
-				);
-
-				// Get detailed information about the route
-				multiRoute.model.events.add('requestsuccess', () => {
-					const activeRoute = multiRoute.getActiveRoute();
-
-					if (activeRoute) {
-						const routeDistance = activeRoute.properties.get('distance', {
-							value: 0,
-							text: '0 км',
-						}) as IRouteDistance;
-						if (routeDistance) {
-							getDistance(routeDistance.value);
-						}
-					}
-				});
-			});
-		}
-	};
-
 	useEffect(() => {
 		if (placemarkId === index) {
-			calculateDistance(userPosition, coords);
+			const distance = calculateDistance(
+				userPosition[0],
+				userPosition[1],
+				coords[0],
+				coords[1]
+			);
+			getDistance(distance);
 		}
 	});
 

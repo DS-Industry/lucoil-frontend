@@ -98,7 +98,6 @@ export const VerificationPage = () => {
 				justifyContent="space-between"
 				alignItems="flex-start"
 				pt="50px"
-				pb="64px"
 				pl="16px"
 				pr="16px"
 			>

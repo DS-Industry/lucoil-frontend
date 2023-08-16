@@ -52,40 +52,26 @@ export const CarWashFullInfo: React.FC<ICarWash> = ({
 						</Box>
 					</>
 				) : (
-					<>
-						<Box>
-							<Text lineHeight="20px" fontSize="12px" color="colors.DARK_GRAY">
-								Стоимость минуты
-							</Text>
-							<TagInfo
-								label={`${carWash.price[0].cost} ₽`}
-								bgColor="colors.PRIMARY_RED"
-								color="colors.WHITE"
-								fontSize="14px"
-								height="20px"
-							/>
-						</Box>
-						<Box>
-							<Text lineHeight="20px" fontSize="12px" color="colors.DARK_GRAY">
-								Программы
-							</Text>
-							<Flex flexDir="row" flexWrap="wrap">
-								{carWash.price.map((program: any, index: number) => {
-									return (
-										<Box mr="6px" mb="7px" key={index}>
-											<TagInfo
-												label={program.name}
-												bgColor="colors.WHITE_GRAY"
-												color="colors.BLACK"
-												fontSize="14px"
-												height="20px"
-											/>
-										</Box>
-									);
-								})}
-							</Flex>
-						</Box>
-					</>
+					<Box>
+						<Text lineHeight="20px" fontSize="12px" color="colors.DARK_GRAY">
+							Программы
+						</Text>
+						<Flex flexDir="row" flexWrap="wrap">
+							{carWash.price.map((program: any, index: number) => {
+								return (
+									<Box mr="6px" mb="7px" key={index}>
+										<TagInfo
+											label={program.name}
+											bgColor="colors.WHITE_GRAY"
+											color="colors.BLACK"
+											fontSize="14px"
+											height="20px"
+										/>
+									</Box>
+								);
+							})}
+						</Flex>
+					</Box>
 				)}
 				<Box mb="15px">
 					{carWash.tags &&

@@ -5,6 +5,7 @@ import {
 	Placemark,
 	GeolocationControl,
 	ZoomControl,
+	useYMaps,
 } from '@pbe/react-yandex-maps';
 import React from 'react';
 import { CustomPlacemark } from '../placemark';
@@ -24,6 +25,8 @@ interface IYandexMaps {
 	setCarWashIdList: any;
 	carWashIdList: number;
 	drawerSwitch: string;
+	setCarWashWithDistance: any;
+	carWashWithDistance: any;
 }
 
 export const YandexMaps: React.FC<IYandexMaps> = React.memo(
@@ -39,6 +42,8 @@ export const YandexMaps: React.FC<IYandexMaps> = React.memo(
 		setCarWashIdList,
 		carWashIdList,
 		drawerSwitch,
+		setCarWashWithDistance,
+		carWashWithDistance,
 	}) => {
 		return (
 			<Flex h="85vh" w="100%" justifyContent="center" alignItems="center">
@@ -46,7 +51,7 @@ export const YandexMaps: React.FC<IYandexMaps> = React.memo(
 					<YMaps
 						enterprise
 						query={{
-							apikey: '69daa1a6-dc1e-463c-915b-2e6f0ca0cc74',
+							apikey: '8933ab08-0e8f-418a-aa0f-292d4f89c156',
 						}}
 					>
 						<Map
@@ -68,11 +73,11 @@ export const YandexMaps: React.FC<IYandexMaps> = React.memo(
 							]}
 						>
 							{store.carWashes.map((carWash: any, index: number) => {
-								console.log(carWash);
 								if (carWash.lat && carWash.lon) {
 									return (
 										<CustomPlacemark
 											key={index}
+											carWash={carWash}
 											index={index}
 											coords={[carWash.lat, carWash.lon]}
 											carWashes={carWash.carwashes}
@@ -90,6 +95,8 @@ export const YandexMaps: React.FC<IYandexMaps> = React.memo(
 											placemarkId={carWashIdList >= 0 ? carWashIdList : -1}
 											setDrawerSwitch={setDrawerSwitch}
 											placeMarkSwitch={drawerSwitch}
+											setCarWashWithDistance={setCarWashWithDistance}
+											carWashWithDistance={carWashWithDistance}
 										/>
 									);
 								}

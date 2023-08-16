@@ -32,11 +32,11 @@ export const OperButton: React.FC<IOperButton> = ({
 			onClick();
 		}
 		if (switchCarWashType && switchCarWashType !== 'tel') {
-			sessionStorage.setItem('bayNumber', String(value));
-			updateStore({
-				bayNumber: Number(value),
-			});
 			if (switchCarWashType === 'bay') {
+				sessionStorage.setItem('bayNumber', String(value));
+				updateStore({
+					bayNumber: Number(value),
+				});
 				onClick('sum');
 			} else {
 				onClick(switchCarWashType);
@@ -60,6 +60,7 @@ export const OperButton: React.FC<IOperButton> = ({
 				bg={!disabled ? 'colors.PRIMARY_RED' : '#D2D3D9'}
 				w="100%"
 				h="46px"
+				mb="64px"
 				borderRadius="4px"
 				color="colors.WHITE"
 				onClick={handleClick}

@@ -45,7 +45,6 @@ export const LoginPage: React.FC = () => {
 				flexDir="column"
 				justifyContent="flex-start"
 				alignItems="center"
-				pb="20%"
 			>
 				<Header
 					fontSize="28px"

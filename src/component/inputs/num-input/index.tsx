@@ -75,7 +75,7 @@ export const NumInput: React.FC<INumInput> = ({
 			<OperButton
 				switchCarWashType={switchCarWashType}
 				isSum={isSum}
-				disabled={messageSwitch === 1 || messageSwitch === 2 ? true : false}
+				disabled={messageSwitch === 1 || messageSwitch === 2 || !value}
 				onClick={onClick}
 				value={value}
 				title="Далее"

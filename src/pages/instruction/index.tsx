@@ -1,6 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { Header } from '../../component/header';
-import { instructionList } from '../../variabels';
+import { instructionList } from '../../utill/variabels';
 import { OperButton } from '../../component/buttons/oper_button';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useOrder } from '../../context/order-context';
@@ -53,7 +53,6 @@ export const InstructionPage: React.FC = () => {
 					mr="16px"
 					mt="50px"
 					pt="40px"
-					pb="60px"
 					h="90vh"
 					justifyContent="space-between"
 					borderTopRadius="25px"

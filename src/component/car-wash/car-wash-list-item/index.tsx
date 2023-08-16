@@ -1,6 +1,7 @@
 import { Box, Flex, HStack, Text, Divider } from '@chakra-ui/react';
 
 interface ICarWash {
+	distance: number;
 	coords: string;
 	title: string;
 	address: string;
@@ -22,6 +23,7 @@ export const CarWash: React.FC<ICarWash> = ({
 	index,
 	setCarWash,
 	setCarWashIdList,
+	distance,
 }) => {
 	const handleClick = () => {
 		openFullInfo('full-info');
@@ -38,7 +40,22 @@ export const CarWash: React.FC<ICarWash> = ({
 					<Text fontSize="15px" fontWeight="700" lineHeight="20px">
 						{title}
 					</Text>
-					<HStack>
+					<HStack alignItems="baseline">
+						<Text
+							bg="colors.WHITE_GRAY"
+							fontSize="10px"
+							padding="1px 5px"
+							fontWeight="700"
+							borderRadius="5px"
+						>
+							{distance && distance < 1000
+								? `${Math.round(distance)} м `
+								: distance && distance > 1000 && distance / 1000 < 100
+								? `${(distance / 1000).toFixed(2)} км `
+								: distance && distance / 1000 > 100
+								? `${Math.floor(distance / 1000)} км`
+								: ''}
+						</Text>
 						<Text fontSize="12px" fontWeight="500" color="colors.DARK_GRAY">
 							{address}
 						</Text>

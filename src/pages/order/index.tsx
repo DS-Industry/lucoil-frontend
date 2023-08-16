@@ -114,6 +114,7 @@ export const OrderPage: React.FC = () => {
 			h="100vh"
 			w="100vw"
 			p="28px"
+			pb="0"
 		>
 			<Flex flexDirection="column">
 				<CarWashMap

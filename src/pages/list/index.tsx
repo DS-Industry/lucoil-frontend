@@ -3,12 +3,14 @@ import { CarWash } from '../../component/car-wash/car-wash-list-item';
 import { ListInput } from '../../component/inputs/list-input';
 import { useEffect, useState } from 'react';
 import { useCarWash } from '../../context/carwash-context';
+import { calculateDistance } from '../../utill/functions';
 
 interface IListPage {
 	openFullInfo: any;
 	setCarWashCoords: any;
 	setCarWash: any;
 	setCarWashIdList: any;
+	userPosition: number[];
 }
 
 export const ListPage: React.FC<IListPage> = ({
@@ -16,6 +18,7 @@ export const ListPage: React.FC<IListPage> = ({
 	setCarWashCoords,
 	setCarWash,
 	setCarWashIdList,
+	userPosition,
 }) => {
 	const [term, setTerm] = useState<string>('');
 	const { store } = useCarWash();
@@ -71,8 +74,15 @@ export const ListPage: React.FC<IListPage> = ({
 					})
 					.map((filteredCarWash: any, index: number) => {
 						console.log(filteredCarWash);
+						const distance = calculateDistance(
+							userPosition[0],
+							userPosition[1],
+							filteredCarWash.coords[0],
+							filteredCarWash.coords[1]
+						);
 						return (
 							<CarWash
+								distance={distance}
 								setCarWashIdList={setCarWashIdList}
 								setCarWash={setCarWash}
 								carWash={filteredCarWash.carWash}
