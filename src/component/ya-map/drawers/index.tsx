@@ -9,8 +9,6 @@ import { Navbar } from '../../nav-bar';
 import { ListPage } from '../../../pages/list';
 import { YandexMaps } from '../map';
 import { CarWashMainInfo } from '../../car-wash/car-wash-main-info';
-import { Box, Flex, Image, Text } from '@chakra-ui/react';
-import { OperButton } from '../../buttons/oper_button';
 import { SelectBay } from '../../select-bay';
 
 export const CustomYMap = () => {
@@ -140,17 +138,6 @@ export const CustomYMap = () => {
 					onClose={handleCloseDrawer}
 				>
 					<SelectBay carWash={carWash} onClick={setDrawerSwitch} />
-					{/* 				
-						<NumInput
-						nameMessage="Номер поста"
-						minValue={1}
-						maxValue={carWash.boxes.length}
-						onClick={setDrawerSwitch}
-						label="Введите номер поста"
-						switchCarWashType={
-							carWash && carWash.type === 'SelfService' ? 'bay' : 'portal'
-						}
-					/> */}
 				</CustomDrawer>
 			)}
 

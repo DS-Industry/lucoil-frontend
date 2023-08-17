@@ -1,6 +1,7 @@
 import { Box, HStack, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useOrder } from '../../../context/order-context';
+import { useCarWash } from '../../../context/carwash-context';
 
 interface IPortalService {
 	name: string;
@@ -10,10 +11,13 @@ interface IPortalService {
 export const PortalService: React.FC<IPortalService> = ({ name, cost }) => {
 	const navigate = useNavigate();
 	const { updateStore } = useOrder();
+	const { updateStore: updateCWStore } = useCarWash();
 
 	const handleClick = () => {
 		navigate('/order');
 		updateStore({ sum: Number(cost) });
+		updateCWStore({ program: name });
+		sessionStorage.setItem('program', name);
 	};
 
 	return (

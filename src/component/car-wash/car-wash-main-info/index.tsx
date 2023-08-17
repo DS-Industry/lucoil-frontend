@@ -19,7 +19,7 @@ export const CarWashMainInfo: React.FC<ICarWashMainInfo> = ({
 	carWashMainInfo,
 }) => {
 	return (
-		<Flex mb="30px" flexDirection="column">
+		<Flex flexDirection="column">
 			<CarWashMap
 				isDisabled={false}
 				carWash={carWash}
@@ -44,7 +44,13 @@ export const CarWashMainInfo: React.FC<ICarWashMainInfo> = ({
 			)}
 
 			{carWashMainInfo && carWashMainInfo.carWashes.length < 2 && (
-				<Box w="100%" display="flex" justifyContent="space-between" mt="15px">
+				<Box
+					w="100%"
+					h="auto"
+					display="flex"
+					justifyContent="space-between"
+					mt="15px"
+				>
 					<TagButton
 						switchCarWashType="bay"
 						onClick={setDrawerSwitch}

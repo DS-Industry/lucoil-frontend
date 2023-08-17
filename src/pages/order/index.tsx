@@ -14,12 +14,13 @@ interface IStorageData {
 	sum: string | null;
 	bayNumber: string | null;
 	carWash: any | null;
+	program: string | null;
 }
 
 export const OrderPage: React.FC = () => {
 	const toast = useToast();
 	const navigate = useNavigate();
-	const { store, sendPayment, updateStore } = useOrder();
+	const { store, sendPayment } = useOrder();
 	const {
 		store: carWashStore,
 		pingCarWash,
@@ -88,6 +89,7 @@ export const OrderPage: React.FC = () => {
 		const partnerCard = sessionStorage.getItem('partnerCard');
 		const sum = sessionStorage.getItem('sum');
 		const bayNumber = sessionStorage.getItem('bayNumber');
+		const program = sessionStorage.getItem('program');
 		const carWash = sessionStorage.getItem('carWash');
 		if (carWash) {
 			setStorageData({
@@ -96,6 +98,7 @@ export const OrderPage: React.FC = () => {
 				sum: sum,
 				bayNumber: bayNumber,
 				carWash: JSON.parse(carWash),
+				program: program,
 			});
 		}
 	}, []);
@@ -142,7 +145,37 @@ export const OrderPage: React.FC = () => {
 							: 'distance'
 					}
 					isDisabled={true}
+					IsOrder={true}
 				/>
+				{carWashStore.carWash && carWashStore.carWash.type === 'Portal' ? (
+					<Box>
+						<Text pt="30px" fontSize="15px" fontWeight="700">
+							Программа
+						</Text>
+						<TagInfo
+							label={carWashStore.program ? carWashStore.program : ''}
+							bgColor="colors.PRIMARY_RED"
+							color="colors.WHITE"
+							fontSize="14px"
+							height="20px"
+						/>
+					</Box>
+				) : storageData?.carWash && storageData?.carWash.type === 'Portal' ? (
+					<Box>
+						<Text pt="30px" fontSize="15px" fontWeight="700">
+							Программа
+						</Text>
+						<TagInfo
+							label={storageData.program ? storageData.program : ''}
+							bgColor="colors.PRIMARY_RED"
+							color="colors.WHITE"
+							fontSize="14px"
+							height="20px"
+						></TagInfo>
+					</Box>
+				) : (
+					''
+				)}
 				<Text pt="30px" fontSize="15px" fontWeight="700">
 					Пост
 				</Text>

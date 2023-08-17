@@ -6,6 +6,7 @@ interface ICarWashStorePartial {
 	carWashes?: any | [];
 	pingStatus?: any | null;
 	isLoading?: boolean;
+	program?: string;
 }
 
 interface ICarWashContext {
@@ -23,6 +24,7 @@ const CarWashProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 		carWashes: [],
 		pingStatus: null,
 		isLoading: false,
+		program: '',
 	});
 
 	const updateStore = (newState: ICarWashStorePartial) => {

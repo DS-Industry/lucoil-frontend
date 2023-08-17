@@ -44,6 +44,7 @@ export const TagButton: React.FC<ITagButton> = ({
 		<Button
 			display="flex"
 			w="100%"
+			mb="64px"
 			h={height}
 			paddingTop="10px"
 			paddingBottom="10px"

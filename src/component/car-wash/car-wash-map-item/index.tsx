@@ -1,5 +1,15 @@
 import { TimeIcon } from '@chakra-ui/icons';
-import { Divider, Flex, Text } from '@chakra-ui/react';
+import { IoMdArrowRoundBack } from 'react-icons/io';
+import {
+	Button,
+	Divider,
+	Flex,
+	HStack,
+	IconButton,
+	Spacer,
+	Text,
+} from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 interface ICarWashMap {
 	id: string;
@@ -12,6 +22,7 @@ interface ICarWashMap {
 	getCarWash?: any;
 	setSwitch?: any;
 	setCarWashDrawer?: any;
+	IsOrder?: boolean;
 }
 
 export const CarWashMap: React.FC<ICarWashMap> = ({
@@ -23,12 +34,18 @@ export const CarWashMap: React.FC<ICarWashMap> = ({
 	distance,
 	setCarWashDrawer,
 	isDisabled,
+	IsOrder = false,
 }) => {
+	const navigate = useNavigate();
 	const handleClick = () => {
 		if (!isDisabled) {
 			getCarWash(carWash);
 			setCarWashDrawer('full-info');
 		}
+	};
+
+	const handleBackClick = () => {
+		navigate('/home');
 	};
 
 	return (
@@ -37,14 +54,36 @@ export const CarWashMap: React.FC<ICarWashMap> = ({
 			flexDirection="column"
 			onClick={handleClick}
 		>
-			<Text
-				fontSize="20px"
-				lineHeight="20px"
-				color="colors.BLACK"
-				fontWeight="800"
-			>
-				{title}
-			</Text>
+			{IsOrder ? (
+				<HStack>
+					<Text
+						fontSize="20px"
+						lineHeight="20px"
+						color="colors.BLACK"
+						fontWeight="800"
+					>
+						{title}
+					</Text>
+					<Spacer />
+					<IconButton
+						onClick={handleBackClick}
+						isRound
+						colorScheme="colors.brand"
+						aria-label="back button"
+						icon={<IoMdArrowRoundBack />}
+					/>
+				</HStack>
+			) : (
+				<Text
+					fontSize="20px"
+					lineHeight="20px"
+					color="colors.BLACK"
+					fontWeight="800"
+				>
+					{title}
+				</Text>
+			)}
+
 			<Flex
 				fontSize="14px"
 				lineHeight="20px"

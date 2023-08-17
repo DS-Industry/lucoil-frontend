@@ -10,6 +10,9 @@ const root = createRoot(document.getElementById('root') as HTMLElement);
 
 const colors = {
 	colors: {
+		brand: {
+			500: '#D2233C',
+		},
 		PRIMARY_RED: '#D2233C',
 		SECONDARY_RED: '#F7EAEC',
 		WHITE: '#FFFFFF',
@@ -19,19 +22,7 @@ const colors = {
 	},
 };
 
-const components = {
-	Checkbox: {
-		baseStyle: {
-			control: {
-				rounded: 'full',
-				width: '24px',
-				height: '24px',
-			},
-		},
-	},
-};
-
-const theme = extendTheme({ colors, components });
+const theme = extendTheme({ colors });
 
 root.render(
 	<ChakraProvider theme={theme}>

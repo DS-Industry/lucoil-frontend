@@ -54,12 +54,14 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	const sendCode = async (verificationCode: string) => {
 		try {
+			const card = user.partnerCard;
 			updateStore({ isLoading: true });
 			//-------- Add endPoint to send code and get status --------
 			console.log('Отправка кода...');
 			/* 
 			const response = await api.post('', {
 				verificationCode,
+				parterCard: card
 			}); 
 			
 			
