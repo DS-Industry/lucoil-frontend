@@ -1,6 +1,8 @@
 import React from 'react';
 import api from '../../api';
 import { useNavigate } from 'react-router-dom';
+import secureLocalStorage from 'react-secure-storage';
+import { useUser } from '../user-context';
 
 interface IPaymentData {
 	amount: string;
@@ -12,15 +14,17 @@ interface IOrderStorePartial {
 	bayNumber?: number | null;
 	sum?: number | null;
 	paymentId?: number | null;
-	partnerCard?: number | null;
 	isPaid?: boolean | null;
 	paymentTocken?: string | null;
+	isLoading?: boolean;
+	error?: any | null;
 }
 interface IOrderContext {
 	store: IOrderStorePartial;
 	sendOrder: () => Promise<void>;
 	updateStore: (data: IOrderStorePartial) => void;
 	sendPayment: (data: IPaymentData) => void;
+	getStore: () => void;
 }
 
 const OrderContext = React.createContext<IOrderContext | null>(null);
@@ -34,18 +38,28 @@ const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
 		sum: null,
 		paymentId: null,
 		paymentTocken: null,
-		partnerCard: null,
 		isPaid: false,
+		isLoading: false,
+		error: null,
 	});
 	const navigate = useNavigate();
+	const { user } = useUser();
 
 	const updateStore = (data: IOrderStorePartial) => {
 		const state = { ...store, ...data };
-		setStore(state);
+		secureLocalStorage.setItem('order-store', state);
+		getStore();
+	};
+
+	const getStore = () => {
+		const store: IOrderStorePartial | any =
+			secureLocalStorage.getItem('order-store');
+		setStore(store);
 	};
 
 	const sendPayment = async (data: IPaymentData) => {
 		try {
+			updateStore({ isLoading: true });
 			console.log(data);
 			const response = await api.post('payment/create', {
 				amount: data.amount,
@@ -54,58 +68,36 @@ const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
 			});
 			console.log(response.data);
 			updateStore({
+				isLoading: false,
 				paymentId: response.data.id,
 				paymentTocken: response.data.confirmation.confirmation_token,
 			});
 		} catch (error) {
 			console.log(error);
+			updateStore({ isLoading: false });
 		}
 	};
 
 	const sendOrder = async () => {
 		try {
-			let data = {
+			updateStore({ isLoading: true });
+			const response = await api.post(`order/create`, {
 				paymentId: store.paymentId,
 				carWashId: store.carWashId,
 				bayNumber: store.bayNumber,
 				orderSum: store.sum,
-				partnerCard: store.partnerCard,
-			};
-			if (!store.carWashId) {
-				const carWash = sessionStorage.getItem('carWash');
-				const bayNumber = sessionStorage.getItem('bayNumber');
-				const sum = sessionStorage.getItem('sum');
-				const partnerCard = sessionStorage.getItem('parterCard');
-				if (carWash) {
-					data = {
-						...data,
-						carWashId: JSON.parse(carWash).id,
-						bayNumber: Number(bayNumber),
-						orderSum: Number(sum),
-						partnerCard: Number(partnerCard),
-					};
-				}
-			}
-
-			console.log('This is data', data);
-			const response = await api.post(`order/create`, {
-				paymentId: data.paymentId,
-				carWashId: data.carWashId,
-				bayNumber: data.bayNumber,
-				orderSum: data.orderSum,
-				partnerCard: data.partnerCard,
+				partnerCard: user.partnerCard,
 			});
-			console.log('This is response', response);
-			console.log(response);
 			navigate('/success');
-		} catch (e) {
+		} catch (e: any) {
 			console.log(e);
+			updateStore({ isLoading: false, error: e });
 		}
 	};
 
 	return (
 		<OrderContext.Provider
-			value={{ store, sendOrder, sendPayment, updateStore }}
+			value={{ store, sendOrder, sendPayment, updateStore, getStore }}
 		>
 			{children}
 		</OrderContext.Provider>

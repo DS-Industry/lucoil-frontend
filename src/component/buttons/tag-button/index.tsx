@@ -37,7 +37,6 @@ export const TagButton: React.FC<ITagButton> = ({
 		updateCWState({
 			carWash: carWashDistance,
 		});
-		sessionStorage.setItem('carWash', JSON.stringify(carWashDistance));
 	};
 
 	return (

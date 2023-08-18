@@ -24,18 +24,17 @@ export const VerificationPage = () => {
 		thirdN: '',
 		fourthN: '',
 	});
-	const phNumber = sessionStorage.getItem('phone');
 
 	// send OTP code to phone number
 
 	const handleClick = () => {
-		if (phNumber) {
+		if (user.phNumber) {
 			setIsButtonDisabled(true);
-			sendPhNumber(user && user.phNumber ? user.phNumber : phNumber);
+			sendPhNumber(user.phNumber);
 		}
 	};
 
-	// seind user OTP input
+	// send user OTP input
 
 	useEffect(() => {
 		if (code.firstN && code.secondN && code.thirdN && code.fourthN) {
@@ -106,7 +105,7 @@ export const VerificationPage = () => {
 						Введите код из СМС
 					</Text>
 					<Text fontSize="15px" color="#C7C7CB" fontWeight="500" mb="30px">
-						Код направлен на {user.phNumber ? user.phNumber : phNumber}
+						Код направлен на {user.phNumber}
 					</Text>
 
 					<VerificationList code={code} setCode={setCode} />

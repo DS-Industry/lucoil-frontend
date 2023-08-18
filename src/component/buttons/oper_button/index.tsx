@@ -33,7 +33,6 @@ export const OperButton: React.FC<IOperButton> = ({
 		}
 		if (switchCarWashType && switchCarWashType !== 'tel') {
 			if (switchCarWashType === 'bay') {
-				sessionStorage.setItem('bayNumber', String(value));
 				updateStore({
 					bayNumber: Number(value),
 				});
@@ -44,7 +43,6 @@ export const OperButton: React.FC<IOperButton> = ({
 		}
 		if (isSum) {
 			onClick();
-			sessionStorage.setItem('sum', String(value));
 			updateStore({
 				sum: Number(value),
 			});

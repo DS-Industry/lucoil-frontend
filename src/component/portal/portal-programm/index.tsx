@@ -17,7 +17,6 @@ export const PortalService: React.FC<IPortalService> = ({ name, cost }) => {
 		navigate('/order');
 		updateStore({ sum: Number(cost) });
 		updateCWStore({ program: name });
-		sessionStorage.setItem('program', name);
 	};
 
 	return (

@@ -20,28 +20,30 @@ export const CarWashMainInfo: React.FC<ICarWashMainInfo> = ({
 }) => {
 	return (
 		<Flex flexDirection="column">
-			<CarWashMap
-				isDisabled={false}
-				carWash={carWash}
-				id={carWash.id}
-				title={carWash.name}
-				openTime="24 часа"
-				address={carWash.address}
-				distance={distance}
-				getCarWash={setCarWash}
-				setCarWashDrawer={setDrawerSwitch}
-			/>
-			{distance && distance > 500 && (
-				<Flex w="100%" justifyContent="center" mt="20px">
-					<TagInfo
-						label="АМС слишком далеко от вас!"
-						bgColor="colors.SECONDARY_RED"
-						color="colors.PRIMARY_RED"
-						fontSize="14px"
-						height="28px"
-					/>
-				</Flex>
-			)}
+			<Box w="100%" mb="20px">
+				<CarWashMap
+					isDisabled={false}
+					carWash={carWash}
+					id={carWash.id}
+					title={carWash.name}
+					openTime="24 часа"
+					address={carWash.address}
+					distance={distance}
+					getCarWash={setCarWash}
+					setCarWashDrawer={setDrawerSwitch}
+				/>
+				{distance && distance > 500 && (
+					<Flex w="100%" justifyContent="center" mt="20px">
+						<TagInfo
+							label="АМС слишком далеко от вас!"
+							bgColor="colors.SECONDARY_RED"
+							color="colors.PRIMARY_RED"
+							fontSize="14px"
+							height="28px"
+						/>
+					</Flex>
+				)}
+			</Box>
 
 			{carWashMainInfo && carWashMainInfo.carWashes.length < 2 && (
 				<Box

@@ -1,10 +1,12 @@
 import React from 'react';
+import secureLocalStorage from 'react-secure-storage';
 
 interface IUserPartial {
 	partnerCard?: string | number | null;
 	phNumber?: string | null;
 	token?: string | null;
 	isLoading?: boolean;
+	error?: any | null;
 }
 
 interface IUserContext {
@@ -12,6 +14,7 @@ interface IUserContext {
 	updateStore: (data: IUserPartial) => void;
 	sendCode: (verificationCode: string) => void;
 	sendPhNumber: (phNumber: string) => void;
+	getStore: () => void;
 }
 
 const UserContext = React.createContext<IUserContext | null>(null);
@@ -24,11 +27,18 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 		phNumber: null,
 		token: null,
 		isLoading: false,
+		error: null,
 	});
 
 	const updateStore = (data: IUserPartial) => {
 		const state = { ...user, ...data };
-		setUser(state);
+		secureLocalStorage.setItem('user-store', state);
+		getStore();
+	};
+
+	const getStore = () => {
+		const store: IUserPartial | any = secureLocalStorage.getItem('user-store');
+		setUser(store);
 	};
 
 	const sendPhNumber = async (phNumber: string) => {
@@ -37,7 +47,6 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 			const correctPhNumber = phNumber.replaceAll(' ', '');
 			//-------- Add endPoint to send Number and get code --------
 			console.log('Отправка номера...', correctPhNumber);
-			sessionStorage.setItem('phone', correctPhNumber);
 			/*
 			cosnt response = await api.post('', {
 				correctPhNumber,
@@ -48,20 +57,20 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 			updateStore({ isLoading: false, phNumber: correctPhNumber /* signUp */ });
 		} catch (error) {
 			console.log(error);
-			updateStore({ isLoading: false });
+			updateStore({ isLoading: false, error });
 		}
 	};
 
 	const sendCode = async (verificationCode: string) => {
 		try {
-			const card = user.partnerCard;
+			const partnerCard = user.partnerCard;
 			updateStore({ isLoading: true });
 			//-------- Add endPoint to send code and get status --------
 			console.log('Отправка кода...');
 			/* 
 			const response = await api.post('', {
 				verificationCode,
-				parterCard: card
+				parterCard
 			}); 
 			
 			
@@ -74,7 +83,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 			/* 			updateStore({ isLoading: false, verification: true }); */
 		} catch (error) {
 			console.log(error);
-			updateStore({ isLoading: false });
+			updateStore({ isLoading: false, error: error });
 		}
 	};
 
@@ -85,6 +94,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 				updateStore,
 				sendCode,
 				sendPhNumber,
+				getStore,
 			}}
 		>
 			{children}

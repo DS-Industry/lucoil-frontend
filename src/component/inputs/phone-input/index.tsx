@@ -3,15 +3,27 @@ import { ChangeEvent } from 'react';
 
 interface IPhoneInput {
 	value: string;
-	formatPhoneNumber: (value: string) => string;
 	setValue: (value: string) => void;
 }
 
-export const PhoneInput: React.FC<IPhoneInput> = ({
-	value,
-	formatPhoneNumber,
-	setValue,
-}) => {
+export const PhoneInput: React.FC<IPhoneInput> = ({ value, setValue }) => {
+	const formatPhoneNumber = (input: string) => {
+		let splitFormatter = input.split('');
+		if (
+			(input.length === 4 || input.length === 8 || input.length === 11) &&
+			splitFormatter[splitFormatter.length - 1] === ' '
+		) {
+			splitFormatter.pop();
+		} else if (
+			input.length === 4 ||
+			input.length === 8 ||
+			input.length === 11
+		) {
+			splitFormatter.splice(input.length - 1, 0, ' ');
+		}
+		return splitFormatter.join('');
+	};
+
 	return (
 		<Box mt="50px" width="100%">
 			<Text fontWeight="700" fontSize="20px">

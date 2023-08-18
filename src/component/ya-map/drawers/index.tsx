@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { CustomDrawer } from '../../drawer';
 import { CarWashFullInfo } from '../../car-wash/car-wash-full-info';
 import { NumInput } from '../../inputs/num-input';
 import { useNavigate } from 'react-router-dom';
 import { PortalProgramList } from '../../portal/portal-program-list';
-import { useCarWash } from '../../../context/carwash-context';
-import { Navbar } from '../../nav-bar';
 import { ListPage } from '../../../pages/list';
 import { YandexMaps } from '../map';
 import { CarWashMainInfo } from '../../car-wash/car-wash-main-info';
@@ -13,11 +11,6 @@ import { SelectBay } from '../../select-bay';
 
 export const CustomYMap = () => {
 	const navigate = useNavigate();
-
-	const { store, getCarWashList } = useCarWash();
-	const [carWashWithDistance, setCarWashWithDistance] = useState<Array<any>>(
-		[]
-	);
 
 	const [userPosition, setUserPosition] = useState<number[]>([]);
 	const [drawerSwitch, setDrawerSwitch] = useState<string>('');
@@ -35,38 +28,10 @@ export const CustomYMap = () => {
 		navigate('/order');
 	};
 
-	useEffect(() => {
-		async function getCarWashListWithCoords() {
-			await getCarWashList();
-			//console.log(store.carWashes);
-			navigator.geolocation.getCurrentPosition((position) => {
-				const { latitude, longitude } = position.coords;
-				setUserPosition([latitude, longitude]);
-			});
-		}
-
-		if (!store.isLoading) {
-			getCarWashListWithCoords();
-		}
-	}, []);
-
-	useEffect(() => {
-		console.log('distance array length', carWashWithDistance.length);
-		if (carWashWithDistance.length) {
-			console.log('this is store carwashes');
-			console.log(store.carWashes);
-			console.log('this is store carwashes upper');
-			console.log('----------- START --------------');
-			console.log(carWashWithDistance);
-			console.log('----------- END ------------------');
-		}
-	}, [carWashWithDistance]);
-
 	return (
 		<>
 			<YandexMaps
 				userPosition={userPosition}
-				store={store}
 				carWashCoords={carWashCoords ? carWashCoords : null}
 				carWashIdList={carWashIdList}
 				setCarWash={setCarWash}
@@ -75,12 +40,9 @@ export const CustomYMap = () => {
 				setCarWashMainInfo={setCarWashMainInfo}
 				setDistance={setDistance}
 				setDrawerSwitch={setDrawerSwitch}
-				setCarWashWithDistance={setCarWashWithDistance}
-				carWashWithDistance={carWashWithDistance}
 				drawerSwitch={drawerSwitch}
+				setUserPosition={setUserPosition}
 			/>
-
-			{store.carWashes && <Navbar openList={setDrawerSwitch} />}
 
 			<CustomDrawer
 				key={100}

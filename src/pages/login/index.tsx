@@ -13,28 +13,9 @@ export const LoginPage: React.FC = () => {
 
 	const handleClick = () => {
 		const phNumber = `+7 ${value}`;
-		const correctPhNumber = phNumber.replaceAll(' ', '');
-		console.log(correctPhNumber);
-		sessionStorage.setItem('phone', correctPhNumber);
+		console.log(`login page, phone number ${phNumber}`);
 		sendPhNumber(phNumber);
 		navigate('/verification');
-	};
-
-	const formatPhoneNumber = (input: string) => {
-		let splitFormatter = input.split('');
-		if (
-			(input.length === 4 || input.length === 8 || input.length === 11) &&
-			splitFormatter[splitFormatter.length - 1] === ' '
-		) {
-			splitFormatter.pop();
-		} else if (
-			input.length === 4 ||
-			input.length === 8 ||
-			input.length === 11
-		) {
-			splitFormatter.splice(input.length - 1, 0, ' ');
-		}
-		return splitFormatter.join('');
 	};
 
 	return (
@@ -61,11 +42,7 @@ export const LoginPage: React.FC = () => {
 					paddingInline="16px"
 					alignItems="flex-start"
 				>
-					<PhoneInput
-						value={value}
-						setValue={setValue}
-						formatPhoneNumber={formatPhoneNumber}
-					/>
+					<PhoneInput value={value} setValue={setValue} />
 					<OperButton
 						title="Далее"
 						onClick={handleClick}

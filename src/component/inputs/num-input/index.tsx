@@ -29,7 +29,6 @@ export const NumInput: React.FC<INumInput> = ({
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
 		setValue(event.target.value);
-		console.log(event.target.value);
 		if (Number(event.target.value) < minValue) {
 			setMessageSwitch(1);
 		} else {

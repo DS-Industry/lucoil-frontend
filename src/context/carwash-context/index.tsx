@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import api from '../../api';
+import secureLocalStorage from 'react-secure-storage';
 
 interface ICarWashStorePartial {
 	carWash?: any | null;
@@ -7,6 +8,7 @@ interface ICarWashStorePartial {
 	pingStatus?: any | null;
 	isLoading?: boolean;
 	program?: string;
+	error?: any | null;
 }
 
 interface ICarWashContext {
@@ -14,6 +16,7 @@ interface ICarWashContext {
 	getCarWashList: () => void;
 	pingCarWash: (carWashId: number, bayNumber: number) => void;
 	updateStore: (newState: ICarWashStorePartial) => void;
+	getStore: () => void;
 }
 
 const CarWashContext = React.createContext<ICarWashContext | null>(null);
@@ -25,11 +28,19 @@ const CarWashProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 		pingStatus: null,
 		isLoading: false,
 		program: '',
+		error: null,
 	});
 
 	const updateStore = (newState: ICarWashStorePartial) => {
 		const state = { ...store, ...newState };
-		setStore(state);
+		secureLocalStorage.setItem('carWash-store', state);
+		getStore();
+	};
+
+	const getStore = () => {
+		const store: ICarWashStorePartial | any =
+			secureLocalStorage.getItem('carWash-store');
+		setStore(store);
 	};
 
 	const getCarWashList = async () => {
@@ -40,7 +51,7 @@ const CarWashProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 			updateStore({ carWashes: response.data, isLoading: false });
 		} catch (error) {
 			console.log(error);
-			updateStore({ isLoading: false, carWashes: null });
+			updateStore({ isLoading: false, carWashes: null, error });
 		}
 	};
 
@@ -57,7 +68,7 @@ const CarWashProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 			return;
 		} catch (error) {
 			console.log(error);
-			updateStore({ isLoading: false, pingStatus: 400 });
+			updateStore({ isLoading: false, pingStatus: 400, error });
 		}
 	};
 
@@ -68,6 +79,7 @@ const CarWashProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 				getCarWashList,
 				pingCarWash,
 				updateStore,
+				getStore,
 			}}
 		>
 			{children}

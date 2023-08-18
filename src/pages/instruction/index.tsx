@@ -3,17 +3,17 @@ import { Header } from '../../component/header';
 import { instructionList } from '../../utill/variabels';
 import { OperButton } from '../../component/buttons/oper_button';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useOrder } from '../../context/order-context';
 import { useEffect } from 'react';
 import { Logo } from '../../component/logo';
 import { InstructionList } from '../../component/hard-data/instructions';
 import { MainText } from '../../component/hard-data/main-text';
+import { useUser } from '../../context/user-context';
 
 export const InstructionPage: React.FC = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	const { updateStore } = useOrder();
+	const { updateStore } = useUser();
 
 	const handleClick = () => {
 		navigate('/login');
@@ -25,7 +25,6 @@ export const InstructionPage: React.FC = () => {
 
 		if (partnerCard) {
 			console.log(partnerCard);
-			sessionStorage.setItem('partnerCard', String(partnerCard));
 			updateStore({
 				partnerCard,
 			});

@@ -4,41 +4,41 @@ import { Box, Flex, HStack, Text, useToast } from '@chakra-ui/react';
 import { OperButton } from '../../component/buttons/oper_button';
 import { useCarWash } from '../../context/carwash-context';
 import { TagInfo } from '../../component/tag-info';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../context/user-context';
-
-interface IStorageData {
-	phone: string | null;
-	partnerCard: string | null;
-	sum: string | null;
-	bayNumber: string | null;
-	carWash: any | null;
-	program: string | null;
-}
 
 export const OrderPage: React.FC = () => {
 	const toast = useToast();
 	const navigate = useNavigate();
-	const { store, sendPayment } = useOrder();
+
+	const {
+		store: orderStore,
+		sendPayment,
+		getStore: getOrderStore,
+	} = useOrder();
+
 	const {
 		store: carWashStore,
 		pingCarWash,
 		updateStore: updateCWStore,
+		getStore: getCWStore,
 	} = useCarWash();
-	const { user } = useUser();
-	const [storageData, setStorageData] = useState<IStorageData | null>(null);
+
+	const { user: userStore, getStore: getUserStore } = useUser();
 
 	const handleClick = () => {
-		if (store.carWashId) {
-			pingCarWash(Number(store.carWashId), Number(store.bayNumber));
-		} else {
-			pingCarWash(
-				Number(storageData?.carWash.id),
-				Number(storageData?.bayNumber)
-			);
+		if (orderStore.carWashId) {
+			pingCarWash(Number(orderStore.carWashId), Number(orderStore.bayNumber));
 		}
 	};
+
+	useEffect(() => {
+		getOrderStore();
+		getCWStore();
+		getUserStore();
+		console.log(orderStore, carWashStore, userStore);
+	}, []);
 
 	useEffect(() => {
 		if (carWashStore.pingStatus === 200) {
@@ -46,16 +46,8 @@ export const OrderPage: React.FC = () => {
 				pingStatus: null,
 			});
 			const data = {
-				amount: store.sum
-					? String(store.sum)
-					: storageData?.sum
-					? storageData.sum
-					: 'null',
-				phone: user.phNumber
-					? String(user.phNumber)
-					: storageData?.phone
-					? storageData.phone
-					: 'string',
+				amount: String(orderStore.sum),
+				phone: String(userStore.phNumber),
 			};
 			sendPayment(data);
 			console.log('ping status free');
@@ -79,35 +71,10 @@ export const OrderPage: React.FC = () => {
 	}, [carWashStore.pingStatus]);
 
 	useEffect(() => {
-		if (store.paymentTocken) {
+		if (orderStore.paymentTocken) {
 			navigate('/pay');
 		}
-	}, [store.paymentTocken]);
-
-	useEffect(() => {
-		const phNumber = sessionStorage.getItem('phone');
-		const partnerCard = sessionStorage.getItem('partnerCard');
-		const sum = sessionStorage.getItem('sum');
-		const bayNumber = sessionStorage.getItem('bayNumber');
-		const program = sessionStorage.getItem('program');
-		const carWash = sessionStorage.getItem('carWash');
-		if (carWash) {
-			setStorageData({
-				phone: phNumber,
-				partnerCard: partnerCard,
-				sum: sum,
-				bayNumber: bayNumber,
-				carWash: JSON.parse(carWash),
-				program: program,
-			});
-		}
-	}, []);
-
-	useEffect(() => {
-		if (storageData) {
-			console.log(storageData);
-		}
-	}, [storageData]);
+	}, [orderStore.paymentTocken]);
 
 	return (
 		<Flex
@@ -119,153 +86,106 @@ export const OrderPage: React.FC = () => {
 			p="28px"
 			pb="0"
 		>
-			<Flex flexDirection="column">
-				<CarWashMap
-					id={String(store.sum)}
-					title={
-						carWashStore.carWash
-							? carWashStore.carWash.name
-							: storageData?.carWash
-							? storageData.carWash['name']
-							: 'cwnamve'
-					}
-					openTime="24часа"
-					address={
-						carWashStore.carWash
-							? carWashStore.carWash.address
-							: storageData?.carWash
-							? storageData?.carWash.address
-							: 'address'
-					}
-					distance={
-						carWashStore.carWash
-							? carWashStore.carWash.distance
-							: storageData?.carWash
-							? storageData?.carWash.distance
-							: 'distance'
-					}
-					isDisabled={true}
-					IsOrder={true}
-				/>
-				{carWashStore.carWash && carWashStore.carWash.type === 'Portal' ? (
-					<Box>
-						<Text pt="30px" fontSize="15px" fontWeight="700">
-							Программа
-						</Text>
-						<TagInfo
-							label={carWashStore.program ? carWashStore.program : ''}
-							bgColor="colors.PRIMARY_RED"
-							color="colors.WHITE"
-							fontSize="14px"
-							height="20px"
+			{userStore.partnerCard && carWashStore.carWash && (
+				<>
+					<Flex flexDirection="column">
+						<CarWashMap
+							id={String(orderStore.sum)}
+							title={carWashStore.carWash.name}
+							openTime="24часа"
+							address={carWashStore.carWash.address}
+							distance={carWashStore.carWash.distance}
+							isDisabled={true}
+							IsOrder={true}
 						/>
-					</Box>
-				) : storageData?.carWash && storageData?.carWash.type === 'Portal' ? (
-					<Box>
+						{carWashStore.carWash && carWashStore.carWash.type === 'Portal' && (
+							<Box>
+								<Text pt="30px" fontSize="15px" fontWeight="700">
+									Программа
+								</Text>
+								<TagInfo
+									label={carWashStore.program ? carWashStore.program : ''}
+									bgColor="colors.PRIMARY_RED"
+									color="colors.WHITE"
+									fontSize="14px"
+									height="20px"
+								/>
+							</Box>
+						)}
 						<Text pt="30px" fontSize="15px" fontWeight="700">
-							Программа
+							Пост
 						</Text>
-						<TagInfo
-							label={storageData.program ? storageData.program : ''}
-							bgColor="colors.PRIMARY_RED"
-							color="colors.WHITE"
-							fontSize="14px"
-							height="20px"
-						></TagInfo>
-					</Box>
-				) : (
-					''
-				)}
-				<Text pt="30px" fontSize="15px" fontWeight="700">
-					Пост
-				</Text>
-				<Box w="30%">
-					<TagInfo
-						label={
-							store.bayNumber
-								? String(store.bayNumber)
-								: storageData?.bayNumber
-								? storageData.bayNumber
-								: 'bayNumber'
-						}
-						bgColor="colors.PRIMARY_RED"
-						color="colors.WHITE"
-						fontSize="14px"
-						height="20px"
-					/>
-				</Box>
-				<Text pt="30px" fontSize="15px" fontWeight="700">
-					Кэшбек на карту Лукойл
-				</Text>
-				<Box w="30%">
-					<TagInfo
-						label="10 %"
-						bgColor="colors.PRIMARY_RED"
-						color="colors.WHITE"
-						fontSize="14px"
-						height="20px"
-					/>
-				</Box>
-				<HStack w="80vw">
-					<Text pt="36px" fontSize="15px" fontWeight="400">
-						Карта программы лояльности
-						<Text
-							as="span"
-							color="colors.PRIMARY_RED"
-							ml="5px"
-							fontSize="15px"
-							fontWeight="700"
-							letterSpacing="2px"
-						>
-							ЛУКОЙЛ
+						<Box w="30%">
+							<TagInfo
+								label={String(orderStore.bayNumber)}
+								bgColor="colors.PRIMARY_RED"
+								color="colors.WHITE"
+								fontSize="14px"
+								height="20px"
+							/>
+						</Box>
+						<Text pt="30px" fontSize="15px" fontWeight="700">
+							Кэшбек на карту Лукойл
 						</Text>
-						:
-					</Text>
-				</HStack>
-				<Box mt="11px" fontWeight="500">
-					<TagInfo
-						label={
-							store.partnerCard
-								? store.partnerCard
-								: storageData?.partnerCard
-								? storageData.partnerCard
-								: 'partner card'
-						}
-						bgColor="colors.WHITE_GRAY"
-						color="colors.BLACK"
-						fontSize="14px"
-						height="20px"
-						fontWeight="500"
-					/>
-				</Box>
-				<Box mt="11px" fontWeight="500">
-					<TagInfo
-						label={
-							user.phNumber
-								? user.phNumber
-								: storageData?.phone
-								? storageData.phone
-								: 'phone number'
-						}
-						bgColor="colors.WHITE_GRAY"
-						color="colors.BLACK"
-						fontSize="14px"
-						height="20px"
-						fontWeight="500"
-					/>
-				</Box>
-			</Flex>
-			<Flex flexDirection="inherit" justifyContent="center">
-				<Text w="100%" textAlign="center" fontSize="48px" fontWeight="700">
-					{store.sum ? store.sum : storageData?.sum ? storageData.sum : 'sum'} ₽
-				</Text>
-				<OperButton
-					title="Оплатить"
-					onClick={handleClick}
-					disabled={false}
-					isOper={false}
-				/>
-			</Flex>
+						<Box w="30%">
+							<TagInfo
+								label="10 %"
+								bgColor="colors.PRIMARY_RED"
+								color="colors.WHITE"
+								fontSize="14px"
+								height="20px"
+							/>
+						</Box>
+						<HStack w="80vw">
+							<Text pt="36px" fontSize="15px" fontWeight="400">
+								Карта программы лояльности
+								<Text
+									as="span"
+									color="colors.PRIMARY_RED"
+									ml="5px"
+									fontSize="15px"
+									fontWeight="700"
+									letterSpacing="2px"
+								>
+									ЛУКОЙЛ
+								</Text>
+								:
+							</Text>
+						</HStack>
+						<Box mt="11px" fontWeight="500">
+							<TagInfo
+								label={String(userStore.partnerCard)}
+								bgColor="colors.WHITE_GRAY"
+								color="colors.BLACK"
+								fontSize="14px"
+								height="20px"
+								fontWeight="500"
+							/>
+						</Box>
+						<Box mt="11px" fontWeight="500">
+							<TagInfo
+								label={String(userStore.phNumber)}
+								bgColor="colors.WHITE_GRAY"
+								color="colors.BLACK"
+								fontSize="14px"
+								height="20px"
+								fontWeight="500"
+							/>
+						</Box>
+					</Flex>
+					<Flex flexDirection="inherit" justifyContent="center">
+						<Text w="100%" textAlign="center" fontSize="48px" fontWeight="700">
+							{orderStore.sum} ₽
+						</Text>
+						<OperButton
+							title="Оплатить"
+							onClick={handleClick}
+							disabled={false}
+							isOper={false}
+						/>
+					</Flex>
+				</>
+			)}
 		</Flex>
 	);
 };

@@ -30,6 +30,7 @@ export const SelectBay: React.FC<ISelectBay> = ({ carWash, onClick }) => {
 				{carWash.boxes.map((box: any, index: number) => {
 					return (
 						<Box
+							key={index}
 							marginRight="16px"
 							minW="16vw"
 							minH="16vw"

@@ -21,8 +21,6 @@ interface ICustomPlacemark {
 	setPlaceMarkStyle: any;
 	setCarWash: any;
 	setCarWashId: any;
-	setCarWashWithDistance: any;
-	carWashWithDistance: any;
 }
 
 export const CustomPlacemark: React.FC<ICustomPlacemark> = ({

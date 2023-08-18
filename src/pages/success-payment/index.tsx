@@ -4,10 +4,12 @@ import { Header } from '../../component/header';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useOrder } from '../../context/order-context';
+import { useCarWash } from '../../context/carwash-context';
 
 export const SuccessPaymentPage = () => {
 	const { updateStore } = useOrder();
 	const navigate = useNavigate();
+	const { updateStore: updateCWStore } = useCarWash();
 	useEffect(() => {
 		updateStore({
 			paymentId: null,
@@ -16,7 +18,9 @@ export const SuccessPaymentPage = () => {
 			bayNumber: null,
 			sum: null,
 		});
-		sessionStorage.removeItem('carWash');
+		updateCWStore({
+			carWash: null,
+		});
 		setTimeout(() => {
 			navigate('/home');
 		}, 3000);

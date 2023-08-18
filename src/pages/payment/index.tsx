@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useOrder } from '../../context/order-context';
-import { useNavigate } from 'react-router-dom';
 export const PaymentPage = () => {
 	const { store, sendOrder } = useOrder();
-	const navigate = useNavigate();
 
 	useEffect(() => {
 		const script = document.createElement('script');
