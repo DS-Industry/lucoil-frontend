@@ -16,7 +16,7 @@ interface IVerificationCode {
 export const VerificationPage = () => {
 	const toast = useToast();
 	const navigate = useNavigate();
-	const { user, sendCode, sendPhNumber, getStore } = useUser();
+	const { user, signIn, signUp, sendPhNumber, getStore } = useUser();
 	const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
 	const [code, setCode] = useState<IVerificationCode>({
 		firstN: '',
@@ -39,7 +39,7 @@ export const VerificationPage = () => {
 	useEffect(() => {
 		if (code.firstN && code.secondN && code.thirdN && code.fourthN) {
 			const result = Object.values(code).join('');
-			sendCode(result);
+			signIn(result);
 		}
 	}, [code.firstN, code.secondN, code.thirdN, code.fourthN]);
 
@@ -47,29 +47,17 @@ export const VerificationPage = () => {
 
 	useEffect(() => {
 		if (!user.isLoading) {
-			setCode({
-				firstN: '',
-				secondN: '',
-				thirdN: '',
-				fourthN: '',
-			});
-			console.log('this is user token', user.token);
-			if (user.token === 'success token') {
+			console.log('this is result', user.token);
+			console.log('this is error: ', user.error);
+			if (
+				user.token === 'success registration' ||
+				user.token === 'success authorization'
+			) {
 				navigate('/home');
-			} else if (user.token === 'error token') {
-				toast({
-					containerStyle: {
-						marginTop: 'none',
-						width: '95vw',
-					},
-					position: 'top',
-					title: 'Ошибка',
-					variant: 'subtle',
-					description: 'Неверный код',
-					status: 'error',
-					duration: 9000,
-					isClosable: true,
-				});
+				console.log('navigate to home');
+			} else if (user.error && user.error.status === 404) {
+				const result = Object.values(code).join('');
+				signUp(result);
 			} else if (user.error) {
 				toast({
 					containerStyle: {
@@ -85,6 +73,12 @@ export const VerificationPage = () => {
 					isClosable: true,
 				});
 			}
+			setCode({
+				firstN: '',
+				secondN: '',
+				thirdN: '',
+				fourthN: '',
+			});
 		}
 	}, [user.isLoading]);
 

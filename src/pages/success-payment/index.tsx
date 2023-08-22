@@ -21,6 +21,7 @@ export const SuccessPaymentPage = () => {
 		updateCWStore({
 			carWash: null,
 		});
+		console.log('i am in success');
 		setTimeout(() => {
 			navigate('/home');
 		}, 3000);

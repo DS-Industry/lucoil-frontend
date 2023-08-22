@@ -12,7 +12,8 @@ interface IUserPartial {
 interface IUserContext {
 	user: IUserPartial;
 	updateStore: (data: IUserPartial) => void;
-	sendCode: (verificationCode: string) => void;
+	signUp: (verificationCode: string) => void;
+	signIn: (verificationCode: string) => void;
 	sendPhNumber: (phNumber: string) => void;
 	getStore: () => void;
 }
@@ -70,16 +71,41 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 		}
 	};
 
-	const sendCode = async (verificationCode: string) => {
+	const signUp = async (verificationCode: string) => {
 		try {
 			const partnerCard = user.partnerCard;
 			updateStore({ isLoading: true });
-			//-------- Add endPoint to send code and get status --------
-			console.log('Отправка кода...');
+			console.log('Отправка кода для регистрации');
+			// -------------- Add endpoint to send code for registration -----------
+			/* 
+				const response = await api.post('', {
+				verificationCode,
+				parterCard
+			});
+
+			*/
+			setTimeout(() => {
+				const random = Math.floor(Math.random() * 100);
+				console.log('this is random number: ', random);
+				updateStore({
+					isLoading: false,
+					token: random >= 0 && random <= 50 ? 'success registration' : null,
+					error: random >= 50 ? 'error' : null,
+				});
+			}, 2000);
+		} catch (error: any) {
+			console.log(error);
+			updateStore({ isLoading: false, error });
+		}
+	};
+	const signIn = async (verificationCode: string) => {
+		try {
+			updateStore({ isLoading: true });
+			//-------- Add endPoint to authentication --------
+			console.log('Отправка кода для авторизации...');
 			/* 
 			const response = await api.post('', {
 				verificationCode,
-				parterCard
 			}); 
 			
 			
@@ -90,15 +116,15 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 				console.log('this is random number: ', random);
 				updateStore({
 					isLoading: false,
-					token:
-						random >= 0 && random <= 33
-							? 'success token'
-							: random > 33 && random < 66
-							? 'error token'
+					token: random >= 0 && random <= 50 ? 'success authorization' : null,
+					error:
+						random >= 50 && random <= 75
+							? { status: 505 }
+							: random > 75
+							? { status: 404 }
 							: null,
-					error: random >= 66 ? 'error' : null,
 				});
-			}, 5000);
+			}, 2000);
 			//----------------------------------------------------------
 			/* 			updateStore({ isLoading: false, verification: true }); */
 		} catch (error) {
@@ -112,7 +138,8 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 			value={{
 				user,
 				updateStore,
-				sendCode,
+				signIn,
+				signUp,
 				sendPhNumber,
 				getStore,
 			}}

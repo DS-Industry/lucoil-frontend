@@ -16,6 +16,7 @@ export const OrderPage: React.FC = () => {
 		store: orderStore,
 		sendPayment,
 		getStore: getOrderStore,
+		updateStore: updateOrderStore,
 	} = useOrder();
 
 	const {
@@ -71,10 +72,29 @@ export const OrderPage: React.FC = () => {
 	}, [carWashStore.pingStatus]);
 
 	useEffect(() => {
-		if (orderStore.paymentTocken) {
-			navigate('/pay');
+		if (!orderStore.isLoading) {
+			if (orderStore.paymentTocken) {
+				navigate('/pay');
+			}
+			if (orderStore.error) {
+				toast({
+					containerStyle: {
+						marginTop: 'none',
+						width: '95vw',
+					},
+					position: 'top',
+					title: 'Кажется что-то пошло не так...',
+					variant: 'subtle',
+					description: 'На сервере ведутся работы, приходите позже',
+					status: 'error',
+					duration: 9000,
+					isClosable: true,
+				});
+				updateOrderStore({ error: null });
+				navigate('/home');
+			}
 		}
-	}, [orderStore.paymentTocken]);
+	}, [orderStore.isLoading]);
 
 	return (
 		<Flex

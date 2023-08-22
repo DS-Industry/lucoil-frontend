@@ -42,7 +42,6 @@ const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
 		isLoading: false,
 		error: null,
 	});
-	const navigate = useNavigate();
 	const { user } = useUser();
 
 	const updateStore = (data: IOrderStorePartial) => {
@@ -67,6 +66,7 @@ const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
 				redirect_url: 'http://localhost:3000',
 			});
 			console.log(response.data);
+			const random = Math.floor(Math.random() * 100);
 			updateStore({
 				isLoading: false,
 				paymentId: response.data.id,
@@ -88,7 +88,7 @@ const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
 				orderSum: store.sum,
 				partnerCard: user.partnerCard,
 			});
-			navigate('/success');
+			updateStore({ isLoading: false });
 		} catch (error: any) {
 			console.log(error);
 			updateStore({ isLoading: false, error });

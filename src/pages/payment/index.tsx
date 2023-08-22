@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { useOrder } from '../../context/order-context';
+import { useNavigate } from 'react-router-dom';
 export const PaymentPage = () => {
 	const { store, sendOrder } = useOrder();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const script = document.createElement('script');
@@ -23,15 +25,14 @@ export const PaymentPage = () => {
 				// @ts-ignore
 				error_callback: function (error) {
 					console.log(error);
+					navigate('/error');
 				},
 			});
 
-			checkout.on('success', () => {
+			checkout.on('success', async () => {
 				//Код, который нужно выполнить после успешной оплаты.
-				console.log('Start Equipment');
-				sendOrder();
-				console.log('after order');
-				console.log(store);
+				await sendOrder();
+				navigate('/success');
 				//Удаление инициализированного виджета
 				checkout.destroy();
 			});
