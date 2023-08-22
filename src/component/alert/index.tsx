@@ -3,18 +3,16 @@ import {
 	AlertDescription,
 	AlertIcon,
 	AlertTitle,
+	Box,
 } from '@chakra-ui/react';
 
 export const CustomAlert = () => {
 	return (
-		<>
+		<Box>
 			<Alert
-				w="100vw"
 				justifyContent="center"
 				flexDir="column"
 				status="error"
-				ml="16px"
-				mr="16px"
 				borderRadius="16px"
 			>
 				<AlertIcon boxSize="40px" mr={0} />
@@ -30,6 +28,6 @@ export const CustomAlert = () => {
 					На сервере ведутся работы, приходите позже
 				</AlertDescription>
 			</Alert>
-		</>
+		</Box>
 	);
 };

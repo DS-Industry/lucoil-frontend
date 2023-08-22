@@ -56,15 +56,15 @@ export const YandexMaps: React.FC<IYandexMaps> = React.memo(
 		}, []);
 
 		return (
-			<Flex
-				h="100vh"
-				w="100%"
-				justifyContent="space-evenly"
-				alignItems="center"
-				flexDirection="column"
-			>
+			<>
 				{store.carWashes && userPosition.length > 0 ? (
-					<>
+					<Flex
+						h="100vh"
+						w="100vw"
+						justifyContent="space-evenly"
+						alignItems="center"
+						flexDirection="column"
+					>
 						<YMaps
 							enterprise
 							query={{
@@ -134,13 +134,23 @@ export const YandexMaps: React.FC<IYandexMaps> = React.memo(
 							</Map>
 						</YMaps>
 						<Navbar openList={setDrawerSwitch} />
-					</>
+					</Flex>
 				) : store.carWashes === null ? (
-					<CustomAlert />
+					<Flex
+						h="100vh"
+						alignItems="center"
+						alignContent="center"
+						ml="20px"
+						mr="20px"
+					>
+						<CustomAlert />
+					</Flex>
 				) : (
-					<Spinner h="30px" w="30px" />
+					<Flex w="100vw" h="100vh" justifyContent="center" alignItems="center">
+						<Spinner h="30px" w="30px" />
+					</Flex>
 				)}
-			</Flex>
+			</>
 		);
 	}
 );

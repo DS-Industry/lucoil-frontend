@@ -74,7 +74,7 @@ const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
 			});
 		} catch (error) {
 			console.log(error);
-			updateStore({ isLoading: false });
+			updateStore({ isLoading: false, error });
 		}
 	};
 
@@ -89,9 +89,9 @@ const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
 				partnerCard: user.partnerCard,
 			});
 			navigate('/success');
-		} catch (e: any) {
-			console.log(e);
-			updateStore({ isLoading: false, error: e });
+		} catch (error: any) {
+			console.log(error);
+			updateStore({ isLoading: false, error });
 		}
 	};
 

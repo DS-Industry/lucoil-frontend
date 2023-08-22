@@ -63,7 +63,7 @@ export const InstructionPage: React.FC = () => {
 					})}
 					<Box pl="13px" pr="13px" w="100%">
 						<OperButton
-							title="Искать мойку"
+							title="Искать автомойку"
 							onClick={handleClick}
 							disabled={false}
 							isOper={false}

@@ -16,7 +16,7 @@ interface IVerificationCode {
 export const VerificationPage = () => {
 	const toast = useToast();
 	const navigate = useNavigate();
-	const { user, sendCode, sendPhNumber } = useUser();
+	const { user, sendCode, sendPhNumber, getStore } = useUser();
 	const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
 	const [code, setCode] = useState<IVerificationCode>({
 		firstN: '',
@@ -46,33 +46,53 @@ export const VerificationPage = () => {
 	// check OTP verification
 
 	useEffect(() => {
-		console.log('this is user token', user.token);
-		if (user.token === 'success') {
-			navigate('/home');
-		} else if (user.token === 'error') {
+		if (!user.isLoading) {
 			setCode({
 				firstN: '',
 				secondN: '',
 				thirdN: '',
 				fourthN: '',
 			});
-			toast({
-				containerStyle: {
-					marginTop: 'none',
-					width: '100vw',
-				},
-				position: 'top',
-				title: 'Ошибка',
-				variant: 'subtle',
-				description: 'Неверный код',
-				status: 'error',
-				duration: 9000,
-				isClosable: true,
-			});
+			console.log('this is user token', user.token);
+			if (user.token === 'success token') {
+				navigate('/home');
+			} else if (user.token === 'error token') {
+				toast({
+					containerStyle: {
+						marginTop: 'none',
+						width: '95vw',
+					},
+					position: 'top',
+					title: 'Ошибка',
+					variant: 'subtle',
+					description: 'Неверный код',
+					status: 'error',
+					duration: 9000,
+					isClosable: true,
+				});
+			} else if (user.error) {
+				toast({
+					containerStyle: {
+						marginTop: 'none',
+						width: '95vw',
+					},
+					position: 'top',
+					title: 'Кажется что-то пошло не так...',
+					variant: 'subtle',
+					description: 'На сервере ведутся работы, приходите позже',
+					status: 'error',
+					duration: 9000,
+					isClosable: true,
+				});
+			}
 		}
-	}, [user.token]);
+	}, [user.isLoading]);
 
 	// disabled button timer use effect
+
+	useEffect(() => {
+		getStore();
+	}, []);
 
 	useEffect(() => {
 		if (isButtonDisabled) {

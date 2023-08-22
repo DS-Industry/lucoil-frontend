@@ -54,10 +54,19 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 			const { signUp } = response.data
 			*/
 			//----------------------------------------------------------
-			updateStore({ isLoading: false, phNumber: correctPhNumber /* signUp */ });
+
+			setTimeout(() => {
+				const random = Math.floor(Math.random() * 100);
+				console.log('this is random number: ', random);
+				updateStore({
+					isLoading: false,
+					phNumber: random >= 0 && random <= 50 ? phNumber : null,
+					error: random >= 50 ? 'error' : null,
+				});
+			}, 3000);
 		} catch (error) {
 			console.log(error);
-			updateStore({ isLoading: false, error });
+			updateStore({ isLoading: false, error, phNumber: null });
 		}
 	};
 
@@ -77,7 +86,18 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 			const verification = response.data
 			*/
 			setTimeout(() => {
-				updateStore({ isLoading: false, token: 'success' });
+				const random = Math.floor(Math.random() * 100);
+				console.log('this is random number: ', random);
+				updateStore({
+					isLoading: false,
+					token:
+						random >= 0 && random <= 33
+							? 'success token'
+							: random > 33 && random < 66
+							? 'error token'
+							: null,
+					error: random >= 66 ? 'error' : null,
+				});
 			}, 5000);
 			//----------------------------------------------------------
 			/* 			updateStore({ isLoading: false, verification: true }); */

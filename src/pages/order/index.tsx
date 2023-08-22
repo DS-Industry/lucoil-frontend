@@ -47,7 +47,7 @@ export const OrderPage: React.FC = () => {
 			});
 			const data = {
 				amount: String(orderStore.sum),
-				phone: String(userStore.phNumber),
+				phone: String(userStore.phNumber?.replaceAll(' ', '')),
 			};
 			sendPayment(data);
 			console.log('ping status free');
@@ -155,16 +155,6 @@ export const OrderPage: React.FC = () => {
 						<Box mt="11px" fontWeight="500">
 							<TagInfo
 								label={String(userStore.partnerCard)}
-								bgColor="colors.WHITE_GRAY"
-								color="colors.BLACK"
-								fontSize="14px"
-								height="20px"
-								fontWeight="500"
-							/>
-						</Box>
-						<Box mt="11px" fontWeight="500">
-							<TagInfo
-								label={String(userStore.phNumber)}
 								bgColor="colors.WHITE_GRAY"
 								color="colors.BLACK"
 								fontSize="14px"

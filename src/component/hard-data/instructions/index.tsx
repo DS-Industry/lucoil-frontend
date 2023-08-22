@@ -13,15 +13,14 @@ export const InstructionList: React.FC<IInstructionList> = ({
 		<Flex
 			justifyContent="flex-start"
 			alignItems="flex-start"
-			pl="16px"
-			pr="16px"
+			pl="30px"
+			pr="30px"
 		>
 			<Avatar
 				name={String(index + 1)}
 				w="28px"
 				h="28px"
 				bgColor="colors.PRIMARY_RED"
-				ml="30px"
 				fontSize="16px"
 				fontWeight="600"
 			/>
