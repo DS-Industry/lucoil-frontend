@@ -35,27 +35,31 @@ export const OrderPage: React.FC = () => {
 	};
 
 	useEffect(() => {
-		getOrderStore();
-		getCWStore();
-		getUserStore();
-		console.log(orderStore, carWashStore, userStore);
-	}, []);
+		if (orderStore && carWashStore && userStore) {
+			console.log(orderStore, carWashStore, userStore);
+		}
+		if (!orderStore.sum) {
+			getOrderStore();
+		}
+		if (!carWashStore.carWash) {
+			getCWStore();
+		}
+		if (!userStore.partnerCard) {
+			getUserStore();
+		}
+	}, [orderStore, carWashStore, userStore]);
 
 	useEffect(() => {
 		if (carWashStore.pingStatus === 200) {
 			updateCWStore({
 				pingStatus: null,
 			});
-			const data = {
-				amount: String(orderStore.sum),
-				phone: String(userStore.phNumber?.replaceAll(' ', '')),
-			};
-			sendPayment(data);
+			sendPayment(String(orderStore.sum));
 			console.log('ping status free');
 		}
 
 		if (carWashStore.pingStatus === 400) {
-			console.log('is busy');
+			console.log('ping status busy');
 			updateCWStore({
 				pingStatus: null,
 			});
@@ -106,7 +110,7 @@ export const OrderPage: React.FC = () => {
 			p="28px"
 			pb="0"
 		>
-			{userStore.partnerCard && carWashStore.carWash && (
+			{userStore.partnerCard !== null && carWashStore.carWash && (
 				<>
 					<Flex flexDirection="column">
 						<CarWashMap

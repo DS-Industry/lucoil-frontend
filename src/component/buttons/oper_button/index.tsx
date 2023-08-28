@@ -1,6 +1,7 @@
 import { Button } from '@chakra-ui/react';
 import { useOrder } from '../../../context/order-context';
 import { useUser } from '../../../context/user-context';
+import { useCarWash } from '../../../context/carwash-context';
 
 interface IOperButton {
 	title: string;
@@ -23,29 +24,33 @@ export const OperButton: React.FC<IOperButton> = ({
 }) => {
 	const { updateStore } = useOrder();
 	const { updateStore: updateUserStore } = useUser();
+	const { store: carWashStore } = useCarWash();
 
 	const handleClick = () => {
+		console.log('this is drawer type: ', switchCarWashType);
 		if (switchCarWashType === 'tel') {
 			updateUserStore({
 				phNumber: value,
 			});
 			onClick();
 		}
-		if (switchCarWashType && switchCarWashType !== 'tel') {
-			if (switchCarWashType === 'bay') {
-				updateStore({
-					bayNumber: Number(value),
-				});
+		if (switchCarWashType === 'bay') {
+			console.log(value);
+			updateStore({
+				bayNumber: Number(value),
+			});
+			if (carWashStore.carWash.type === 'SelfService') {
 				onClick('sum');
 			} else {
-				onClick(switchCarWashType);
+				onClick('portal');
 			}
 		}
-		if (isSum) {
-			onClick();
+
+		if (switchCarWashType === 'sum') {
 			updateStore({
 				sum: Number(value),
 			});
+			onClick();
 		}
 
 		if (!switchCarWashType && !isSum) {

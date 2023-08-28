@@ -1,13 +1,7 @@
 import React from 'react';
 import api from '../../api';
-import { useNavigate } from 'react-router-dom';
 import secureLocalStorage from 'react-secure-storage';
 import { useUser } from '../user-context';
-
-interface IPaymentData {
-	amount: string;
-	phone: string;
-}
 
 interface IOrderStorePartial {
 	carWashId?: number | null;
@@ -23,7 +17,7 @@ interface IOrderContext {
 	store: IOrderStorePartial;
 	sendOrder: () => Promise<void>;
 	updateStore: (data: IOrderStorePartial) => void;
-	sendPayment: (data: IPaymentData) => void;
+	sendPayment: (data: string) => void;
 	getStore: () => void;
 }
 
@@ -56,21 +50,27 @@ const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
 		setStore(store);
 	};
 
-	const sendPayment = async (data: IPaymentData) => {
+	const sendPayment = async (amount: string) => {
 		try {
 			updateStore({ isLoading: true });
-			console.log(data);
-			const response = await api.post('payment/create', {
-				amount: data.amount,
-				phone: data.phone,
-				redirect_url: 'http://localhost:3000',
-			});
-			console.log(response.data);
-			const random = Math.floor(Math.random() * 100);
+			const response = await api.post(
+				'payment/create',
+				{
+					amount,
+					phone: user.phNumber,
+					redirect_url: 'http://localhost:3000',
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${user.token}`,
+					},
+				}
+			);
 			updateStore({
 				isLoading: false,
 				paymentId: response.data.id,
 				paymentTocken: response.data.confirmation.confirmation_token,
+				error: null,
 			});
 		} catch (error) {
 			console.log(error);
@@ -81,14 +81,22 @@ const OrderProvider: React.FC<{ children: React.ReactNode }> = ({
 	const sendOrder = async () => {
 		try {
 			updateStore({ isLoading: true });
-			const response = await api.post(`order/create`, {
-				paymentId: store.paymentId,
-				carWashId: store.carWashId,
-				bayNumber: store.bayNumber,
-				orderSum: store.sum,
-				partnerCard: user.partnerCard,
-			});
-			updateStore({ isLoading: false });
+			await api.post(
+				`order/create`,
+				{
+					paymentId: store.paymentId,
+					carWashId: store.carWashId,
+					bayNumber: store.bayNumber,
+					orderSum: store.sum,
+					partnerCard: user.partnerCard,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${user.token}`,
+					},
+				}
+			);
+			updateStore({ isLoading: false, error: null });
 		} catch (error: any) {
 			console.log(error);
 			updateStore({ isLoading: false, error });

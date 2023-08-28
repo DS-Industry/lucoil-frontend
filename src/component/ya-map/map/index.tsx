@@ -46,9 +46,13 @@ export const YandexMaps: React.FC<IYandexMaps> = React.memo(
 
 		useEffect(() => {
 			async function getCarWashListWithCoords() {
+				console.log('here');
+				console.log(store.carWashes);
 				await getCarWashList();
+
 				navigator.geolocation.getCurrentPosition((position) => {
 					const { latitude, longitude } = position.coords;
+					console.log(latitude, longitude);
 					setUserPosition([latitude, longitude]);
 				});
 			}
@@ -115,7 +119,7 @@ export const YandexMaps: React.FC<IYandexMaps> = React.memo(
 													placeMarkSwitch={drawerSwitch}
 												/>
 											);
-										}
+										} else return null;
 									})}
 								<Placemark
 									key={98928397239231}
@@ -135,7 +139,7 @@ export const YandexMaps: React.FC<IYandexMaps> = React.memo(
 						</YMaps>
 						<Navbar openList={setDrawerSwitch} />
 					</Flex>
-				) : store.carWashes === null ? (
+				) : store.error ? (
 					<Flex
 						h="100vh"
 						alignItems="center"

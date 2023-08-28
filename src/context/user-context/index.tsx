@@ -1,5 +1,6 @@
 import React from 'react';
 import secureLocalStorage from 'react-secure-storage';
+import api from '../../api';
 
 interface IUserPartial {
 	partnerCard?: string | number | null;
@@ -45,88 +46,64 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 	const sendPhNumber = async (phNumber: string) => {
 		try {
 			updateStore({ isLoading: true });
-			const correctPhNumber = phNumber.replaceAll(' ', '');
-			//-------- Add endPoint to send Number and get code --------
-			console.log('Отправка номера...', correctPhNumber);
-			/*
-			cosnt response = await api.post('', {
-				correctPhNumber,
-			}); 
-			const { signUp } = response.data
-			*/
-			//----------------------------------------------------------
-
-			setTimeout(() => {
-				const random = Math.floor(Math.random() * 100);
-				console.log('this is random number: ', random);
-				updateStore({
-					isLoading: false,
-					phNumber: random >= 0 && random <= 50 ? phNumber : null,
-					error: random >= 50 ? 'error' : null,
-				});
-			}, 3000);
+			const phone = phNumber.replaceAll(' ', '');
+			console.log('Отправка кода на номер ->', phone);
+			const response = await api.post('/auth/send/otp', {
+				phone,
+			});
+			console.log(response.data);
+			updateStore({
+				isLoading: false,
+				phNumber,
+				error: null,
+			});
 		} catch (error) {
 			console.log(error);
 			updateStore({ isLoading: false, error, phNumber: null });
 		}
 	};
 
-	const signUp = async (verificationCode: string) => {
+	const signUp = async (otp: string) => {
 		try {
 			const partnerCard = user.partnerCard;
+			const phone = user.phNumber?.replaceAll(' ', '');
 			updateStore({ isLoading: true });
 			console.log('Отправка кода для регистрации');
-			// -------------- Add endpoint to send code for registration -----------
-			/* 
-				const response = await api.post('', {
-				verificationCode,
-				parterCard
+			const response = await api.post('/auth/register', {
+				phone,
+				otp,
+				partnerCard,
 			});
-
-			*/
-			setTimeout(() => {
-				const random = Math.floor(Math.random() * 100);
-				console.log('this is random number: ', random);
-				updateStore({
-					isLoading: false,
-					token: random >= 0 && random <= 50 ? 'success registration' : null,
-					error: random >= 50 ? 'error' : null,
-				});
-			}, 2000);
+			console.log(response.data);
+			updateStore({
+				isLoading: false,
+				token: response.data.accessToken,
+				phNumber: response.data.user.phone,
+				error: null,
+			});
 		} catch (error: any) {
 			console.log(error);
 			updateStore({ isLoading: false, error });
 		}
 	};
-	const signIn = async (verificationCode: string) => {
+	const signIn = async (otp: string) => {
 		try {
 			updateStore({ isLoading: true });
-			//-------- Add endPoint to authentication --------
-			console.log('Отправка кода для авторизации...');
-			/* 
-			const response = await api.post('', {
-				verificationCode,
-			}); 
-			
-			
-			const verification = response.data
-			*/
-			setTimeout(() => {
-				const random = Math.floor(Math.random() * 100);
-				console.log('this is random number: ', random);
-				updateStore({
-					isLoading: false,
-					token: random >= 0 && random <= 50 ? 'success authorization' : null,
-					error:
-						random >= 50 && random <= 75
-							? { status: 505 }
-							: random > 75
-							? { status: 404 }
-							: null,
-				});
-			}, 2000);
-			//----------------------------------------------------------
-			/* 			updateStore({ isLoading: false, verification: true }); */
+			const phone = user.phNumber?.replaceAll(' ', '');
+			console.log('Отправка кода для авторизации');
+			console.log('Номер телефона: ', phone);
+			console.log(otp);
+			const response = await api.post('/auth/login', {
+				phone,
+				otp,
+			});
+			console.log(response.data);
+			updateStore({
+				isLoading: false,
+				token: response.data.accessToken,
+				phNumber: response.data.user.phone,
+				error: null,
+			});
 		} catch (error) {
 			console.log(error);
 			updateStore({ isLoading: false, error: error });

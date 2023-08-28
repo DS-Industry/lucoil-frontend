@@ -1,7 +1,6 @@
 import { TimeIcon } from '@chakra-ui/icons';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import {
-	Button,
 	Divider,
 	Flex,
 	HStack,
@@ -10,6 +9,8 @@ import {
 	Text,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { useCarWash } from '../../../context/carwash-context';
+import { useOrder } from '../../../context/order-context';
 
 interface ICarWashMap {
 	id: string;
@@ -37,6 +38,8 @@ export const CarWashMap: React.FC<ICarWashMap> = ({
 	IsOrder = false,
 }) => {
 	const navigate = useNavigate();
+	const { updateStore } = useCarWash();
+	const { updateStore: updateOrderStore } = useOrder();
 	const handleClick = () => {
 		if (!isDisabled) {
 			getCarWash(carWash);
@@ -46,6 +49,15 @@ export const CarWashMap: React.FC<ICarWashMap> = ({
 
 	const handleBackClick = () => {
 		navigate('/home');
+		updateStore({
+			carWash: null,
+			program: '',
+		});
+		updateOrderStore({
+			carWashId: null,
+			bayNumber: null,
+			sum: null,
+		});
 	};
 
 	return (

@@ -95,30 +95,26 @@ export const CustomYMap = () => {
 			</CustomDrawer>
 
 			{carWash && (
-				<CustomDrawer
-					isOpen={drawerSwitch === 'bay'}
-					onClose={handleCloseDrawer}
-				>
-					<SelectBay carWash={carWash} onClick={setDrawerSwitch} />
-				</CustomDrawer>
-			)}
-
-			{carWash && carWash.type === 'SelfService' ? (
-				<CustomDrawer
-					isOpen={drawerSwitch === 'sum' ? true : false}
-					onClose={handleCloseDrawer}
-				>
-					<NumInput
-						nameMessage="Сумма"
-						minValue={carWash.limitMinCost}
-						maxValue={carWash.limitMaxCost}
-						onClick={navigateToOrder}
-						label="Введите сумму"
-						isSum={true}
-					/>
-				</CustomDrawer>
-			) : (
 				<>
+					<CustomDrawer
+						isOpen={drawerSwitch === 'bay'}
+						onClose={handleCloseDrawer}
+					>
+						<SelectBay carWash={carWash} onClick={setDrawerSwitch} />
+					</CustomDrawer>
+					<CustomDrawer
+						isOpen={drawerSwitch === 'sum'}
+						onClose={handleCloseDrawer}
+					>
+						<NumInput
+							nameMessage="Сумма"
+							switchCarWashType={drawerSwitch}
+							minValue={carWash.limitMinCost}
+							maxValue={carWash.limitMaxCost}
+							onClick={navigateToOrder}
+							label="Введите сумму"
+						/>
+					</CustomDrawer>
 					<CustomDrawer
 						isOpen={drawerSwitch === 'portal'}
 						onClose={handleCloseDrawer}

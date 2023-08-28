@@ -48,7 +48,7 @@ const CarWashProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 			updateStore({ isLoading: true });
 			const response = await api.get('carwash/list');
 			console.log(response.data);
-			updateStore({ carWashes: response.data, isLoading: false });
+			updateStore({ carWashes: response.data, isLoading: false, error: null });
 		} catch (error) {
 			console.log(error);
 			updateStore({ isLoading: false, carWashes: null, error });
@@ -63,7 +63,7 @@ const CarWashProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 			);
 			console.log(response.data);
 			if (response.status === 200) {
-				updateStore({ pingStatus: 200, isLoading: false });
+				updateStore({ pingStatus: 200, isLoading: false, error: null });
 			}
 			return;
 		} catch (error) {

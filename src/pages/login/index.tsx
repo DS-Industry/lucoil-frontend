@@ -9,7 +9,7 @@ import { PhoneInput } from '../../component/inputs/phone-input';
 export const LoginPage: React.FC = () => {
 	const navigate = useNavigate();
 	const toast = useToast();
-	const { sendPhNumber, updateStore, user } = useUser();
+	const { sendPhNumber, user } = useUser();
 	const [value, setValue] = useState<any>('');
 
 	const handleClick = async () => {

@@ -59,9 +59,7 @@ export const SelectBay: React.FC<ISelectBay> = ({ carWash, onClick }) => {
 			</Box>
 			<OperButton
 				title="Далее"
-				switchCarWashType={
-					carWash && carWash.type === 'SelfService' ? 'bay' : 'portal'
-				}
+				switchCarWashType="bay"
 				disabled={!value ? true : false}
 				onClick={onClick}
 				value={value}

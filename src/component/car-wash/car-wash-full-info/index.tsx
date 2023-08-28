@@ -74,31 +74,25 @@ export const CarWashFullInfo: React.FC<ICarWash> = ({
 					</Box>
 				)}
 				<Box mb="15px">
-					{carWash.tags &&
-						carWash.tags.map((tag: any, index: number) => {
-							return (
-								<Box key={index}>
-									<Text
-										lineHeight="20px"
-										fontSize="12px"
-										color="colors.DARK_GRAY"
-									>
-										Услуги
-									</Text>
-									<Flex flexDir="row" flexWrap="wrap">
-										<Box>
-											<TagInfo
-												label={tag.name}
-												bgColor="colors.WHITE_GRAY"
-												color="colors.BLACK"
-												fontSize="14px"
-												height="20px"
-											/>
-										</Box>
-									</Flex>
-								</Box>
-							);
-						})}
+					<Text lineHeight="20px" fontSize="12px" color="colors.DARK_GRAY">
+						Услуги
+					</Text>
+					<Flex flexDir="row" flexWrap="wrap">
+						{carWash.tags &&
+							carWash.tags.map((tag: any, index: number) => {
+								return (
+									<Box mr="6px" mb="7px" key={index}>
+										<TagInfo
+											label={tag.name}
+											bgColor="colors.WHITE_GRAY"
+											color="colors.BLACK"
+											fontSize="14px"
+											height="20px"
+										/>
+									</Box>
+								);
+							})}
+					</Flex>
 				</Box>
 				{distance && distance > 500 ? (
 					<Flex w="100%" justifyContent="center" mb="15px">

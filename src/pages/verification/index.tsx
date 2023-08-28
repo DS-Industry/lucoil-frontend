@@ -47,15 +47,9 @@ export const VerificationPage = () => {
 
 	useEffect(() => {
 		if (!user.isLoading) {
-			console.log('this is result', user.token);
-			console.log('this is error: ', user.error);
-			if (
-				user.token === 'success registration' ||
-				user.token === 'success authorization'
-			) {
+			if (user.token) {
 				navigate('/home');
-				console.log('navigate to home');
-			} else if (user.error && user.error.status === 404) {
+			} else if (user.error && user.error.response.status === 404) {
 				const result = Object.values(code).join('');
 				signUp(result);
 			} else if (user.error) {
@@ -67,7 +61,7 @@ export const VerificationPage = () => {
 					position: 'top',
 					title: 'Кажется что-то пошло не так...',
 					variant: 'subtle',
-					description: 'На сервере ведутся работы, приходите позже',
+					description: 'Возможно, вы ввели неправильный код',
 					status: 'error',
 					duration: 9000,
 					isClosable: true,
